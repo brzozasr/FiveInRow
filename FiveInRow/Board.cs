@@ -6,6 +6,11 @@ namespace FiveInRow
 {
     public class Board : Window
     {
+        uint[,] _boardArray;
+        const uint EMPTY = 0;
+        const uint PLAYER1 = 1;
+        const uint PLAYER2 = 2;
+
         public Board(uint row, uint col) : base("Board")
         {
             SetDefaultSize(640, 600);
@@ -13,10 +18,9 @@ namespace FiveInRow
             DeleteEvent += delegate { Application.Quit(); };
 
             List<Button> buttonLists = new List<Button>();
+            _boardArray = new uint[row, col];
 
             Table table = new Table(row, col, true);
-
-            Console.WriteLine(buttonLists.Count);
 
             for (uint i = 0; i < row; i++)
             {
@@ -25,10 +29,9 @@ namespace FiveInRow
                     Button cell = new Button($"{i}, {j}");
                     table.Attach(cell, j, j + 1, i, i + 1);
                     buttonLists.Add(cell);
+                    _boardArray[i, j] = EMPTY;
                 }
             }
-
-            Console.WriteLine(buttonLists.Count);
 
             foreach (Button btn in buttonLists)
             {
