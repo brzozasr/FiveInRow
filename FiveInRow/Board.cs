@@ -44,7 +44,9 @@ namespace FiveInRow
 
         private void OnClick(object sender, EventArgs args)
         {
-            Application.Quit();
+            //Application.Quit();
+            Button btn = (Button)sender;
+            btn.Label = "TEST";
         }
     }
 
