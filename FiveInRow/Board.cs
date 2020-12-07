@@ -26,7 +26,8 @@ namespace FiveInRow
             {
                 for (uint j = 0; j < col; j++)
                 {
-                    Button cell = new Button($"{i}, {j}");
+                    Button cell = new Button($"{i},{j}");
+                    cell.Children[0].ChildVisible = false;
                     table.Attach(cell, j, j + 1, i, i + 1);
                     buttonLists.Add(cell);
                     _boardArray[i, j] = EMPTY;
@@ -46,6 +47,9 @@ namespace FiveInRow
         {
             //Application.Quit();
             Button btn = (Button)sender;
+            
+            Console.WriteLine(btn.Label);
+            Console.WriteLine(btn);
             btn.Label = "TEST";
         }
     }
