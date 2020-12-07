@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.808.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiveInRow", "FiveInRow\FiveInRow.csproj", "{235944A2-E38F-4A5E-8390-B752F37A3EB0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{235944A2-E38F-4A5E-8390-B752F37A3EB0}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{235944A2-E38F-4A5E-8390-B752F37A3EB0}.Debug|anycpu.Build.0 = Debug|anycpu
+		{235944A2-E38F-4A5E-8390-B752F37A3EB0}.Release|anycpu.ActiveCfg = Release|anycpu
+		{235944A2-E38F-4A5E-8390-B752F37A3EB0}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {109D42AE-79EB-4D45-8106-6853D157F452}
+	EndGlobalSection
+EndGlobal
