@@ -47,10 +47,24 @@ namespace FiveInRow
         {
             //Application.Quit();
             Button btn = (Button)sender;
-            
+
             Console.WriteLine(btn.Label);
+            Image image = new Image(Stock.Apply, IconSize.Button);
+            //Image image = Image.LoadFromResource("sBallRed.png");
+            //image.WidthRequest = 10;
+            //image.HeightRequest = 10;
+            btn.Remove(btn.Children[0]);
+            //Image image = new Image("gtk-print", IconSize.Button);
+
+
+            //btn.Image = image;
+            btn.ChildVisible = true;
+            btn.Add(image);
             Console.WriteLine(btn);
-            btn.Label = "TEST";
+
+
+            Console.WriteLine(btn.Label);
+            //btn.Label = "TEST";
         }
     }
 
