@@ -10,7 +10,11 @@ namespace FiveInRow
             Application.Init();
             //MainWindow win = new MainWindow();
             //win.Show();
-            new Board(6, 6);
+            //new Board(6, 6);
+            Window intro = new Intro();
+            intro.Resizable = false;
+            intro.Decorated = false;
+            intro.Show();
             Application.Run();
         }
     }
