@@ -73,7 +73,7 @@
     <EmbeddedResource Include="Resources\sBallBlue.png">
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\sBallRed.png">
+    <EmbeddedResource Include="Resources\s-ball-red.png">
       <IncludeInPackage>true</IncludeInPackage>
     </EmbeddedResource>
   </ItemGroup>

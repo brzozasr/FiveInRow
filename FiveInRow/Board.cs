@@ -6,7 +6,8 @@ namespace FiveInRow
 {
     public class Board : Window
     {
-        uint[,] _boardArray;
+        private Table _table;
+        private uint[,] _boardArray;
         const uint EMPTY = 0;
         const uint PLAYER1 = 1;
         const uint PLAYER2 = 2;
@@ -20,7 +21,7 @@ namespace FiveInRow
             List<Button> buttonLists = new List<Button>();
             _boardArray = new uint[row, col];
 
-            Table table = new Table(row, col, true);
+            _table = new Table(row, col, true);
 
             for (uint i = 0; i < row; i++)
             {
@@ -28,7 +29,7 @@ namespace FiveInRow
                 {
                     Button cell = new Button($"{i},{j}");
                     cell.Children[0].ChildVisible = false;
-                    table.Attach(cell, j, j + 1, i, i + 1);
+                    _table.Attach(cell, j, j + 1, i, i + 1);
                     buttonLists.Add(cell);
                     _boardArray[i, j] = EMPTY;
                 }
@@ -39,7 +40,7 @@ namespace FiveInRow
                 btn.Clicked += OnClick;
             }
 
-            Add(table);
+            Add(_table);
             ShowAll();
         }
 
@@ -47,23 +48,25 @@ namespace FiveInRow
         {
             //Application.Quit();
             Button btn = (Button)sender;
-
-            Console.WriteLine(btn.Label);
-            Image image = new Image(Stock.Apply, IconSize.Button);
-            //Image image = Image.LoadFromResource("sBallRed.png");
+            
+            // Console.WriteLine(_table.FocusChild.);
+            // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
+            // Console.WriteLine(_table.NColumns);
+            // _table.Remove(btn);
+            
+            // Image image = new Image(Stock.Apply, IconSize.Button);
+            // Image image = Image.LoadFromResource("s-ball-red");
             //image.WidthRequest = 10;
             //image.HeightRequest = 10;
-            btn.Remove(btn.Children[0]);
+            // btn.Remove(btn.Children[0]);
             //Image image = new Image("gtk-print", IconSize.Button);
 
+            // btn.Image = image;
+            // btn.ChildVisible = true;
+            // // btn.Add(image);
+            // Console.WriteLine(btn);
 
-            //btn.Image = image;
-            btn.ChildVisible = true;
-            btn.Add(image);
-            Console.WriteLine(btn);
-
-
-            Console.WriteLine(btn.Label);
+            // Console.WriteLine(btn.Label);
             //btn.Label = "TEST";
         }
     }
