@@ -49,11 +49,27 @@ namespace FiveInRow
             //Application.Quit();
             Button btn = (Button)sender;
             
+            string[] coords = btn.Label.Split(',');
+            int x = Int32.Parse(coords[0]);
+            int y = Int32.Parse(coords[1]);
+
+            uint leftAttach = (uint)y;
+            uint rightAttach = (uint)y + 1;
+            uint topAttach = (uint)x;
+            uint bottomAttach = (uint)x + 1;
+            
+            _table.Remove(btn);
+            
+            Image image = new Image(Stock.Apply, IconSize.Button);
+            Button newBtn = new Button(image);
+            
+            _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
+            
+            ShowAll();
+            
             // Console.WriteLine(_table.FocusChild.);
             // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
             // Console.WriteLine(_table.NColumns);
-            // _table.Remove(btn);
-            
             // Image image = new Image(Stock.Apply, IconSize.Button);
             // Image image = Image.LoadFromResource("s-ball-red");
             //image.WidthRequest = 10;
