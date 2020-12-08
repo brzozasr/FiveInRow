@@ -1,4 +1,6 @@
+using Atk;
 using Gtk;
+using Image = Gtk.Image;
 
 namespace FiveInRow
 {
@@ -9,13 +11,9 @@ namespace FiveInRow
             SetDefaultSize(600, 400);
             SetPosition(WindowPosition.Center);
             DeleteEvent += delegate { Application.Quit(); };
-
-
-            //introLogo.Pixbuf = new Gdk.Pixbuf("/FiveInRow/Properties/Resources/intro.png");
-            Image introLogo = new Image();
-            var pixbuf = new Gdk.Pixbuf("\\FiveInRow\\Properties\\Resources\\intro.png");
-            introLogo.Pixbuf = pixbuf;
-
+            
+            var pixbuf = new Gdk.Pixbuf("intro.png");
+            Image introLogo = new Image(pixbuf);
             ShowAll();
         }
     }
