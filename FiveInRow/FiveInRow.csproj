@@ -70,5 +70,10 @@
     <Content Include="Properties\Resources\s-ball-orange.png" />
     <Content Include="Properties\Resources\s-ball-red.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
