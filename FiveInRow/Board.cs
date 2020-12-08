@@ -11,9 +11,10 @@ namespace FiveInRow
         const uint Empty = 0; // emty cell (=0) of the game
         const uint Player1 = 1; // cell with mark (=1) the Player1 
         const uint Player2 = 2; // cell with mark (=2) the Player2
-        private string Player1Image = Stock.Apply; // Image for player 1
-        private string Player2Image = Stock.Cancel; // Image for player 2
+        private string _player1Image = Stock.Apply; // Image for player 1
+        private string _player2Image = Stock.Cancel; // Image for player 2
         private bool _turn = true; // turn = PLAYER1
+        private string _imageState;
 
         public Board(uint row, uint col) : base("FIVE IN ONE ROW")
         {
@@ -65,18 +66,16 @@ namespace FiveInRow
 
             _table.Remove(btn);
 
-            string ImageState;
-
             if (_turn == true)
             {
-                ImageState = Player1Image;
+                _imageState = _player1Image;
             }
             else
             {
-                ImageState = Player2Image;
+                _imageState = _player2Image;
             }
 
-            Image image = new Image(ImageState, IconSize.Button);
+            Image image = new Image(_imageState, IconSize.Button);
             Button newBtn = new Button(image);
 
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
@@ -93,14 +92,17 @@ namespace FiveInRow
                 _boardArray[x, y] = Player2;
                 _turn = true;
             }
-
-            for (int i = 0; i < _boardArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < _boardArray.GetLength(1); j++)
-                {
-                    Console.WriteLine(_boardArray.GetValue(i, j));
-                }
-            }
+            
+            GameListener();
+            
+            // TODO delete
+            // for (int i = 0; i < _boardArray.GetLength(0); i++)
+            // {
+            //     for (int j = 0; j < _boardArray.GetLength(1); j++)
+            //     {
+            //         Console.WriteLine(_boardArray.GetValue(i, j));
+            //     }
+            // }
 
             // Console.WriteLine(_table.FocusChild.);
             // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
@@ -119,6 +121,14 @@ namespace FiveInRow
 
             // Console.WriteLine(btn.Label);
             //btn.Label = "TEST";
+        }
+
+        private void GameListener()
+        {
+            foreach (Button btn in _table.Children)
+            {
+                // Console.WriteLine(btn.Label);
+            }
         }
     }
 }
