@@ -49,35 +49,6 @@
     <Reference Include="Mono.Posix" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\bBallBlue.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\bBallGreen.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\bBallOrange.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\bBallRed.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\sBallOrange.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\sBallGreen.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\sBallBlue.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Resources\s-ball-red.png">
-      <IncludeInPackage>true</IncludeInPackage>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
@@ -86,7 +57,18 @@
     <Compile Include="Board.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Content Include="Properties\Resources\b-ball-blue.png" />
+    <Content Include="Properties\Resources\b-ball-green.png" />
+    <Content Include="Properties\Resources\b-ball-orange.png" />
+    <Content Include="Properties\Resources\b-ball-red.png" />
+    <Content Include="Properties\Resources\m-ball-blue.png" />
+    <Content Include="Properties\Resources\m-ball-green.png" />
+    <Content Include="Properties\Resources\m-ball-orange.png" />
+    <Content Include="Properties\Resources\m-ball-red.png" />
+    <Content Include="Properties\Resources\s-ball-blue.png" />
+    <Content Include="Properties\Resources\s-ball-green.png" />
+    <Content Include="Properties\Resources\s-ball-orange.png" />
+    <Content Include="Properties\Resources\s-ball-red.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
