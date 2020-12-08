@@ -59,7 +59,6 @@
     <Compile Include="SettingWindow.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="gtk-gui\intro.png" />
     <Content Include="Properties\Resources\b-ball-blue.png" />
     <Content Include="Properties\Resources\b-ball-green.png" />
     <Content Include="Properties\Resources\b-ball-orange.png" />
