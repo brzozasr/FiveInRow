@@ -7,13 +7,13 @@ namespace FiveInRow
     public class Board : Window
     {
         private Table _table;
-        private uint[,] _boardArray;                        // board with status of game 
-        const uint Empty = 0;                               // emty cell (=0) of the game
-        const uint Player1 = 1;                             // cell with mark (=1) the Player1 
-        const uint Player2 = 2;                             // cell with mark (=2) the Player2
-        private string Player1Image = Stock.Apply;          // Image for player 1
-        private string Player2Image = Stock.Cancel;         // Image for player 2
-        private bool _turn = true;                          // turn = PLAYER1
+        private uint[,] _boardArray; // board with status of game 
+        const uint Empty = 0; // emty cell (=0) of the game
+        const uint Player1 = 1; // cell with mark (=1) the Player1 
+        const uint Player2 = 2; // cell with mark (=2) the Player2
+        private string Player1Image = Stock.Apply; // Image for player 1
+        private string Player2Image = Stock.Cancel; // Image for player 2
+        private bool _turn = true; // turn = PLAYER1
 
         public Board(uint row, uint col) : base("FIVE IN ONE ROW")
         {
@@ -52,17 +52,17 @@ namespace FiveInRow
         private void OnClick(object sender, EventArgs args)
         {
             //Application.Quit();
-            Button btn = (Button)sender;
-            
+            Button btn = (Button) sender;
+
             string[] coords = btn.Label.Split(',');
             int x = Int32.Parse(coords[0]);
             int y = Int32.Parse(coords[1]);
 
-            uint leftAttach = (uint)y;
-            uint rightAttach = (uint)y + 1;
-            uint topAttach = (uint)x;
-            uint bottomAttach = (uint)x + 1;
-            
+            uint leftAttach = (uint) y;
+            uint rightAttach = (uint) y + 1;
+            uint topAttach = (uint) x;
+            uint bottomAttach = (uint) x + 1;
+
             _table.Remove(btn);
 
             string ImageState;
@@ -78,17 +78,17 @@ namespace FiveInRow
 
             Image image = new Image(ImageState, IconSize.Button);
             Button newBtn = new Button(image);
-            
+
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
-            
+
             ShowAll();
 
-            if (_turn == true)  // Player1
+            if (_turn == true) // Player1
             {
                 _boardArray[x, y] = Player1;
                 _turn = false;
             }
-            else                // Player2
+            else // Player2
             {
                 _boardArray[x, y] = Player2;
                 _turn = true;
@@ -102,24 +102,23 @@ namespace FiveInRow
                 }
             }
 
-                // Console.WriteLine(_table.FocusChild.);
-                // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
-                // Console.WriteLine(_table.NColumns);
-                // Image image = new Image(Stock.Apply, IconSize.Button);
-                // Image image = Image.LoadFromResource("s-ball-red");
-                //image.WidthRequest = 10;
-                //image.HeightRequest = 10;
-                // btn.Remove(btn.Children[0]);
-                //Image image = new Image("gtk-print", IconSize.Button);
+            // Console.WriteLine(_table.FocusChild.);
+            // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
+            // Console.WriteLine(_table.NColumns);
+            // Image image = new Image(Stock.Apply, IconSize.Button);
+            // Image image = Image.LoadFromResource("s-ball-red");
+            //image.WidthRequest = 10;
+            //image.HeightRequest = 10;
+            // btn.Remove(btn.Children[0]);
+            //Image image = new Image("gtk-print", IconSize.Button);
 
-                // btn.Image = image;
-                // btn.ChildVisible = true;
-                // // btn.Add(image);
-                // Console.WriteLine(btn);
+            // btn.Image = image;
+            // btn.ChildVisible = true;
+            // // btn.Add(image);
+            // Console.WriteLine(btn);
 
-                // Console.WriteLine(btn.Label);
-                //btn.Label = "TEST";
-            }
+            // Console.WriteLine(btn.Label);
+            //btn.Label = "TEST";
+        }
     }
-
 }
