@@ -12,14 +12,15 @@ namespace FiveInRow
         public static void Main(string[] args)
         {
             Application.Init();
-            MainWindow win = new MainWindow(WindowType.Popup);
-            win.Show();
-            _win = win;
-            // new Board(10, 10);
-            //new SettingWindow();
-            Thread thr = new Thread(new ThreadStart(ThreadRoutine));
-            thr.Start();
-            _notify = new ThreadNotify(new ReadyEvent(ThreadCounter));
+            //MainWindow win = new MainWindow(WindowType.Popup);
+            //win.Show();
+            //_win = win;
+
+            //Thread thr = new Thread(new ThreadStart(ThreadRoutine));
+            //thr.Start();
+            //_notify = new ThreadNotify(new ReadyEvent(ThreadCounter));
+
+            new ConfigGameWindow();
             Application.Run();
         }
 
