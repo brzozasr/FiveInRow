@@ -3,18 +3,27 @@
 
 public partial class MainWindow
 {
+	private global::Gtk.Image image1;
+
 	protected virtual void Build()
 	{
 		global::Stetic.Gui.Initialize(this);
 		// Widget MainWindow
 		this.Name = "MainWindow";
-		this.Title = global::Mono.Unix.Catalog.GetString("MainWindow");
-		this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+		this.Title = global::Mono.Unix.Catalog.GetString("FIVE IN A ROW");
+		this.WindowPosition = ((global::Gtk.WindowPosition)(3));
+		this.Resizable = false;
+		this.Decorated = false;
+		// Container child MainWindow.Gtk.Container+ContainerChild
+		this.image1 = new global::Gtk.Image();
+		this.image1.Name = "image1";
+		this.image1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("FiveInRow.Properties.Resources.intro.png");
+		this.Add(this.image1);
 		if ((this.Child != null))
 		{
 			this.Child.ShowAll();
 		}
-		this.DefaultWidth = 435;
+		this.DefaultWidth = 600;
 		this.DefaultHeight = 400;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);

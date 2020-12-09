@@ -8,10 +8,10 @@ namespace FiveInRow
         public static void Main(string[] args)
         {
             Application.Init();
-            //MainWindow win = new MainWindow();
-            //win.Show();
+            MainWindow win = new MainWindow(WindowType.Popup);
+            win.Show();
             // new Board(10, 10);
-            new SettingWindow();
+            //new SettingWindow();
             Application.Run();
         }
     }

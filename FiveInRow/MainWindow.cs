@@ -3,7 +3,7 @@ using Gtk;
 
 public partial class MainWindow : Gtk.Window
 {
-    public MainWindow() : base(Gtk.WindowType.Toplevel)
+    public MainWindow(WindowType popup) : base(Gtk.WindowType.Popup)
     {
         Build();
     }
