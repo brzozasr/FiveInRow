@@ -15,12 +15,13 @@ namespace FiveInRow
         private string _player2Image = Stock.Cancel; // Image for player 2
         private bool _turn = true; // turn = PLAYER1
         private string _imageState;
+        private static ConfigGameWindow _configGameWindow;
 
         public Board(uint row, uint col) : base("FIVE IN ONE ROW")
         {
-            //SetDefaultSize(640, 600);
             SetPosition(WindowPosition.Center);
-            DeleteEvent += delegate { Application.Quit(); };
+            //DeleteEvent += delegate { Application.Quit(); };
+            DeleteEvent += new DeleteEventHandler(DestroyBoard);
 
             List<Button> buttonLists = new List<Button>();
             _boardArray = new uint[row, col];
@@ -104,23 +105,6 @@ namespace FiveInRow
             //     }
             // }
 
-            // Console.WriteLine(_table.FocusChild.);
-            // _table.FocusChild.RenderIcon(Stock.MediaPlay, IconSize.Button, "");
-            // Console.WriteLine(_table.NColumns);
-            // Image image = new Image(Stock.Apply, IconSize.Button);
-            // Image image = Image.LoadFromResource("s-ball-red");
-            //image.WidthRequest = 10;
-            //image.HeightRequest = 10;
-            // btn.Remove(btn.Children[0]);
-            //Image image = new Image("gtk-print", IconSize.Button);
-
-            // btn.Image = image;
-            // btn.ChildVisible = true;
-            // // btn.Add(image);
-            // Console.WriteLine(btn);
-
-            // Console.WriteLine(btn.Label);
-            //btn.Label = "TEST";
         }
 
         private void GameListener()
@@ -129,6 +113,19 @@ namespace FiveInRow
             {
                 // Console.WriteLine(btn.Label);
             }
+        }
+
+        private void DestroyBoard(object sender, DeleteEventArgs e)
+        { 
+            this.Destroy();
+            _configGameWindow.Show();
+            
+        }
+
+        // window ConfigGameWindow handler
+        public static void SetConfigGameWindow(ConfigGameWindow configGameWindow)
+        {
+            _configGameWindow = configGameWindow;
         }
     }
 }

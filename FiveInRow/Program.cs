@@ -12,15 +12,15 @@ namespace FiveInRow
         public static void Main(string[] args)
         {
             Application.Init();
-            //MainWindow win = new MainWindow(WindowType.Popup);
-            //win.Show();
-            //_win = win;
+            MainWindow win = new MainWindow(WindowType.Popup);
+            win.Show();
+            _win = win;
 
-            //Thread thr = new Thread(new ThreadStart(ThreadRoutine));
-            //thr.Start();
-            //_notify = new ThreadNotify(new ReadyEvent(ThreadCounter));
+            Thread thr = new Thread(new ThreadStart(ThreadRoutine));
+            thr.Start();
+            _notify = new ThreadNotify(new ReadyEvent(ThreadCounter));
 
-            new ConfigGameWindow();
+            //new ConfigGameWindow();
             Application.Run();
         }
 
@@ -33,7 +33,7 @@ namespace FiveInRow
         {
             Thread.Sleep(4000);
             _win.HideAll();
-            new SettingWindow();
+            new ConfigGameWindow();
         }
     }
 }

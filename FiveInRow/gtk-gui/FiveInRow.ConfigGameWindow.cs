@@ -14,17 +14,29 @@ namespace FiveInRow
 
 		private global::Gtk.HBox hbox4;
 
-		private global::Gtk.RadioButton radiobutton15;
+		private global::Gtk.RadioButton rbAi;
 
-		private global::Gtk.RadioButton radiobutton17;
+		private global::Gtk.RadioButton rbMultiplayer;
 
 		private global::Gtk.Fixed fixed4;
 
 		private global::Gtk.Label labelBordSize;
 
-		private global::Gtk.SpinButton spinbutton2;
+		private global::Gtk.SpinButton sbBoardSize;
 
-		private global::Gtk.Label GtkLabel1;
+		private global::Gtk.Label GtkLabel2;
+
+		private global::Gtk.HBox hbox5;
+
+		private global::Gtk.Alignment alignment17;
+
+		private global::Gtk.VBox vbox5;
+
+		private global::Gtk.Alignment alignment19;
+
+		private global::Gtk.Button btnPlay;
+
+		private global::Gtk.Alignment alignment18;
 
 		protected virtual void Build()
 		{
@@ -55,24 +67,24 @@ namespace FiveInRow
 			this.hbox4.Name = "hbox4";
 			this.hbox4.Spacing = 6;
 			// Container child hbox4.Gtk.Box+BoxChild
-			this.radiobutton15 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton15"));
-			this.radiobutton15.CanFocus = true;
-			this.radiobutton15.Name = "radiobutton15";
-			this.radiobutton15.DrawIndicator = true;
-			this.radiobutton15.UseUnderline = true;
-			this.radiobutton15.Group = new global::GLib.SList(global::System.IntPtr.Zero);
-			this.hbox4.Add(this.radiobutton15);
-			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.radiobutton15]));
+			this.rbAi = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("AI (Artificial Intelligence)"));
+			this.rbAi.CanFocus = true;
+			this.rbAi.Name = "rbAi";
+			this.rbAi.DrawIndicator = true;
+			this.rbAi.UseUnderline = true;
+			this.rbAi.Group = new global::GLib.SList(global::System.IntPtr.Zero);
+			this.hbox4.Add(this.rbAi);
+			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.rbAi]));
 			w1.Position = 0;
 			// Container child hbox4.Gtk.Box+BoxChild
-			this.radiobutton17 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton17"));
-			this.radiobutton17.CanFocus = true;
-			this.radiobutton17.Name = "radiobutton17";
-			this.radiobutton17.DrawIndicator = true;
-			this.radiobutton17.UseUnderline = true;
-			this.radiobutton17.Group = this.radiobutton15.Group;
-			this.hbox4.Add(this.radiobutton17);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.radiobutton17]));
+			this.rbMultiplayer = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Multiplayer (online)"));
+			this.rbMultiplayer.CanFocus = true;
+			this.rbMultiplayer.Name = "rbMultiplayer";
+			this.rbMultiplayer.DrawIndicator = true;
+			this.rbMultiplayer.UseUnderline = true;
+			this.rbMultiplayer.Group = this.rbAi.Group;
+			this.hbox4.Add(this.rbMultiplayer);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox4[this.rbMultiplayer]));
 			w2.Position = 1;
 			this.vbox15.Add(this.hbox4);
 			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.hbox4]));
@@ -91,15 +103,16 @@ namespace FiveInRow
 			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.labelBordSize]));
 			w4.Y = 5;
 			// Container child fixed4.Gtk.Fixed+FixedChild
-			this.spinbutton2 = new global::Gtk.SpinButton(8D, 30D, 1D);
-			this.spinbutton2.CanFocus = true;
-			this.spinbutton2.Name = "spinbutton2";
-			this.spinbutton2.Adjustment.PageIncrement = 10D;
-			this.spinbutton2.ClimbRate = 1D;
-			this.spinbutton2.Numeric = true;
-			this.spinbutton2.Value = 8D;
-			this.fixed4.Add(this.spinbutton2);
-			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.spinbutton2]));
+			this.sbBoardSize = new global::Gtk.SpinButton(8D, 25D, 1D);
+			this.sbBoardSize.CanFocus = true;
+			this.sbBoardSize.Name = "sbBoardSize";
+			this.sbBoardSize.Adjustment.PageIncrement = 10D;
+			this.sbBoardSize.ClimbRate = 1D;
+			this.sbBoardSize.Numeric = true;
+			this.sbBoardSize.UpdatePolicy = ((global::Gtk.SpinButtonUpdatePolicy)(1));
+			this.sbBoardSize.Value = 8D;
+			this.fixed4.Add(this.sbBoardSize);
+			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.sbBoardSize]));
 			w5.X = 116;
 			this.vbox15.Add(this.fixed4);
 			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.fixed4]));
@@ -108,14 +121,57 @@ namespace FiveInRow
 			w6.Fill = false;
 			this.GtkAlignment.Add(this.vbox15);
 			this.frame.Add(this.GtkAlignment);
-			this.GtkLabel1 = new global::Gtk.Label();
-			this.GtkLabel1.Name = "GtkLabel1";
-			this.GtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Game Mode</b>");
-			this.GtkLabel1.UseMarkup = true;
-			this.frame.LabelWidget = this.GtkLabel1;
+			this.GtkLabel2 = new global::Gtk.Label();
+			this.GtkLabel2.Name = "GtkLabel2";
+			this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Game Mode</b>");
+			this.GtkLabel2.UseMarkup = true;
+			this.frame.LabelWidget = this.GtkLabel2;
 			this.vbox14.Add(this.frame);
 			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox14[this.frame]));
 			w9.Position = 0;
+			// Container child vbox14.Gtk.Box+BoxChild
+			this.hbox5 = new global::Gtk.HBox();
+			this.hbox5.Name = "hbox5";
+			this.hbox5.Spacing = 6;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.alignment17 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment17.Name = "alignment17";
+			this.hbox5.Add(this.alignment17);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment17]));
+			w10.Position = 0;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.vbox5 = new global::Gtk.VBox();
+			this.vbox5.Name = "vbox5";
+			this.vbox5.Spacing = 6;
+			// Container child vbox5.Gtk.Box+BoxChild
+			this.alignment19 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment19.Name = "alignment19";
+			// Container child alignment19.Gtk.Container+ContainerChild
+			this.btnPlay = new global::Gtk.Button();
+			this.btnPlay.CanFocus = true;
+			this.btnPlay.Name = "btnPlay";
+			this.btnPlay.UseUnderline = true;
+			this.btnPlay.Label = global::Mono.Unix.Catalog.GetString("PLAY");
+			this.alignment19.Add(this.btnPlay);
+			this.vbox5.Add(this.alignment19);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox5[this.alignment19]));
+			w12.Position = 0;
+			w12.Expand = false;
+			w12.Fill = false;
+			this.hbox5.Add(this.vbox5);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.vbox5]));
+			w13.Position = 1;
+			w13.Expand = false;
+			w13.Fill = false;
+			// Container child hbox5.Gtk.Box+BoxChild
+			this.alignment18 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment18.Name = "alignment18";
+			this.hbox5.Add(this.alignment18);
+			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment18]));
+			w14.Position = 2;
+			this.vbox14.Add(this.hbox5);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox14[this.hbox5]));
+			w15.Position = 2;
 			this.Add(this.vbox14);
 			if ((this.Child != null))
 			{
