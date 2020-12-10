@@ -57,6 +57,7 @@
     <Compile Include="Board.cs" />
     <Compile Include="ConfigGameWindow.cs" />
     <Compile Include="gtk-gui\FiveInRow.ConfigGameWindow.cs" />
+    <Compile Include="GameLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Resources\b-ball-blue.png" />

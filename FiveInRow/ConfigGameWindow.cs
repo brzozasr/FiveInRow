@@ -16,10 +16,18 @@ namespace FiveInRow
         private void playGame(object sender, EventArgs e)
         {
             Board.SetConfigGameWindow(this);
-            this.Hide();
             uint row, col;
             row = col = Convert.ToUInt32(sbBoardSize.Text, 10);
-            _ = new Board(row, col);
+
+            if (rbAi.Active)
+            {
+                this.Hide();
+                _ = new Board(row, col);
+            }
+            else if (rbMultiplayer.Active)
+            {
+
+            }
 
         }
 
