@@ -18,12 +18,12 @@ namespace FiveInRow
             string searchPlayer2 = MultiplyString(Convert.ToString(Board.Player2Mark), _inLine);
 
             string row = "";
-            
+
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    row +=  Convert.ToString(board.GetValue(i, j));
+                    row += Convert.ToString(board.GetValue(i, j));
                     if (row.Contains(searchPlayer1))
                     {
                         Console.WriteLine("Player 1");
@@ -35,14 +35,15 @@ namespace FiveInRow
                         return player2Name;
                     }
                 }
+
                 row = "";
             }
 
             string col = "";
 
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (int i = 0; i < board.GetLength(1); i++)
             {
-                for (int j = 0; j < board.GetLength(1); j++)
+                for (int j = 0; j < board.GetLength(0); j++)
                 {
                     col += Convert.ToString(board.GetValue(j, i));
                     if (col.Contains(searchPlayer1))
@@ -56,10 +57,64 @@ namespace FiveInRow
                         return player2Name;
                     }
                 }
+
                 col = "";
             }
 
-            Console.WriteLine(board.GetLongLength(1));
+            int heightRow = board.GetLength(0);
+            int widthCol = board.GetLength(1);
+
+            string diagonalRight = "";
+
+            // looping thru two dimensional array diagonally (/ direction)
+            for (int k = 0; k <= heightRow + widthCol - 2; k++)
+            {
+                for (int j = 0; j <= k; j++)
+                {
+                    int i = k - j;
+                    if (i < heightRow && j < widthCol)
+                    {
+                        diagonalRight += Convert.ToString(board.GetValue(i, j));
+                        if (diagonalRight.Contains(searchPlayer1))
+                        {
+                            Console.WriteLine("Player 1");
+                            return player1Name;
+                        }
+                        else if (diagonalRight.Contains(searchPlayer2))
+                        {
+                            Console.WriteLine("Player 2");
+                            return player2Name;
+                        }
+                    }
+                }
+
+                diagonalRight = "";
+            }
+
+            string diagonalLeft = "";
+
+            // looping thru two dimensional array diagonally (\ direction)
+            for (int n = -heightRow; n <= widthCol; n++)
+            {
+                for (int i = 0; i < heightRow; i++)
+                {
+                    if ((i - n >= 0) && (i - n < widthCol))
+                    {
+                        diagonalLeft += Convert.ToString(board.GetValue(i, i - n));
+                        if (diagonalLeft.Contains(searchPlayer1))
+                        {
+                            Console.WriteLine("Player 1");
+                            return player1Name;
+                        }
+                        else if (diagonalLeft.Contains(searchPlayer2))
+                        {
+                            Console.WriteLine("Player 2");
+                            return player2Name;
+                        }
+                    }
+                }
+                diagonalLeft = "";
+            }
 
             return null;
         }

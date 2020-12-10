@@ -56,7 +56,6 @@ namespace FiveInRow
 
         private void OnClick(object sender, EventArgs args)
         {
-            //Application.Quit();
             Button btn = (Button) sender;
 
             string[] coords = btn.Label.Split(',');
@@ -81,6 +80,8 @@ namespace FiveInRow
 
             Image image = new Image(_imageState, IconSize.Button);
             Button newBtn = new Button(image);
+            newBtn.WidthRequest = 40;
+            newBtn.HeightRequest = 40;
 
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
 
