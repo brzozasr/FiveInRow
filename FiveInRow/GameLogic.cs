@@ -59,6 +59,8 @@ namespace FiveInRow
                 col = "";
             }
 
+            Console.WriteLine(board.GetLongLength(1));
+
             return null;
         }
 

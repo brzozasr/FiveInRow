@@ -22,7 +22,7 @@ namespace FiveInRow
             if (rbAi.Active)
             {
                 this.Hide();
-                _ = new Board(row, col);
+                _ = new Board(row, 9); // TODO col
             }
             else if (rbMultiplayer.Active)
             {
