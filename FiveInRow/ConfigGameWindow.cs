@@ -9,11 +9,11 @@ namespace FiveInRow
                 base(WindowType.Toplevel)
         {
             this.Build();
-            btnPlay.Clicked += new EventHandler(playGame);
+            btnPlay.Clicked += new EventHandler(PlayGame);
             DeleteEvent += delegate { Application.Quit(); };
         }
 
-        private void playGame(object sender, EventArgs e)
+        private void PlayGame(object sender, EventArgs e)
         {
             Board.SetConfigGameWindow(this);
             uint row, col;
