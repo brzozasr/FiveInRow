@@ -101,6 +101,9 @@ namespace FiveInRow
             GameLogic.HasWon("PLAYER 1", "PLAYER 2");
             GameLogic.IsBoardFull();
             GameListener();
+            
+            // TODO delete
+            GameLogic.AiMove();
         }
 
 

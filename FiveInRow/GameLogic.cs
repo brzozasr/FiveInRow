@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Gtk;
 
 namespace FiveInRow
 {
@@ -95,13 +96,13 @@ namespace FiveInRow
             string diagonalLeft = "";
 
             // looping thru two dimensional array diagonally (\ direction)
-            for (int n = -heightRow; n <= widthCol; n++)
+            for (int i = -heightRow; i <= widthCol; i++)
             {
-                for (int i = 0; i < heightRow; i++)
+                for (int j = 0; j < heightRow; j++)
                 {
-                    if ((i - n >= 0) && (i - n < widthCol))
+                    if ((j - i >= 0) && (j - i < widthCol))
                     {
-                        diagonalLeft += Convert.ToString(board.GetValue(i, i - n));
+                        diagonalLeft += Convert.ToString(board.GetValue(j, j - i));
                         if (diagonalLeft.Contains(searchPlayer1))
                         {
                             Console.WriteLine("Player 1");
@@ -144,6 +145,45 @@ namespace FiveInRow
             List<(int x, int y)> twoHalfOpen = new List<(int x, int y)>();
             List<(int x, int y)> one = new List<(int x, int y)>();
             
+            SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
+            
+            uint[,] board = Board.BoardArray;
+            // string searchPlayer1 = MultiplyString(Convert.ToString(Board.Player1Mark), _inLine);
+            // string searchPlayer2 = MultiplyString(Convert.ToString(Board.Player2Mark), _inLine);
+            
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    if (board.GetLength(1) - 1 > j)
+                    {
+                        if ((uint)board.GetValue(i, j) == 2 && (uint)board.GetValue(i, j + 1) == 2)
+                        {
+                            tmpSet.Add((i, j));
+                            tmpSet.Add((i, j + 1));
+                        }
+                        else
+                        {
+                            // foreach (var tup in tmpSet)
+                            // {
+                            //     Console.Write(tup + " ");
+                            // }
+                            //
+                            // tmpSet.Clear();
+                        }
+                    }
+                    
+                }
+
+                foreach (var tup in tmpSet)
+                {
+                    Console.Write(tup + " ");
+                }
+
+                Console.WriteLine();
+                tmpSet.Clear();
+            }
+            
             return (0, 0);
         }
 
@@ -159,7 +199,7 @@ namespace FiveInRow
         /// <param name="noMarks">number marks in line,</param>
         /// <param name="mark">kind of mark.</param>
         /// <returns>Returns list of fields (EmptyCell) where AI can put they mark.</returns>
-        private static List<(int, int)> FindMarkInLine(int noMarks, int mark)
+        public static List<(int, int)> FindMarkInLine(int noMarks, int mark)
         {
             
             
