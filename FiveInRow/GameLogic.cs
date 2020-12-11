@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace FiveInRow
 {
@@ -119,7 +120,60 @@ namespace FiveInRow
             return null;
         }
 
-        protected internal static string MultiplyString(string multiplier, int multiplicand)
+        protected internal static bool IsBoardFull()
+        {
+            uint[,] board = Board.BoardArray;
+            foreach (var cell in board)
+            {
+                if (cell == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        protected internal static (int, int) AiMove()
+        {
+            List<(int x, int y)> fourOpen = new List<(int x, int y)>();
+            List<(int x, int y)> fourHalfOpen = new List<(int x, int y)>();
+            List<(int x, int y)> threeOpen = new List<(int x, int y)>();
+            List<(int x, int y)> threeHalfOpen = new List<(int x, int y)>();
+            List<(int x, int y)> twoOpen = new List<(int x, int y)>();
+            List<(int x, int y)> twoHalfOpen = new List<(int x, int y)>();
+            List<(int x, int y)> one = new List<(int x, int y)>();
+            
+            return (0, 0);
+        }
+
+        private static (int, int) GetFourOpen()
+        {
+            
+            return (0, 0);
+        }
+        
+        /// <summary>
+        /// Searching empty fields (EmptyCell) in line where AI can put they mark.
+        /// </summary>
+        /// <param name="noMarks">number marks in line,</param>
+        /// <param name="mark">kind of mark.</param>
+        /// <returns>Returns list of fields (EmptyCell) where AI can put they mark.</returns>
+        private static List<(int, int)> FindMarkInLine(int noMarks, int mark)
+        {
+            
+            
+            List<(int x, int y)> test = new List<(int x, int y)>();
+            return test;
+        }
+        
+        protected internal static (int, int) AiMoveToWin()
+        {
+            
+            return (0, 0);
+        }
+
+        private static string MultiplyString(string multiplier, int multiplicand)
         {
             string tmpStirng = "";
 
