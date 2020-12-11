@@ -103,7 +103,7 @@ namespace FiveInRow
             GameListener();
             
             // TODO delete
-            GameLogic.AiMove();
+            GameLogic.FindMarkInVerticalLine();
         }
 
 

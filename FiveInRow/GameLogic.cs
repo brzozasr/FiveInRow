@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Gtk;
 
 namespace FiveInRow
@@ -115,6 +116,7 @@ namespace FiveInRow
                         }
                     }
                 }
+
                 diagonalLeft = "";
             }
 
@@ -135,81 +137,255 @@ namespace FiveInRow
             return true;
         }
 
-        protected internal static (int, int) AiMove()
+        protected internal static (int, int) FindMarkInHorizontalLine()
         {
-            List<(int x, int y)> fourOpen = new List<(int x, int y)>();
-            List<(int x, int y)> fourHalfOpen = new List<(int x, int y)>();
-            List<(int x, int y)> threeOpen = new List<(int x, int y)>();
-            List<(int x, int y)> threeHalfOpen = new List<(int x, int y)>();
-            List<(int x, int y)> twoOpen = new List<(int x, int y)>();
-            List<(int x, int y)> twoHalfOpen = new List<(int x, int y)>();
-            List<(int x, int y)> one = new List<(int x, int y)>();
-            
+            List<(int x, int y)> fourMarksHorizontal = new List<(int x, int y)>();
+            List<(int x, int y)> threeMarksHorizontal = new List<(int x, int y)>();
+            List<(int x, int y)> twoMarksHorizontal = new List<(int x, int y)>();
+
             SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
-            
+
             uint[,] board = Board.BoardArray;
-            // string searchPlayer1 = MultiplyString(Convert.ToString(Board.Player1Mark), _inLine);
-            // string searchPlayer2 = MultiplyString(Convert.ToString(Board.Player2Mark), _inLine);
-            
+
+            // Possible positions to move in horizontal line
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
                     if (board.GetLength(1) - 1 > j)
                     {
-                        if ((uint)board.GetValue(i, j) == 2 && (uint)board.GetValue(i, j + 1) == 2)
+                        if ((uint) board.GetValue(i, j) == Board.Player1Mark &&
+                            (uint) board.GetValue(i, j + 1) == Board.Player1Mark)
                         {
                             tmpSet.Add((i, j));
                             tmpSet.Add((i, j + 1));
                         }
-                        else
+
+                        if ((uint) board.GetValue(i, j + 1) != Board.Player1Mark || board.GetLength(1) - 2 == j)
                         {
-                            // foreach (var tup in tmpSet)
-                            // {
-                            //     Console.Write(tup + " ");
-                            // }
-                            //
-                            // tmpSet.Clear();
+                            if (tmpSet.Count > 0)
+                            {
+                                switch (tmpSet.Count)
+                                {
+                                    case 2:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            twoMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            twoMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    case 3:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            threeMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            threeMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    case 4:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            fourMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            fourMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    default:
+                                        Console.WriteLine("Nothing to do.");
+                                        break;
+                                }
+                            }
                         }
                     }
-                    
                 }
-
-                foreach (var tup in tmpSet)
-                {
-                    Console.Write(tup + " ");
-                }
-
-                Console.WriteLine();
-                tmpSet.Clear();
             }
-            
-            return (0, 0);
-        }
 
-        private static (int, int) GetFourOpen()
-        {
-            
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("twoMarks: ");
+            foreach (var tup in twoMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("threeMarks: ");
+            foreach (var tup in threeMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("fourMarks: ");
+            foreach (var tup in fourMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+
             return (0, 0);
         }
         
+        
+        protected internal static (int, int) FindMarkInVerticalLine()
+        {
+            List<(int x, int y)> fourMarksVertical = new List<(int x, int y)>();
+            List<(int x, int y)> threeMarksVertical = new List<(int x, int y)>();
+            List<(int x, int y)> twoMarksVertical = new List<(int x, int y)>();
+
+            SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
+
+            uint[,] board = Board.BoardArray;
+
+            // Possible positions to move in horizontal line
+            for (int i = 0; i < board.GetLength(1); i++)
+            {
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    if (board.GetLength(0) - 1 > i)
+                    {
+                        if ((uint) board.GetValue(j, i) == Board.Player1Mark &&
+                            (uint) board.GetValue(j, i + 1) == Board.Player1Mark)
+                        {
+                            tmpSet.Add((j, i));
+                            tmpSet.Add((j, i + 1));
+                        }
+
+                        if ((uint) board.GetValue(j, i + 1) != Board.Player1Mark || board.GetLength(0) - 2 == i)
+                        {
+                            if (tmpSet.Count > 0)
+                            {
+                                switch (tmpSet.Count)
+                                {
+                                    case 2:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            twoMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            twoMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    case 3:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            threeMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            threeMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    case 4:
+                                        if (tmpSet.First().y > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            fourMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        }
+
+                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                            Board.EmptyCell)
+                                        {
+                                            fourMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        }
+
+                                        tmpSet.Clear();
+                                        break;
+                                    default:
+                                        Console.WriteLine("Nothing to do.");
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("twoMarks: ");
+            foreach (var tup in twoMarksVertical)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("threeMarks: ");
+            foreach (var tup in threeMarksVertical)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("fourMarks: ");
+            foreach (var tup in fourMarksVertical)
+            {
+                Console.Write(tup + " ");
+            }
+            Console.WriteLine();
+
+            return (0, 0);
+        }
+
+
+        private static (int, int) GetFourOpen()
+        {
+            return (0, 0);
+        }
+
         /// <summary>
         /// Searching empty fields (EmptyCell) in line where AI can put they mark.
         /// </summary>
-        /// <param name="noMarks">number marks in line,</param>
+        /// <param name="noMarks">number of marks in line,</param>
         /// <param name="mark">kind of mark.</param>
         /// <returns>Returns list of fields (EmptyCell) where AI can put they mark.</returns>
         public static List<(int, int)> FindMarkInLine(int noMarks, int mark)
         {
-            
-            
             List<(int x, int y)> test = new List<(int x, int y)>();
             return test;
         }
-        
+
         protected internal static (int, int) AiMoveToWin()
         {
-            
             return (0, 0);
         }
 
