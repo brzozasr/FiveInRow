@@ -711,12 +711,12 @@ namespace FiveInRow
                     if ((uint) board.GetValue(i, j) == Board.Player1Mark)
                     {
                         (int x, int y) cell = ((i, j));
-                        
+
                         // Top left corner
                         if (cell.x == 0 && cell.y == 0)
                         {
                             if ((uint) board.GetValue(i, j + 1) != mark &&
-                                (uint) board.GetValue(i + 1, j + 1) != mark && 
+                                (uint) board.GetValue(i + 1, j + 1) != mark &&
                                 (uint) board.GetValue(i + 1, j) != mark)
                             {
                                 if ((uint) board.GetValue(i, j + 1) == empty)
@@ -735,7 +735,7 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Top edge
                         if (cell.x == 0 && cell.y > 0 && cell.y < boardWidth - 1)
                         {
@@ -795,7 +795,7 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Left edge
                         if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y == 0)
                         {
@@ -831,9 +831,9 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Bottom left corner
-                        if (cell.x == boardHeight -1 && cell.y == 0)
+                        if (cell.x == boardHeight - 1 && cell.y == 0)
                         {
                             if ((uint) board.GetValue(i - 1, j) != mark &&
                                 (uint) board.GetValue(i - 1, j + 1) != mark &&
@@ -855,7 +855,7 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Bottom edge
                         if (cell.x == boardHeight - 1 && cell.y > 0 && cell.y < boardWidth - 1)
                         {
@@ -891,9 +891,9 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Bottom right corner
-                        if (cell.x == boardHeight -1 && cell.y == boardWidth - 1)
+                        if (cell.x == boardHeight - 1 && cell.y == boardWidth - 1)
                         {
                             if ((uint) board.GetValue(i, j - 1) != mark &&
                                 (uint) board.GetValue(i - 1, j - 1) != mark &&
@@ -915,7 +915,7 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Right edge
                         if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y == boardWidth - 1)
                         {
@@ -951,7 +951,7 @@ namespace FiveInRow
                                 }
                             }
                         }
-                        
+
                         // Middle cell of the board
                         if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y > 0 && cell.y < boardWidth - 1)
                         {
@@ -959,8 +959,8 @@ namespace FiveInRow
                                 (uint) board.GetValue(i - 1, j - 1) != mark &&
                                 (uint) board.GetValue(i, j - 1) != mark &&
                                 (uint) board.GetValue(i + 1, j - 1) != mark &&
-                                (uint) board.GetValue(i + 1, j) != mark && 
-                                (uint) board.GetValue(i + 1, j + 1) != mark && 
+                                (uint) board.GetValue(i + 1, j) != mark &&
+                                (uint) board.GetValue(i + 1, j + 1) != mark &&
                                 (uint) board.GetValue(i, j + 1) != mark &&
                                 (uint) board.GetValue(i - 1, j + 1) != mark)
                             {
@@ -988,17 +988,18 @@ namespace FiveInRow
                                 {
                                     singleCell.Add((i + 1, j));
                                 }
-                                if ((uint) board.GetValue(i + 1, j + 1) == empty) 
+
+                                if ((uint) board.GetValue(i + 1, j + 1) == empty)
                                 {
                                     singleCell.Add((i + 1, j + 1));
                                 }
 
-                                if ((uint) board.GetValue(i, j + 1) == empty) 
+                                if ((uint) board.GetValue(i, j + 1) == empty)
                                 {
                                     singleCell.Add((i, j + 1));
                                 }
 
-                                if ((uint) board.GetValue(i - 1, j + 1) == empty) 
+                                if ((uint) board.GetValue(i - 1, j + 1) == empty)
                                 {
                                     singleCell.Add((i - 1, j + 1));
                                 }
@@ -1012,28 +1013,98 @@ namespace FiveInRow
             {
                 Console.Write(tup + ", ");
             }
+
             Console.WriteLine();
 
             return (0, 0);
         }
 
 
-        /// <summary>
-        /// Searching empty fields (EmptyCell) in line where AI can put they mark.
-        /// </summary>
-        /// <param name="noMarks">number of marks in line,</param>
-        /// <param name="mark">kind of mark.</param>
-        /// <returns>Returns list of fields (EmptyCell) where AI can put they mark.</returns>
-        public static List<(int, int)> FindMarkInLine(int noMarks, int mark)
-        {
-            List<(int x, int y)> test = new List<(int x, int y)>();
-            return test;
-        }
-
         protected internal static (int, int) AiMoveToWin()
         {
             return (0, 0);
         }
+
+
+        protected internal static (int, int) AiMoveToWinHorizontal()
+        {
+            List<(int x, int y)> aiMoveToWinHorizontal = new List<(int x, int y)>();
+
+            SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
+
+            uint[,] board = Board.BoardArray;
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    if (board.GetLength(1) - 1 > j)
+                    {
+                        if ((uint) board.GetValue(i, j) == Board.Player2Mark &&
+                            (uint) board.GetValue(i, j + 1) == Board.Player2Mark)
+                        {
+                            tmpSet.Add((i, j));
+                            tmpSet.Add((i, j + 1));
+                        }
+
+                        if ((uint) board.GetValue(i, j + 1) != Board.Player2Mark || board.GetLength(1) - 2 == j)
+                        {
+                            if (tmpSet.Count > 0)
+                            {
+                                if (tmpSet.Count == _inLine - 1)
+                                {
+                                    if (tmpSet.First().y > 0 &&
+                                        (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                        Board.EmptyCell)
+                                    {
+                                        aiMoveToWinHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                    }
+
+                                    if (tmpSet.Last().y < board.GetLength(1) - 1 &&
+                                        (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                                        Board.EmptyCell)
+                                    {
+                                        aiMoveToWinHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                    }
+
+                                    tmpSet.Clear();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine("aiMoveToWinHorizontal: ");
+            foreach (var tup in aiMoveToWinHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+
+            return (0, 0);
+        }
+
+
+        protected internal static (int, int) AiMoveToWinVertical()
+        {
+            return (0, 0);
+        }
+
+
+        protected internal static (int, int) AiMoveToWinDiagonalRight()
+        {
+            return (0, 0);
+        }
+
+
+        protected internal static (int, int) AiMoveToWinDiagonalLeft()
+        {
+            return (0, 0);
+        }
+
 
         private static string MultiplyString(string multiplier, int multiplicand)
         {

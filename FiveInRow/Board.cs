@@ -107,7 +107,8 @@ namespace FiveInRow
             // GameLogic.FindMarkInDiagonalRightLine();
             // GameLogic.FindMarkInVerticalLine();
             // GameLogic.FindMarkInHorizontalLine();
-            GameLogic.SingleCell();
+            // GameLogic.SingleCell();
+            GameLogic.AiMoveToWinHorizontal();
         }
 
 
