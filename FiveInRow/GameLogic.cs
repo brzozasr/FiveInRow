@@ -499,7 +499,7 @@ namespace FiveInRow
                             }
                         }
                     }
-                    
+
                     tmpListPos.Clear();
                 }
 
@@ -532,8 +532,8 @@ namespace FiveInRow
 
             return (0, 0);
         }
-        
-        
+
+
         protected internal static (int, int) FindMarkInDiagonalLeftLine()
         {
             uint[,] board = Board.BoardArray;
@@ -549,7 +549,7 @@ namespace FiveInRow
             int widthCol = board.GetLength(1);
 
             string diagonalLeft = "";
-            
+
             for (int i = -heightRow; i <= widthCol; i++)
             {
                 for (int j = 0; j < heightRow; j++)
@@ -560,7 +560,7 @@ namespace FiveInRow
                         tmpList.Add((j, j - i, (uint) board.GetValue(j, j - i)));
                     }
                 }
-                
+
                 if (diagonalLeft.Length > _inLine - 1)
                 {
                     for (int k = 0; k < tmpList.Count; k++)
@@ -583,7 +583,8 @@ namespace FiveInRow
                                     switch (tmpListPos.Count)
                                     {
                                         case 2:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
+                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
@@ -592,7 +593,7 @@ namespace FiveInRow
                                                 twoMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
-                
+
                                             if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
                                                 tmpListPos.Last().y < board.GetLength(1) - 1 &&
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
@@ -601,11 +602,12 @@ namespace FiveInRow
                                                 twoMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
-                
+
                                             tmpListPos.Clear();
                                             break;
                                         case 3:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
+                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
@@ -614,7 +616,7 @@ namespace FiveInRow
                                                 threeMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
-                
+
                                             if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
                                                 tmpListPos.Last().y < board.GetLength(1) - 1 &&
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
@@ -623,11 +625,12 @@ namespace FiveInRow
                                                 threeMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
-                
+
                                             tmpListPos.Clear();
                                             break;
                                         case 4:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
+                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
@@ -636,7 +639,7 @@ namespace FiveInRow
                                                 fourMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
-                
+
                                             if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
                                                 tmpListPos.Last().y < board.GetLength(1) - 1 &&
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
@@ -645,7 +648,7 @@ namespace FiveInRow
                                                 fourMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
-                
+
                                             tmpListPos.Clear();
                                             break;
                                         default:
@@ -656,14 +659,14 @@ namespace FiveInRow
                             }
                         }
                     }
-                    
+
                     tmpListPos.Clear();
                 }
 
                 diagonalLeft = "";
                 tmpList.Clear();
             }
-            
+
             // Console.WriteLine("twoOpen " + twoMarks.Count);
             Console.WriteLine("twoMarks: ");
             foreach (var tup in twoMarksDiagonalLeft)
@@ -686,7 +689,331 @@ namespace FiveInRow
             }
 
             Console.WriteLine();
-            
+
+            return (0, 0);
+        }
+
+
+        protected internal static (int, int) SingleCell()
+        {
+            uint[,] board = Board.BoardArray;
+            int boardHeight = board.GetLength(0);
+            int boardWidth = board.GetLength(1);
+            uint mark = Board.Player1Mark;
+            uint empty = Board.EmptyCell;
+
+            SortedSet<(int x, int y)> singleCell = new SortedSet<(int x, int y)>();
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    if ((uint) board.GetValue(i, j) == Board.Player1Mark)
+                    {
+                        (int x, int y) cell = ((i, j));
+                        
+                        // Top left corner
+                        if (cell.x == 0 && cell.y == 0)
+                        {
+                            if ((uint) board.GetValue(i, j + 1) != mark &&
+                                (uint) board.GetValue(i + 1, j + 1) != mark && 
+                                (uint) board.GetValue(i + 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i, j + 1) == empty)
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                            }
+                        }
+                        
+                        // Top edge
+                        if (cell.x == 0 && cell.y > 0 && cell.y < boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j - 1) != mark &&
+                                (uint) board.GetValue(i, j + 1) != mark &&
+                                (uint) board.GetValue(i + 1, j + 1) != mark &&
+                                (uint) board.GetValue(i + 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j + 1) == empty)
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                            }
+                        }
+
+                        // Top right corner
+                        if (cell.x == 0 && cell.y == boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                            }
+                        }
+                        
+                        // Left edge
+                        if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y == 0)
+                        {
+                            if ((uint) board.GetValue(i - 1, j) != mark &&
+                                (uint) board.GetValue(i - 1, j + 1) != mark &&
+                                (uint) board.GetValue(i, j + 1) != mark &&
+                                (uint) board.GetValue(i + 1, j + 1) != mark &&
+                                (uint) board.GetValue(i + 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j + 1) == empty)
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                            }
+                        }
+                        
+                        // Bottom left corner
+                        if (cell.x == boardHeight -1 && cell.y == 0)
+                        {
+                            if ((uint) board.GetValue(i - 1, j) != mark &&
+                                (uint) board.GetValue(i - 1, j + 1) != mark &&
+                                (uint) board.GetValue(i, j + 1) != mark)
+                            {
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j + 1) == empty)
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+                            }
+                        }
+                        
+                        // Bottom edge
+                        if (cell.x == boardHeight - 1 && cell.y > 0 && cell.y < boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i - 1, j - 1) != mark &&
+                                (uint) board.GetValue(i - 1, j) != mark &&
+                                (uint) board.GetValue(i - 1, j + 1) != mark &&
+                                (uint) board.GetValue(i, j + 1) != mark)
+                            {
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j + 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j + 1) == empty)
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+                            }
+                        }
+                        
+                        // Bottom right corner
+                        if (cell.x == boardHeight -1 && cell.y == boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i - 1, j - 1) != mark &&
+                                (uint) board.GetValue(i - 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+                            }
+                        }
+                        
+                        // Right edge
+                        if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y == boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i - 1, j) != mark &&
+                                (uint) board.GetValue(i - 1, j - 1) != mark &&
+                                (uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j) != mark)
+                            {
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                            }
+                        }
+                        
+                        // Middle cell of the board
+                        if (cell.x > 0 && cell.x < boardHeight - 1 && cell.y > 0 && cell.y < boardWidth - 1)
+                        {
+                            if ((uint) board.GetValue(i - 1, j) != mark &&
+                                (uint) board.GetValue(i - 1, j - 1) != mark &&
+                                (uint) board.GetValue(i, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j - 1) != mark &&
+                                (uint) board.GetValue(i + 1, j) != mark && 
+                                (uint) board.GetValue(i + 1, j + 1) != mark && 
+                                (uint) board.GetValue(i, j + 1) != mark &&
+                                (uint) board.GetValue(i - 1, j + 1) != mark)
+                            {
+                                if ((uint) board.GetValue(i - 1, j) == empty)
+                                {
+                                    singleCell.Add((i - 1, j));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i - 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j - 1) == empty)
+                                {
+                                    singleCell.Add((i, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j - 1) == empty)
+                                {
+                                    singleCell.Add((i + 1, j - 1));
+                                }
+
+                                if ((uint) board.GetValue(i + 1, j) == empty)
+                                {
+                                    singleCell.Add((i + 1, j));
+                                }
+                                if ((uint) board.GetValue(i + 1, j + 1) == empty) 
+                                {
+                                    singleCell.Add((i + 1, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i, j + 1) == empty) 
+                                {
+                                    singleCell.Add((i, j + 1));
+                                }
+
+                                if ((uint) board.GetValue(i - 1, j + 1) == empty) 
+                                {
+                                    singleCell.Add((i - 1, j + 1));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (var tup in singleCell)
+            {
+                Console.Write(tup + ", ");
+            }
+            Console.WriteLine();
+
             return (0, 0);
         }
 
