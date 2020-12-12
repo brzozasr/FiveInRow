@@ -22,6 +22,7 @@ namespace FiveInRow
 
             string row = "";
 
+            // looping thru two dimensional array horizontally
             for (int i = 0; i < board.GetLength(0); i++)
             {
                 for (int j = 0; j < board.GetLength(1); j++)
@@ -44,6 +45,7 @@ namespace FiveInRow
 
             string col = "";
 
+            // looping thru two dimensional array vertically
             for (int i = 0; i < board.GetLength(1); i++)
             {
                 for (int j = 0; j < board.GetLength(0); j++)
@@ -234,24 +236,27 @@ namespace FiveInRow
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
             Console.WriteLine("threeMarks: ");
             foreach (var tup in threeMarksHorizontal)
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
             Console.WriteLine("fourMarks: ");
             foreach (var tup in fourMarksHorizontal)
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
 
             return (0, 0);
         }
-        
-        
+
+
         protected internal static (int, int) FindMarkInVerticalLine()
         {
             List<(int x, int y)> fourMarksVertical = new List<(int x, int y)>();
@@ -289,14 +294,14 @@ namespace FiveInRow
                                         {
                                             twoMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-                            
+
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
                                             twoMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-                            
+
                                         tmpSet.Clear();
                                         break;
                                     case 3:
@@ -306,14 +311,14 @@ namespace FiveInRow
                                         {
                                             threeMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-                            
+
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
                                             threeMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-                            
+
                                         tmpSet.Clear();
                                         break;
                                     case 4:
@@ -323,14 +328,14 @@ namespace FiveInRow
                                         {
                                             fourMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-                            
+
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
                                             fourMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-                            
+
                                         tmpSet.Clear();
                                         break;
                                     default:
@@ -349,26 +354,132 @@ namespace FiveInRow
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
             Console.WriteLine("threeMarks: ");
             foreach (var tup in threeMarksVertical)
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
             Console.WriteLine("fourMarks: ");
             foreach (var tup in fourMarksVertical)
             {
                 Console.Write(tup + " ");
             }
+
             Console.WriteLine();
 
             return (0, 0);
         }
 
 
-        private static (int, int) GetFourOpen()
+        protected internal static (int, int) FindMarkInDiagonalRightLine()
         {
+            uint[,] board = Board.BoardArray;
+
+            List<(int x, int y)> fourMarksDiagonalRight = new List<(int x, int y)>();
+            List<(int x, int y)> threeMarksDiagonalRight = new List<(int x, int y)>();
+            List<(int x, int y)> twoMarksDiagonalRight = new List<(int x, int y)>();
+
+            List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
+            List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
+
+            int heightRow = board.GetLength(0);
+            int widthCol = board.GetLength(1);
+
+            string diagonalRight = "";
+
+            // looping thru two dimensional array diagonally (/ direction)
+            for (int k = 0; k <= heightRow + widthCol - 2; k++)
+            {
+                for (int j = 0; j <= k; j++)
+                {
+                    int i = k - j;
+                    if (i < heightRow && j < widthCol)
+                    {
+                        diagonalRight += Convert.ToString(board.GetValue(i, j));
+                        tmpList.Add((i, j, (uint) board.GetValue(i, j)));
+                    }
+                }
+
+                if (diagonalRight.Length > _inLine - 1)
+                {
+                    for (int i = 0; i < tmpList.Count; i++)
+                    {
+                        if (tmpList.Count - 1 > i)
+                        {
+                            if (tmpList.ElementAt(i).value == Board.Player1Mark &&
+                                tmpList.ElementAt(i + 1).value == Board.Player1Mark)
+                            {
+                                tmpListPos.Add((tmpList.ElementAt(i).x, tmpList.ElementAt(i).y));
+                                tmpListPos.Add((tmpList.ElementAt(i + 1).x, tmpList.ElementAt(i + 1).y));
+                            }
+                        }
+                    }
+                    // Remove duplicates in list
+                    tmpListPos = tmpListPos.Distinct().ToList();
+                    
+                    foreach (var pos in tmpListPos)
+                    {
+                        Console.Write(pos + ", ");
+                    }
+                    Console.WriteLine();
+
+                    if (tmpListPos.Count > 0)
+                    {
+                        switch (tmpListPos.Count)
+                        {
+                            case 2:
+                                if (board[tmpListPos.First().x + 1, tmpListPos.First().y - 1]  == Board.EmptyCell)
+                                {
+                                    twoMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
+                                }
+
+                                if (board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1]  == Board.EmptyCell)
+                                {
+                                    twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
+                                }
+
+                                tmpListPos.Clear();
+                                break;
+                            default:
+                                Console.WriteLine("Nothing to do.");
+                                break;
+                        }
+                    }
+
+                    tmpListPos.Clear();
+                }
+
+                diagonalRight = "";
+                tmpList.Clear();
+            }
+            
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("twoMarks: ");
+            foreach (var tup in twoMarksDiagonalRight)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("threeMarks: ");
+            foreach (var tup in threeMarksDiagonalRight)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("fourMarks: ");
+            foreach (var tup in fourMarksDiagonalRight)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+
             return (0, 0);
         }
 
