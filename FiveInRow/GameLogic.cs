@@ -262,75 +262,75 @@ namespace FiveInRow
 
             uint[,] board = Board.BoardArray;
 
-            // Possible positions to move in horizontal line
+            // Possible positions to move in vertical line
             for (int i = 0; i < board.GetLength(1); i++)
             {
                 for (int j = 0; j < board.GetLength(0); j++)
                 {
-                    if (board.GetLength(0) - 1 > i)
+                    if (board.GetLength(0) - 1 > j)
                     {
                         if ((uint) board.GetValue(j, i) == Board.Player1Mark &&
-                            (uint) board.GetValue(j, i + 1) == Board.Player1Mark)
+                            (uint) board.GetValue(j + 1, i) == Board.Player1Mark)
                         {
                             tmpSet.Add((j, i));
-                            tmpSet.Add((j, i + 1));
+                            tmpSet.Add((j + 1, i));
                         }
 
-                        if ((uint) board.GetValue(j, i + 1) != Board.Player1Mark || board.GetLength(0) - 2 == i)
+                        if ((uint) board.GetValue(j + 1, i) != Board.Player1Mark || board.GetLength(0) - 2 == j)
                         {
                             if (tmpSet.Count > 0)
                             {
                                 switch (tmpSet.Count)
                                 {
                                     case 2:
-                                        if (tmpSet.First().y > 0 &&
-                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                        if (tmpSet.First().x > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            twoMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-
-                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
-                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                            
+                                        if (tmpSet.Last().x < board.GetLength(0) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            twoMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-
+                            
                                         tmpSet.Clear();
                                         break;
                                     case 3:
-                                        if (tmpSet.First().y > 0 &&
-                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                        if (tmpSet.First().x > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            threeMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-
-                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
-                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                            
+                                        if (tmpSet.Last().x < board.GetLength(0) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            threeMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-
+                            
                                         tmpSet.Clear();
                                         break;
                                     case 4:
-                                        if (tmpSet.First().y > 0 &&
-                                            (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
+                                        if (tmpSet.First().x > 0 &&
+                                            (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksVertical.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            fourMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
-
-                                        if (tmpSet.Last().y < board.GetLength(1) - 1 &&
-                                            (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
+                            
+                                        if (tmpSet.Last().x < board.GetLength(0) - 1 &&
+                                            (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksVertical.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            fourMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
-
+                            
                                         tmpSet.Clear();
                                         break;
                                     default:
