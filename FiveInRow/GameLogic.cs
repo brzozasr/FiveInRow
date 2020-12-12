@@ -416,77 +416,90 @@ namespace FiveInRow
                                 tmpListPos.Add((tmpList.ElementAt(i).x, tmpList.ElementAt(i).y));
                                 tmpListPos.Add((tmpList.ElementAt(i + 1).x, tmpList.ElementAt(i + 1).y));
                             }
+
+                            if (tmpList.ElementAt(i + 1).value != Board.Player1Mark || tmpList.Count - 2 == i)
+                            {
+                                tmpListPos = tmpListPos.Distinct().ToList();
+
+
+                                if (tmpListPos.Count > 0)
+                                {
+                                    switch (tmpListPos.Count)
+                                    {
+                                        case 2:
+                                            if (tmpListPos.First().y > 0 &&
+                                                tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                                board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                twoMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+
+                                            if (tmpListPos.Last().x > 0 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+
+                                            tmpListPos.Clear();
+                                            break;
+                                        case 3:
+                                            Console.WriteLine(tmpListPos.First().y);
+                                            if (tmpListPos.First().y > 0 &&
+                                                tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                                board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                threeMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+
+                                            if (tmpListPos.Last().x > 0 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                threeMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+
+                                            tmpListPos.Clear();
+                                            break;
+                                        case 4:
+                                            Console.WriteLine(tmpListPos.First().y);
+                                            if (tmpListPos.First().y > 0 &&
+                                                tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                                board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                fourMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+
+                                            if (tmpListPos.Last().x > 0 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                fourMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+
+                                            tmpListPos.Clear();
+                                            break;
+                                        default:
+                                            Console.WriteLine("Nothing to do.");
+                                            break;
+                                    }
+                                }
+                            }
                         }
                     }
-
-                    // Remove duplicates in list
-                    tmpListPos = tmpListPos.Distinct().ToList();
-
-                    foreach (var pos in tmpListPos)
-                    {
-                        Console.Write(pos + ", ");
-                    }
-
-                    Console.WriteLine();
-
-                    if (tmpListPos.Count > 0)
-                    {
-                        switch (tmpListPos.Count)
-                        {
-                            case 2:
-                                Console.WriteLine(tmpListPos.First().y);
-                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
-                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
-                                {
-                                    twoMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
-                                }
-
-                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
-                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
-                                {
-                                    twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
-                                }
-
-                                tmpListPos.Clear();
-                                break;
-                            case 3:
-                                Console.WriteLine(tmpListPos.First().y);
-                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
-                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
-                                {
-                                    threeMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
-                                }
-
-                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
-                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
-                                {
-                                    threeMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
-                                }
-
-                                tmpListPos.Clear();
-                                break;
-                            case 4:
-                                Console.WriteLine(tmpListPos.First().y);
-                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
-                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
-                                {
-                                    fourMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
-                                }
-
-                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
-                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
-                                {
-                                    fourMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
-                                }
-
-                                tmpListPos.Clear();
-                                break;
-                            default:
-                                Console.WriteLine("Nothing to do.");
-                                break;
-                        }
-                    }
-
+                    
                     tmpListPos.Clear();
                 }
 
@@ -519,6 +532,164 @@ namespace FiveInRow
 
             return (0, 0);
         }
+        
+        
+        protected internal static (int, int) FindMarkInDiagonalLeftLine()
+        {
+            uint[,] board = Board.BoardArray;
+
+            List<(int x, int y)> fourMarksDiagonalLeft = new List<(int x, int y)>();
+            List<(int x, int y)> threeMarksDiagonalLeft = new List<(int x, int y)>();
+            List<(int x, int y)> twoMarksDiagonalLeft = new List<(int x, int y)>();
+
+            List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
+            List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
+
+            int heightRow = board.GetLength(0);
+            int widthCol = board.GetLength(1);
+
+            string diagonalLeft = "";
+            
+            for (int i = -heightRow; i <= widthCol; i++)
+            {
+                for (int j = 0; j < heightRow; j++)
+                {
+                    if ((j - i >= 0) && (j - i < widthCol))
+                    {
+                        diagonalLeft += Convert.ToString(board.GetValue(j, j - i));
+                        tmpList.Add((j, j - i, (uint) board.GetValue(j, j - i)));
+                    }
+                }
+                
+                if (diagonalLeft.Length > _inLine - 1)
+                {
+                    for (int k = 0; k < tmpList.Count; k++)
+                    {
+                        if (tmpList.Count - 1 > k)
+                        {
+                            if (tmpList.ElementAt(k).value == Board.Player1Mark &&
+                                tmpList.ElementAt(k + 1).value == Board.Player1Mark)
+                            {
+                                tmpListPos.Add((tmpList.ElementAt(k).x, tmpList.ElementAt(k).y));
+                                tmpListPos.Add((tmpList.ElementAt(k + 1).x, tmpList.ElementAt(k + 1).y));
+                            }
+
+                            if (tmpList.ElementAt(k + 1).value != Board.Player1Mark || tmpList.Count - 2 == k)
+                            {
+                                tmpListPos = tmpListPos.Distinct().ToList();
+
+                                if (tmpListPos.Count > 0)
+                                {
+                                    switch (tmpListPos.Count)
+                                    {
+                                        case 2:
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            if (tmpListPos.First().x > 0 &&
+                                                tmpListPos.First().y > 0 &&
+                                                board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                twoMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+                
+                                            if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                twoMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+                
+                                            tmpListPos.Clear();
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            if (tmpListPos.First().x > 0 &&
+                                                tmpListPos.First().y > 0 &&
+                                                board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                threeMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+                
+                                            if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                threeMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+                
+                                            tmpListPos.Clear();
+                                            break;
+                                        case 4:
+                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " + tmpListPos.First().y);
+                                            if (tmpListPos.First().x > 0 &&
+                                                tmpListPos.First().y > 0 &&
+                                                board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                fourMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                    tmpListPos.First().y - 1));
+                                            }
+                
+                                            if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
+                                                tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                                board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
+                                                Board.EmptyCell)
+                                            {
+                                                fourMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                    tmpListPos.Last().y + 1));
+                                            }
+                
+                                            tmpListPos.Clear();
+                                            break;
+                                        default:
+                                            Console.WriteLine("Nothing to do.");
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    tmpListPos.Clear();
+                }
+
+                diagonalLeft = "";
+                tmpList.Clear();
+            }
+            
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("twoMarks: ");
+            foreach (var tup in twoMarksDiagonalLeft)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("threeMarks: ");
+            foreach (var tup in threeMarksDiagonalLeft)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("fourMarks: ");
+            foreach (var tup in fourMarksDiagonalLeft)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+            
+            return (0, 0);
+        }
+
 
         /// <summary>
         /// Searching empty fields (EmptyCell) in line where AI can put they mark.
