@@ -449,6 +449,38 @@ namespace FiveInRow
 
                                 tmpListPos.Clear();
                                 break;
+                            case 3:
+                                Console.WriteLine(tmpListPos.First().y);
+                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
+                                {
+                                    threeMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
+                                }
+
+                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
+                                {
+                                    threeMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
+                                }
+
+                                tmpListPos.Clear();
+                                break;
+                            case 4:
+                                Console.WriteLine(tmpListPos.First().y);
+                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
+                                {
+                                    fourMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
+                                }
+
+                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
+                                {
+                                    fourMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
+                                }
+
+                                tmpListPos.Clear();
+                                break;
                             default:
                                 Console.WriteLine("Nothing to do.");
                                 break;
