@@ -418,13 +418,15 @@ namespace FiveInRow
                             }
                         }
                     }
+
                     // Remove duplicates in list
                     tmpListPos = tmpListPos.Distinct().ToList();
-                    
+
                     foreach (var pos in tmpListPos)
                     {
                         Console.Write(pos + ", ");
                     }
+
                     Console.WriteLine();
 
                     if (tmpListPos.Count > 0)
@@ -432,12 +434,15 @@ namespace FiveInRow
                         switch (tmpListPos.Count)
                         {
                             case 2:
-                                if (board[tmpListPos.First().x + 1, tmpListPos.First().y - 1]  == Board.EmptyCell)
+                                Console.WriteLine(tmpListPos.First().y);
+                                if (tmpListPos.First().y > 0 && tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                    board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] == Board.EmptyCell)
                                 {
                                     twoMarksDiagonalRight.Add((tmpListPos.First().x + 1, tmpListPos.First().y - 1));
                                 }
 
-                                if (board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1]  == Board.EmptyCell)
+                                if (tmpListPos.Last().x > 0 && tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                    board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] == Board.EmptyCell)
                                 {
                                     twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1, tmpListPos.Last().y + 1));
                                 }
@@ -456,7 +461,7 @@ namespace FiveInRow
                 diagonalRight = "";
                 tmpList.Clear();
             }
-            
+
             // Console.WriteLine("twoOpen " + twoMarks.Count);
             Console.WriteLine("twoMarks: ");
             foreach (var tup in twoMarksDiagonalRight)
