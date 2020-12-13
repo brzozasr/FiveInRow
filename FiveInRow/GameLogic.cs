@@ -441,32 +441,84 @@ namespace FiveInRow
                     }
                 }
                 
-                // Checkin that 3 in line (horizontal) are open (??)
+                // Checkin that 3 in line (horizontal) open (??)
                 if (_threeMarksHorizontal.Count > 1)
                 {
                     Console.WriteLine(RandomElementFromList(_threeMarksHorizontal));
                     return RandomElementFromList(_threeMarksHorizontal);
                 }
                 
-                // Checkin that 3 in line (vertical) are open (??)
+                // Checkin that 3 in line (vertical) open (??)
                 if (_threeMarksVertical.Count > 1)
                 {
                     Console.WriteLine(RandomElementFromList(_threeMarksVertical));
                     return RandomElementFromList(_threeMarksVertical);
                 }
                 
-                // Checkin that 3 in line (diagonal right) are open (??)
+                // Checkin that 3 in line (diagonal right) open (??)
                 if (_threeMarksDiagonalRight.Count > 1)
                 {
                     Console.WriteLine(RandomElementFromList(_threeMarksDiagonalRight));
                     return RandomElementFromList(_threeMarksDiagonalRight);
                 }
                 
-                // Checkin that 3 in line (diagonal left) are open (??)
+                // Checkin that 3 in line (diagonal left) open (??)
                 if (_threeMarksDiagonalLeft.Count > 1)
                 {
                     Console.WriteLine(RandomElementFromList(_threeMarksDiagonalLeft));
                     return RandomElementFromList(_threeMarksDiagonalLeft);
+                }
+                
+                // Checkin that 2 and 1 (horizontal) are in one line with one gap
+                if (_twoMarksHorizontal.Count > 0 && _singleList.Count > 0)
+                {
+                    var twoAndSingleDuplicateH = _twoMarksHorizontal.Intersect(_singleList).ToList();;
+
+                    // If there is a gap returns it
+                    if (twoAndSingleDuplicateH.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateH));
+                        return RandomElementFromList(twoAndSingleDuplicateH);
+                    }
+                }
+                
+                // Checkin that 2 and 1 (vertical) are in one line with one gap
+                if (_twoMarksVertical.Count > 0 && _singleList.Count > 0)
+                {
+                    var twoAndSingleDuplicateV = _twoMarksVertical.Intersect(_singleList).ToList();;
+
+                    // If there is a gap returns it
+                    if (twoAndSingleDuplicateV.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateV));
+                        return RandomElementFromList(twoAndSingleDuplicateV);
+                    }
+                }
+                
+                // Checkin that 2 and 1 (diagonal right) are in one line with one gap
+                if (_twoMarksDiagonalRight.Count > 0 && _singleList.Count > 0)
+                {
+                    var twoAndSingleDuplicateDr = _twoMarksDiagonalRight.Intersect(_singleList).ToList();;
+
+                    // If there is a gap returns it
+                    if (twoAndSingleDuplicateDr.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateDr));
+                        return RandomElementFromList(twoAndSingleDuplicateDr);
+                    }
+                }
+                
+                // Checkin that 2 and 1 (diagonal left) are in one line with one gap
+                if (_twoMarksDiagonalLeft.Count > 0 && _singleList.Count > 0)
+                {
+                    var twoAndSingleDuplicateDl = _twoMarksDiagonalLeft.Intersect(_singleList).ToList();;
+
+                    // If there is a gap returns it
+                    if (twoAndSingleDuplicateDl.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateDl));
+                        return RandomElementFromList(twoAndSingleDuplicateDl);
+                    }
                 }
             }
 
