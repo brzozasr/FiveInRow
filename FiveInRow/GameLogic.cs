@@ -174,6 +174,60 @@ namespace FiveInRow
                 // Checking for 4 horizontal marks of Player
                 if (_fourMarksHorizontal.Count > 0) 
                 {
+                    // Searching duplicates in list with 4 marks
+                    // (it means that between line marks is one field gap)
+                    var fourDuplicatesH = _fourMarksHorizontal.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (fourDuplicatesH.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(fourDuplicatesH));
+                        return RandomElementFromList(fourDuplicatesH);
+                    }
+                    
+                    // Checking for gap between 4 and 3 horizontal marks of Player
+                    if (_fourMarksHorizontal.Count > 0 && _threeMarksHorizontal.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 3 marks (it means that between lines is one field gap)
+                        var fourAndThreeDuplicateH = _fourMarksHorizontal.Intersect(_threeMarksHorizontal).ToList();;
+
+                        if (fourAndThreeDuplicateH.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateH));
+                            return RandomElementFromList(fourAndThreeDuplicateH);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 2 horizontal marks of Player
+                    if (_fourMarksHorizontal.Count > 0 && _twoMarksHorizontal.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 2 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndTwoDuplicateH = _fourMarksHorizontal.Intersect(_twoMarksHorizontal).ToList();;
+
+                        if (fourAndTwoDuplicateH.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateH));
+                            return RandomElementFromList(fourAndTwoDuplicateH);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 1 horizontal marks of Player
+                    if (_fourMarksHorizontal.Count > 0 && _singleList.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 1 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndSingleDuplicateH = _fourMarksHorizontal.Intersect(_singleList).ToList();;
+
+                        if (fourAndSingleDuplicateH.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateH));
+                            return RandomElementFromList(fourAndSingleDuplicateH);
+                        }
+                    }
+                    
                     Console.WriteLine(_fourMarksHorizontal.First());
                     return _fourMarksHorizontal.First();
                 }
@@ -181,6 +235,60 @@ namespace FiveInRow
                 // Checking for 4 vertical marks of Player
                 if (_fourMarksVertical.Count > 0)  
                 {
+                    // Searching duplicates in list with 4 marks
+                    // (it means that between line marks is one field gap)
+                    var fourDuplicatesV = _fourMarksVertical.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (fourDuplicatesV.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(fourDuplicatesV));
+                        return RandomElementFromList(fourDuplicatesV);
+                    }
+                    
+                    // Checking for gap between 4 and 3 vertical marks of Player
+                    if (_fourMarksVertical.Count > 0 && _threeMarksVertical.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 3 marks (it means that between lines is one field gap)
+                        var fourAndThreeDuplicateV = _fourMarksVertical.Intersect(_threeMarksVertical).ToList();;
+
+                        if (fourAndThreeDuplicateV.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateV));
+                            return RandomElementFromList(fourAndThreeDuplicateV);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 2 vertical marks of Player
+                    if (_fourMarksVertical.Count > 0 && _twoMarksVertical.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 2 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndTwoDuplicateV = _fourMarksVertical.Intersect(_twoMarksVertical).ToList();;
+
+                        if (fourAndTwoDuplicateV.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateV));
+                            return RandomElementFromList(fourAndTwoDuplicateV);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 1 vertical marks of Player
+                    if (_fourMarksVertical.Count > 0 && _singleList.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 1 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndSingleDuplicateV = _fourMarksVertical.Intersect(_singleList).ToList();;
+
+                        if (fourAndSingleDuplicateV.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateV));
+                            return RandomElementFromList(fourAndSingleDuplicateV);
+                        }
+                    }
+                    
                     Console.WriteLine(_fourMarksVertical.First());
                     return _fourMarksVertical.First();
                 }
@@ -188,6 +296,60 @@ namespace FiveInRow
                 // Checking for 4 diagonal right marks of Player
                 if (_fourMarksDiagonalRight.Count > 0)  
                 {
+                    // Searching duplicates in list with 4 marks
+                    // (it means that between line marks is one field gap)
+                    var fourDuplicatesDr = _fourMarksDiagonalRight.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (fourDuplicatesDr.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(fourDuplicatesDr));
+                        return RandomElementFromList(fourDuplicatesDr);
+                    }
+                    
+                    // Checking for gap between 4 and 3 diagonal right marks of Player
+                    if (_fourMarksDiagonalRight.Count > 0 && _threeMarksDiagonalRight.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 3 marks (it means that between lines is one field gap)
+                        var fourAndThreeDuplicateDr = _fourMarksDiagonalRight.Intersect(_threeMarksDiagonalRight).ToList();;
+
+                        if (fourAndThreeDuplicateDr.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateDr));
+                            return RandomElementFromList(fourAndThreeDuplicateDr);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 2 diagonal right marks of Player
+                    if (_fourMarksDiagonalRight.Count > 0 && _twoMarksDiagonalRight.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 2 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndTwoDuplicateDr = _fourMarksDiagonalRight.Intersect(_twoMarksDiagonalRight).ToList();;
+
+                        if (fourAndTwoDuplicateDr.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateDr));
+                            return RandomElementFromList(fourAndTwoDuplicateDr);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 1 diagonal right marks of Player
+                    if (_fourMarksDiagonalRight.Count > 0 && _singleList.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 1 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndSingleDuplicateDr = _fourMarksDiagonalRight.Intersect(_singleList).ToList();;
+
+                        if (fourAndSingleDuplicateDr.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateDr));
+                            return RandomElementFromList(fourAndSingleDuplicateDr);
+                        }
+                    }
+                    
                     Console.WriteLine(_fourMarksDiagonalRight.First());
                     return _fourMarksDiagonalRight.First();
                 }
@@ -195,6 +357,60 @@ namespace FiveInRow
                 // Checking for 4 diagonal left marks of Player
                 if (_fourMarksDiagonalLeft.Count > 0)  
                 {
+                    // Searching duplicates in list with 4 marks
+                    // (it means that between line marks is one field gap)
+                    var fourDuplicatesDl = _fourMarksDiagonalLeft.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (fourDuplicatesDl.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(fourDuplicatesDl));
+                        return RandomElementFromList(fourDuplicatesDl);
+                    }
+                    
+                    // Checking for gap between 4 and 3 diagonal left marks of Player
+                    if (_fourMarksDiagonalLeft.Count > 0 && _threeMarksDiagonalLeft.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 3 marks (it means that between lines is one field gap)
+                        var fourAndThreeDuplicateDl = _fourMarksDiagonalLeft.Intersect(_threeMarksDiagonalLeft).ToList();;
+
+                        if (fourAndThreeDuplicateDl.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateDl));
+                            return RandomElementFromList(fourAndThreeDuplicateDl);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 2 diagonal left marks of Player
+                    if (_fourMarksDiagonalLeft.Count > 0 && _twoMarksDiagonalLeft.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 2 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndTwoDuplicateDl = _fourMarksDiagonalLeft.Intersect(_twoMarksDiagonalLeft).ToList();;
+
+                        if (fourAndTwoDuplicateDl.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateDl));
+                            return RandomElementFromList(fourAndTwoDuplicateDl);
+                        }
+                    }
+                    
+                    // Checking for gap between 4 and 1 diagonal left marks of Player
+                    if (_fourMarksDiagonalLeft.Count > 0 && _singleList.Count > 0) 
+                    {
+                        // Searching duplicates in lists with 4 and 1 marks
+                        // (it means that between lines is one field gap)
+                        var fourAndSingleDuplicateDl = _fourMarksDiagonalLeft.Intersect(_singleList).ToList();;
+
+                        if (fourAndSingleDuplicateDl.Count > 0)  // If there is a gap returns it
+                        {
+                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateDl));
+                            return RandomElementFromList(fourAndSingleDuplicateDl);
+                        }
+                    }
+                    
                     Console.WriteLine(_fourMarksDiagonalLeft.First());
                     return _fourMarksDiagonalLeft.First();
                 }
@@ -520,9 +736,73 @@ namespace FiveInRow
                         return RandomElementFromList(twoAndSingleDuplicateDl);
                     }
                 }
+                
+                // Checkin 3 in line (horizontal)
+                if (_threeMarksHorizontal.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksHorizontal));
+                    return RandomElementFromList(_threeMarksHorizontal);
+                }
+                
+                // Checkin 3 in line (vertical)
+                if (_threeMarksVertical.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksVertical));
+                    return RandomElementFromList(_threeMarksVertical);
+                }
+                
+                // Checkin 3 in line (diagonal right)
+                if (_threeMarksDiagonalRight.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalRight));
+                    return RandomElementFromList(_threeMarksDiagonalRight);
+                }
+                
+                // Checkin 3 in line (diagonal left)
+                if (_threeMarksDiagonalLeft.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalLeft));
+                    return RandomElementFromList(_threeMarksDiagonalLeft);
+                }
+                
+                // Checking that 2 (horizontal) are in the line
+                if (_twoMarksHorizontal.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_twoMarksHorizontal));
+                    return RandomElementFromList(_twoMarksHorizontal);
+                }
+                
+                // Checking that 2 (vertical) are in the line
+                if (_twoMarksVertical.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_twoMarksVertical));
+                    return RandomElementFromList(_twoMarksVertical);
+                }
+                
+                // Checking that 2 (diagonal right) are in the line
+                if (_twoMarksDiagonalRight.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_twoMarksDiagonalRight));
+                    return RandomElementFromList(_twoMarksDiagonalRight);
+                }
+                
+                // Checking that 2 (diagonal left) are in the line
+                if (_twoMarksDiagonalLeft.Count > 0)
+                {
+                    Console.WriteLine(RandomElementFromList(_twoMarksDiagonalLeft));
+                    return RandomElementFromList(_twoMarksDiagonalLeft);
+                }
             }
 
-            return (0, 0);
+            if (_singleList.Count > 0)
+            {
+                Console.WriteLine(RandomElementFromList(_singleList));
+                return RandomElementFromList(_singleList);
+            }
+            else
+            {
+                return GetRandomEmptyField();
+            }
         }
 
         public static void Test()
@@ -1752,6 +2032,26 @@ namespace FiveInRow
             return aiCheckToWinDiagonalLeft;
         }
 
+
+        private static (int, int) GetRandomEmptyField()
+        {
+            uint[,] board = Board.BoardArray;
+            List<(int, int)> emptyFields = new List<(int, int)>();
+
+            for (int i = 0; i < board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.GetLength(1); j++)
+                {
+                    if ((uint) board.GetValue(i, j) == Board.EmptyCell)
+                    {
+                        emptyFields.Add((i, j));
+                    }
+                }
+            }
+            
+            return RandomElementFromList(emptyFields);
+        }
+        
 
         private static string MultiplyString(string multiplier, int multiplicand)
         {
