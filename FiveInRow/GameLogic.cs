@@ -191,16 +191,67 @@ namespace FiveInRow
                     Console.WriteLine(_fourMarksDiagonalLeft.First());
                     return _fourMarksDiagonalLeft.First();
                 }
-                else if (_threeMarksHorizontal.Count > 0)
+                else if (_threeMarksHorizontal.Count > 0)  // Checking for gap between 3  horizontal marks of Player
                 {
-                    var threeDuplicates = _threeMarksHorizontal.GroupBy(x => x)
+                    // Searching duplicates in list with 3 marks (it means that between line marks is one field gap)
+                    var threeDuplicatesH = _threeMarksHorizontal.GroupBy(x => x)
                         .Where(group => group.Count() > 1)
                         .Select(group => group.Key).ToList();
 
-                    if (threeDuplicates.Count > 0)
+                    if (threeDuplicatesH.Count > 0)  // If there is a gap returns it
                     {
-                        Console.WriteLine(RandomElementFromList(threeDuplicates));
-                        return RandomElementFromList(threeDuplicates);
+                        Console.WriteLine(RandomElementFromList(threeDuplicatesH));
+                        return RandomElementFromList(threeDuplicatesH);
+                    }
+                }
+                else if (_threeMarksVertical.Count > 0)  // Checking for gap between 3 vertical marks of Player
+                {
+                    // Searching duplicates in list with 3 marks (it means that between line marks is one field gap)
+                    var threeDuplicatesV = _threeMarksVertical.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    if (threeDuplicatesV.Count > 0)  // If there is a gap returns it
+                    {
+                        Console.WriteLine(RandomElementFromList(threeDuplicatesV));
+                        return RandomElementFromList(threeDuplicatesV);
+                    }
+                }
+                else if (_threeMarksDiagonalRight.Count > 0)  // Checking for gap between 3 diagonal right marks of Player
+                {
+                    // Searching duplicates in list with 3 marks (it means that between line marks is one field gap)
+                    var threeDuplicatesDr = _threeMarksDiagonalRight.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    if (threeDuplicatesDr.Count > 0)  // If there is a gap returns it
+                    {
+                        Console.WriteLine(RandomElementFromList(threeDuplicatesDr));
+                        return RandomElementFromList(threeDuplicatesDr);
+                    }
+                }
+                else if (_threeMarksDiagonalLeft.Count > 0)  // Checking for gap between 3 diagonal left marks of Player
+                {
+                    // Searching duplicates in list with 3 marks (it means that between line marks is one field gap)
+                    var threeDuplicatesDl = _threeMarksDiagonalLeft.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    if (threeDuplicatesDl.Count > 0)  // If there is a gap returns it
+                    {
+                        Console.WriteLine(RandomElementFromList(threeDuplicatesDl));
+                        return RandomElementFromList(threeDuplicatesDl);
+                    }
+                }
+                else if (_threeMarksHorizontal.Count > 0 && _twoMarksHorizontal.Count > 0)  // Checking for gap between 3 and 2 horizontal marks of Player
+                {
+                    // Searching duplicates in list with 3 and 2 marks (it means that between lines is one field gap)
+                    var duplicateH = _threeMarksHorizontal.Intersect(_twoMarksHorizontal).ToList();;
+
+                    if (duplicateH.Count > 0)  // If there is a gap returns it
+                    {
+                        Console.WriteLine(RandomElementFromList(duplicateH));
+                        return RandomElementFromList(duplicateH);
                     }
                 }
             }
@@ -214,19 +265,28 @@ namespace FiveInRow
             List<(int, int)> l2 = new List<(int, int)>();
 
             l1.Add((0, 0));
-            l1.Add((0, 0));
-            l1.Add((0, 1));
             l1.Add((0, 1));
             l1.Add((0, 2));
             l1.Add((0, 3));
+            l1.Add((0, 4));
+            l1.Add((1, 3));
             l1.Add((4, 4));
-            l1.Add((4, 4));
+            l1.Add((4, 5));
+            
+            l2.Add((1, 0));
+            l2.Add((1, 1));
+            l2.Add((1, 2));
+            l2.Add((5, 3));
+            l2.Add((1, 4));
+            l2.Add((2, 3));
 
-            var duplicateKeys = l1.GroupBy(x => x)
-                .Where(group => group.Count() > 1)
-                .Select(group => group.Key).ToList();
+            // var duplicateKeys = l1.GroupBy(x => x)
+            //     .Where(group => group.Count() > 1)
+            //     .Select(group => group.Key).ToList();
+            
+            var duplicates = l1.Intersect(l2).ToList();
 
-            foreach (var val in duplicateKeys)
+            foreach (var val in duplicates)
             {
                 Console.Write(val + ", ");
             }
@@ -325,27 +385,27 @@ namespace FiveInRow
                 }
             }
             
-            // Console.WriteLine("twoMarks: ");
-            // foreach (var tup in _twoMarksHorizontal)
-            // {
-            //     Console.Write(tup + " ");
-            // }
-            //
-            // Console.WriteLine();
-            // Console.WriteLine("threeMarks: ");
-            // foreach (var tup in _threeMarksHorizontal)
-            // {
-            //     Console.Write(tup + " ");
-            // }
-            //
-            // Console.WriteLine();
-            // Console.WriteLine("fourMarks: ");
-            // foreach (var tup in _fourMarksHorizontal)
-            // {
-            //     Console.Write(tup + " ");
-            // }
-            //
-            // Console.WriteLine();
+            Console.WriteLine("twoMarks: ");
+            foreach (var tup in _twoMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine("threeMarks: ");
+            foreach (var tup in _threeMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine("fourMarks: ");
+            foreach (var tup in _fourMarksHorizontal)
+            {
+                Console.Write(tup + " ");
+            }
+            
+            Console.WriteLine();
         }
 
 
