@@ -380,6 +380,94 @@ namespace FiveInRow
                         }
                     }
                 }
+                
+                // Checkin that 2 and 2 (horizontal) are in the line with one gap
+                if (_twoMarksHorizontal.Count > 0)
+                {
+                    var twoAndTwoDuplicatesH = _twoMarksHorizontal.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (twoAndTwoDuplicatesH.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesH));
+                        return RandomElementFromList(twoAndTwoDuplicatesH);
+                    }
+                }
+                
+                // Checkin that 2 and 2 (vertical) are in the line with one gap
+                if (_twoMarksVertical.Count > 0)
+                {
+                    var twoAndTwoDuplicatesV = _twoMarksVertical.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (twoAndTwoDuplicatesV.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesV));
+                        return RandomElementFromList(twoAndTwoDuplicatesV);
+                    }
+                }
+                
+                // Checkin that 2 and 2 (diagonal right) are in the line with one gap
+                if (_twoMarksDiagonalRight.Count > 0)
+                {
+                    var twoAndTwoDuplicatesDr = _twoMarksDiagonalRight.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (twoAndTwoDuplicatesDr.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesDr));
+                        return RandomElementFromList(twoAndTwoDuplicatesDr);
+                    }
+                }
+                
+                // Checkin that 2 and 2 (diagonal left) are in the line with one gap
+                if (_twoMarksDiagonalLeft.Count > 0)
+                {
+                    var twoAndTwoDuplicatesDl = _twoMarksDiagonalLeft.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    // If there is a gap returns it
+                    if (twoAndTwoDuplicatesDl.Count > 0)  
+                    {
+                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesDl));
+                        return RandomElementFromList(twoAndTwoDuplicatesDl);
+                    }
+                }
+                
+                // Checkin that 3 in line (horizontal) are open (??)
+                if (_threeMarksHorizontal.Count > 1)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksHorizontal));
+                    return RandomElementFromList(_threeMarksHorizontal);
+                }
+                
+                // Checkin that 3 in line (vertical) are open (??)
+                if (_threeMarksVertical.Count > 1)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksVertical));
+                    return RandomElementFromList(_threeMarksVertical);
+                }
+                
+                // Checkin that 3 in line (diagonal right) are open (??)
+                if (_threeMarksDiagonalRight.Count > 1)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalRight));
+                    return RandomElementFromList(_threeMarksDiagonalRight);
+                }
+                
+                // Checkin that 3 in line (diagonal left) are open (??)
+                if (_threeMarksDiagonalLeft.Count > 1)
+                {
+                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalLeft));
+                    return RandomElementFromList(_threeMarksDiagonalLeft);
+                }
             }
 
             return (0, 0);
