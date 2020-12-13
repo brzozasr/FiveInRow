@@ -6,7 +6,7 @@ namespace FiveInRow
 {
     public class Board : Window
     {
-        private Table _table;  // Gtk widget
+        private Table _table; // Gtk widget
         private static uint[,] _boardArray; // board with status of game
         protected internal const uint EmptyCell = 0; // emty cell (=0) of the game
         protected internal const uint Player1Mark = 1; // cell with mark (=1) the Player1 
@@ -67,7 +67,7 @@ namespace FiveInRow
             uint topAttach = (uint) x;
             uint bottomAttach = (uint) x + 1;
 
-            _table.Remove(btn);
+            // _table.Remove(btn);
 
             if (_turn == true)
             {
@@ -78,39 +78,136 @@ namespace FiveInRow
                 _imageState = _player2Image;
             }
 
-            Image image = new Image(_imageState, IconSize.Button);
-            Button newBtn = new Button(image);
-            newBtn.WidthRequest = 40;
-            newBtn.HeightRequest = 40;
+            // Image image = new Image(_imageState, IconSize.Button);
+            // Button newBtn = new Button(image);
+            // newBtn.WidthRequest = 40;
+            // newBtn.HeightRequest = 40;
 
-            _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
-
-            ShowAll();
-
-            if (_turn == true) // Player1
-            {
-                _boardArray[x, y] = Player1Mark;
-                _turn = false;
-            }
-            else // Player2
-            {
-                _boardArray[x, y] = Player2Mark;
-                _turn = true;
-            }
-
-            GameLogic.HasWon("PLAYER 1", "PLAYER 2");
-            GameLogic.IsBoardFull();
-            GameListener();
+            // _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
+            //
+            // ShowAll();
             
-            // TODO delete
-            GameLogic.AiMove();
-            // GameLogic.Test();
+            _boardArray[x, y] = Player1Mark;
+            _turn = false;
+            
+            while(_table.Children.Length > 0) {
+                _table.Remove(_table.Children[0]);
+                _table.Children[0].Destroy();
+            }
+            Remove(_table);
+            _table.Destroy();
+            CreateAgainBoard(_configGameWindow.Row, _configGameWindow.Col);
+            
+            string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
+            bool isBoardFull = GameLogic.IsBoardFull();
+
+            if (_configGameWindow.RbAi.Active)
+            {
+                if (hasWon == null && !isBoardFull)
+                {
+                    BotMove();
+                }
+                else
+                {
+                    Console.WriteLine($"{hasWon} won!!!");
+                    // TODO popup
+                }
+            }
+            else if (_configGameWindow.RbMultiplayer.Active)
+            {
+                if (hasWon == null && !isBoardFull)
+                {
+                    PlayerMove();
+                }
+                else
+                {
+                    Console.WriteLine($"{hasWon} won!!!");
+                    // TODO popup
+                }
+            }
+        }
+        
+
+        private void BotMove()
+        {
+            (int x, int y) coordinates = GameLogic.AiMove();
+            SetCellOfBoardArray(coordinates.x, coordinates.y, Player2Mark);
+            _turn = true;
+            
+            while(_table.Children.Length > 0) {
+                _table.Remove(_table.Children[0]);
+                _table.Children[0].Destroy();
+            }
+            Remove(_table);
+            _table.Destroy();
+
+            CreateAgainBoard(_configGameWindow.Row, _configGameWindow.Col);
+            
+            this.ReallocateRedraws = true;
+            this.RedrawOnAllocate = true;
+            this.QueueDraw();
+            
+            ShowAll();
+            
+        }
+
+
+        private void CreateAgainBoard(uint row, uint col)
+        {
+            List<Button> buttonLists = new List<Button>();
+            _table = new Table(row, col, true);
+
+            for (uint i = 0; i < row; i++)
+            {
+                for (uint j = 0; j < col; j++)
+                {
+                    Button cell; 
+                    
+                    if (_boardArray[i, j] == Player1Mark)
+                    {
+                        Image image = new Image(_player1Image, IconSize.Button);
+                        cell = new Button(image);
+                    } 
+                    else if (_boardArray[i, j] == Player2Mark)
+                    {
+                        Image image = new Image(_player2Image, IconSize.Button);
+                        cell = new Button(image);
+                    }
+                    else
+                    {
+                        cell = new Button($"{i},{j}");
+                        cell.Children[0].ChildVisible = false;
+                    }
+                    
+                    cell.WidthRequest = 40;
+                    cell.HeightRequest = 40;
+                    _table.Attach(cell, j, j + 1, i, i + 1);
+                    buttonLists.Add(cell);
+                }
+            }
+
+            foreach (Button btn in buttonLists)
+            {
+                if (btn.Label != null)
+                {
+                    btn.Clicked += OnClick;
+                }
+            }
+            
+            Add(_table);
+            ShowAll();
+            ShowNow();
+        }
+
+
+        private void PlayerMove()
+        {
         }
 
 
         private void GameListener()
         {
-            foreach (Button btn in _table.Children)
+            foreach (var btn in _table.Children)
             {
                 // Console.WriteLine(btn.Label);
             }
@@ -118,10 +215,9 @@ namespace FiveInRow
 
 
         private void DestroyBoard(object sender, DeleteEventArgs e)
-        { 
+        {
             this.Destroy();
             _configGameWindow.Show();
-            
         }
 
 
@@ -133,7 +229,7 @@ namespace FiveInRow
 
 
         /// <summary>Getter for Board</summary>
-        public static uint[,] BoardArray    // get and set for _boardArray
+        public static uint[,] BoardArray // get and set for _boardArray
         {
             get => _boardArray;
         }
