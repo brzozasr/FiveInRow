@@ -9,6 +9,24 @@ namespace FiveInRow
     {
         private static int _inLine = 5;
 
+        private static List<(int x, int y)> _fourMarksHorizontal;
+        private static List<(int x, int y)> _threeMarksHorizontal;
+        private static List<(int x, int y)> _twoMarksHorizontal;
+
+        private static List<(int x, int y)> _fourMarksVertical;
+        private static List<(int x, int y)> _threeMarksVertical;
+        private static List<(int x, int y)> _twoMarksVertical;
+
+        private static List<(int x, int y)> _fourMarksDiagonalRight;
+        private static List<(int x, int y)> _threeMarksDiagonalRight;
+        private static List<(int x, int y)> _twoMarksDiagonalRight;
+
+        private static List<(int x, int y)> _fourMarksDiagonalLeft;
+        private static List<(int x, int y)> _threeMarksDiagonalLeft;
+        private static List<(int x, int y)> _twoMarksDiagonalLeft;
+
+        private static List<(int, int)> _singleList;
+
         public GameLogic()
         {
         }
@@ -138,11 +156,89 @@ namespace FiveInRow
             return true;
         }
 
-        protected internal static (int, int) FindMarkInHorizontalLine()
+        protected internal static (int, int) AiMove()
         {
-            List<(int x, int y)> fourMarksHorizontal = new List<(int x, int y)>();
-            List<(int x, int y)> threeMarksHorizontal = new List<(int x, int y)>();
-            List<(int x, int y)> twoMarksHorizontal = new List<(int x, int y)>();
+            if (AiMoveToWin() != (-1, -1))  // Checking for AI win possibility
+            {
+                Console.WriteLine("WIN" + AiMoveToWin());
+                return AiMoveToWin();
+            }
+            else
+            {
+                FindMarkInHorizontalLine();
+                FindMarkInVerticalLine();
+                FindMarkInDiagonalRightLine();
+                FindMarkInDiagonalLeftLine();
+                SingleCell();
+
+                if (_fourMarksHorizontal.Count > 0)  // Checking for 4 horizontal marks of Player
+                {
+                    Console.WriteLine(_fourMarksHorizontal.First());
+                    return _fourMarksHorizontal.First();
+                }
+                else if (_fourMarksVertical.Count > 0)  // Checking for 4 vertical marks of Player 
+                {
+                    Console.WriteLine(_fourMarksVertical.First());
+                    return _fourMarksVertical.First();
+                }
+                else if (_fourMarksDiagonalRight.Count > 0)  // Checking for 4 diagonal right marks of Player
+                {
+                    Console.WriteLine(_fourMarksDiagonalRight.First());
+                    return _fourMarksDiagonalRight.First();
+                }
+                else if (_fourMarksDiagonalLeft.Count > 0)  // Checking for 4 diagonal left marks of Player
+                {
+                    Console.WriteLine(_fourMarksDiagonalLeft.First());
+                    return _fourMarksDiagonalLeft.First();
+                }
+                else if (_threeMarksHorizontal.Count > 0)
+                {
+                    var threeDuplicates = _threeMarksHorizontal.GroupBy(x => x)
+                        .Where(group => group.Count() > 1)
+                        .Select(group => group.Key).ToList();
+
+                    if (threeDuplicates.Count > 0)
+                    {
+                        Console.WriteLine(RandomElementFromList(threeDuplicates));
+                        return RandomElementFromList(threeDuplicates);
+                    }
+                }
+            }
+
+            return (0, 0);
+        }
+
+        public static void Test()
+        {
+            List<(int, int)> l1 = new List<(int, int)>();
+            List<(int, int)> l2 = new List<(int, int)>();
+
+            l1.Add((0, 0));
+            l1.Add((0, 0));
+            l1.Add((0, 1));
+            l1.Add((0, 1));
+            l1.Add((0, 2));
+            l1.Add((0, 3));
+            l1.Add((4, 4));
+            l1.Add((4, 4));
+
+            var duplicateKeys = l1.GroupBy(x => x)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key).ToList();
+
+            foreach (var val in duplicateKeys)
+            {
+                Console.Write(val + ", ");
+            }
+
+            Console.WriteLine();
+        }
+
+        private static void FindMarkInHorizontalLine()
+        {
+            _fourMarksHorizontal = new List<(int x, int y)>();
+            _threeMarksHorizontal = new List<(int x, int y)>();
+            _twoMarksHorizontal = new List<(int x, int y)>();
 
             SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
 
@@ -173,14 +269,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            _twoMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
                                         }
 
                                         if (tmpSet.Last().y < board.GetLength(1) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            _twoMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
                                         }
 
                                         tmpSet.Clear();
@@ -190,14 +286,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            _threeMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
                                         }
 
                                         if (tmpSet.Last().y < board.GetLength(1) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            _threeMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
                                         }
 
                                         tmpSet.Clear();
@@ -207,14 +303,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                            _fourMarksHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
                                         }
 
                                         if (tmpSet.Last().y < board.GetLength(1) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                            _fourMarksHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
                                         }
 
                                         tmpSet.Clear();
@@ -228,39 +324,36 @@ namespace FiveInRow
                     }
                 }
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("twoMarks: ");
-            foreach (var tup in twoMarksHorizontal)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("threeMarks: ");
-            foreach (var tup in threeMarksHorizontal)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("fourMarks: ");
-            foreach (var tup in fourMarksHorizontal)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-
-            return (0, 0);
+            
+            // Console.WriteLine("twoMarks: ");
+            // foreach (var tup in _twoMarksHorizontal)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("threeMarks: ");
+            // foreach (var tup in _threeMarksHorizontal)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("fourMarks: ");
+            // foreach (var tup in _fourMarksHorizontal)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
         }
 
 
-        protected internal static (int, int) FindMarkInVerticalLine()
+        private static void FindMarkInVerticalLine()
         {
-            List<(int x, int y)> fourMarksVertical = new List<(int x, int y)>();
-            List<(int x, int y)> threeMarksVertical = new List<(int x, int y)>();
-            List<(int x, int y)> twoMarksVertical = new List<(int x, int y)>();
+            _fourMarksVertical = new List<(int x, int y)>();
+            _threeMarksVertical = new List<(int x, int y)>();
+            _twoMarksVertical = new List<(int x, int y)>();
 
             SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
 
@@ -291,14 +384,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
+                                            _twoMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
 
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            twoMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
+                                            _twoMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
 
                                         tmpSet.Clear();
@@ -308,14 +401,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
+                                            _threeMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
 
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            threeMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
+                                            _threeMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
 
                                         tmpSet.Clear();
@@ -325,14 +418,14 @@ namespace FiveInRow
                                             (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
+                                            _fourMarksVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
                                         }
 
                                         if (tmpSet.Last().x < board.GetLength(0) - 1 &&
                                             (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
                                             Board.EmptyCell)
                                         {
-                                            fourMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
+                                            _fourMarksVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
                                         }
 
                                         tmpSet.Clear();
@@ -346,41 +439,38 @@ namespace FiveInRow
                     }
                 }
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("twoMarks: ");
-            foreach (var tup in twoMarksVertical)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("threeMarks: ");
-            foreach (var tup in threeMarksVertical)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("fourMarks: ");
-            foreach (var tup in fourMarksVertical)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-
-            return (0, 0);
+            
+            // Console.WriteLine("twoMarks: ");
+            // foreach (var tup in _twoMarksVertical)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("threeMarks: ");
+            // foreach (var tup in _threeMarksVertical)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("fourMarks: ");
+            // foreach (var tup in _fourMarksVertical)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
         }
 
 
-        protected internal static (int, int) FindMarkInDiagonalRightLine()
+        private static void FindMarkInDiagonalRightLine()
         {
             uint[,] board = Board.BoardArray;
 
-            List<(int x, int y)> fourMarksDiagonalRight = new List<(int x, int y)>();
-            List<(int x, int y)> threeMarksDiagonalRight = new List<(int x, int y)>();
-            List<(int x, int y)> twoMarksDiagonalRight = new List<(int x, int y)>();
+            _fourMarksDiagonalRight = new List<(int x, int y)>();
+            _threeMarksDiagonalRight = new List<(int x, int y)>();
+            _twoMarksDiagonalRight = new List<(int x, int y)>();
 
             List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
             List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
@@ -431,7 +521,7 @@ namespace FiveInRow
                                                 board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                twoMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                _twoMarksDiagonalRight.Add((tmpListPos.First().x + 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -440,20 +530,19 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                _twoMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
                                             tmpListPos.Clear();
                                             break;
                                         case 3:
-                                            Console.WriteLine(tmpListPos.First().y);
                                             if (tmpListPos.First().y > 0 &&
                                                 tmpListPos.First().x < board.GetLength(0) - 1 &&
                                                 board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                threeMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                _threeMarksDiagonalRight.Add((tmpListPos.First().x + 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -462,20 +551,19 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                threeMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                _threeMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
                                             tmpListPos.Clear();
                                             break;
                                         case 4:
-                                            Console.WriteLine(tmpListPos.First().y);
                                             if (tmpListPos.First().y > 0 &&
                                                 tmpListPos.First().x < board.GetLength(0) - 1 &&
                                                 board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                fourMarksDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                _fourMarksDiagonalRight.Add((tmpListPos.First().x + 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -484,7 +572,7 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                fourMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                _fourMarksDiagonalRight.Add((tmpListPos.Last().x - 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
@@ -505,41 +593,38 @@ namespace FiveInRow
                 diagonalRight = "";
                 tmpList.Clear();
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("twoMarks: ");
-            foreach (var tup in twoMarksDiagonalRight)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("threeMarks: ");
-            foreach (var tup in threeMarksDiagonalRight)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("fourMarks: ");
-            foreach (var tup in fourMarksDiagonalRight)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-
-            return (0, 0);
+            
+            // Console.WriteLine("twoMarks: ");
+            // foreach (var tup in _twoMarksDiagonalRight)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("threeMarks: ");
+            // foreach (var tup in _threeMarksDiagonalRight)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("fourMarks: ");
+            // foreach (var tup in _fourMarksDiagonalRight)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
         }
 
 
-        protected internal static (int, int) FindMarkInDiagonalLeftLine()
+        private static void FindMarkInDiagonalLeftLine()
         {
             uint[,] board = Board.BoardArray;
 
-            List<(int x, int y)> fourMarksDiagonalLeft = new List<(int x, int y)>();
-            List<(int x, int y)> threeMarksDiagonalLeft = new List<(int x, int y)>();
-            List<(int x, int y)> twoMarksDiagonalLeft = new List<(int x, int y)>();
+            _fourMarksDiagonalLeft = new List<(int x, int y)>();
+            _threeMarksDiagonalLeft = new List<(int x, int y)>();
+            _twoMarksDiagonalLeft = new List<(int x, int y)>();
 
             List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
             List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
@@ -582,14 +667,12 @@ namespace FiveInRow
                                     switch (tmpListPos.Count)
                                     {
                                         case 2:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
-                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                twoMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                _twoMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -598,21 +681,19 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                twoMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                _twoMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
                                             tmpListPos.Clear();
                                             break;
                                         case 3:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
-                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                threeMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                _threeMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -621,21 +702,19 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                threeMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                _threeMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
                                             tmpListPos.Clear();
                                             break;
                                         case 4:
-                                            Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
-                                                              tmpListPos.First().y);
                                             if (tmpListPos.First().x > 0 &&
                                                 tmpListPos.First().y > 0 &&
                                                 board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                fourMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                _fourMarksDiagonalLeft.Add((tmpListPos.First().x - 1,
                                                     tmpListPos.First().y - 1));
                                             }
 
@@ -644,7 +723,7 @@ namespace FiveInRow
                                                 board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
                                                 Board.EmptyCell)
                                             {
-                                                fourMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                _fourMarksDiagonalLeft.Add((tmpListPos.Last().x + 1,
                                                     tmpListPos.Last().y + 1));
                                             }
 
@@ -665,35 +744,32 @@ namespace FiveInRow
                 diagonalLeft = "";
                 tmpList.Clear();
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("twoMarks: ");
-            foreach (var tup in twoMarksDiagonalLeft)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("threeMarks: ");
-            foreach (var tup in threeMarksDiagonalLeft)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("fourMarks: ");
-            foreach (var tup in fourMarksDiagonalLeft)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
-
-            return (0, 0);
+            
+            // Console.WriteLine("twoMarks: ");
+            // foreach (var tup in _twoMarksDiagonalLeft)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("threeMarks: ");
+            // foreach (var tup in _threeMarksDiagonalLeft)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
+            // Console.WriteLine("fourMarks: ");
+            // foreach (var tup in _fourMarksDiagonalLeft)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
         }
 
 
-        protected internal static (int, int) SingleCell()
+        private static void SingleCell()
         {
             uint[,] board = Board.BoardArray;
             int boardHeight = board.GetLength(0);
@@ -1008,18 +1084,18 @@ namespace FiveInRow
                 }
             }
 
-            foreach (var tup in singleCell)
-            {
-                Console.Write(tup + ", ");
-            }
+            _singleList = singleCell.ToList();
 
-            Console.WriteLine();
-
-            return (0, 0);
+            // foreach (var tup in _singleList)
+            // {
+            //     Console.Write(tup + ", ");
+            // }
+            //
+            // Console.WriteLine();
         }
 
 
-        protected internal static (int, int)? AiMoveToWin()
+        private static (int, int) AiMoveToWin()
         {
             if (AiCheckToWinHorizontal().Count > 0)
             {
@@ -1039,7 +1115,7 @@ namespace FiveInRow
             }
             else
             {
-                return null;
+                return (-1, -1);
             }
         }
 
@@ -1094,13 +1170,12 @@ namespace FiveInRow
                 }
             }
 
-            Console.WriteLine("aiMoveToWinHorizontal: ");
-            foreach (var tup in aiCheckToWinHorizontal)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
+            // Console.WriteLine("aiMoveToWinHorizontal: ");
+            // foreach (var tup in aiCheckToWinHorizontal)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            // Console.WriteLine();
 
             return aiCheckToWinHorizontal;
         }
@@ -1155,15 +1230,14 @@ namespace FiveInRow
                     }
                 }
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("aiCheckToWinVertical: ");
-            foreach (var tup in aiCheckToWinVertical)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
+            
+            // Console.WriteLine("aiCheckToWinVertical: ");
+            // foreach (var tup in aiCheckToWinVertical)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
 
             return aiCheckToWinVertical;
         }
@@ -1218,7 +1292,6 @@ namespace FiveInRow
                                 {
                                     if (tmpListPos.Count == _inLine - 1)
                                     {
-                                        Console.WriteLine(tmpListPos.First().y);
                                         if (tmpListPos.First().y > 0 &&
                                             tmpListPos.First().x < board.GetLength(0) - 1 &&
                                             board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
@@ -1251,15 +1324,14 @@ namespace FiveInRow
                 diagonalRight = "";
                 tmpList.Clear();
             }
-
-            // Console.WriteLine("twoOpen " + twoMarks.Count);
-            Console.WriteLine("aiCheckToWinDiagonalRight: ");
-            foreach (var tup in aiCheckToWinDiagonalRight)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
+            
+            // Console.WriteLine("aiCheckToWinDiagonalRight: ");
+            // foreach (var tup in aiCheckToWinDiagonalRight)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
 
             return aiCheckToWinDiagonalRight;
         }
@@ -1309,10 +1381,8 @@ namespace FiveInRow
 
                                 if (tmpListPos.Count > 0)
                                 {
-                                    if (tmpListPos.Count == _inLine)
+                                    if (tmpListPos.Count == _inLine - 1)
                                     {
-                                        Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
-                                                          tmpListPos.First().y);
                                         if (tmpListPos.First().x > 0 &&
                                             tmpListPos.First().y > 0 &&
                                             board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
@@ -1346,13 +1416,13 @@ namespace FiveInRow
                 tmpList.Clear();
             }
 
-            Console.WriteLine("aiCheckToWinDiagonalLeft: ");
-            foreach (var tup in aiCheckToWinDiagonalLeft)
-            {
-                Console.Write(tup + " ");
-            }
-
-            Console.WriteLine();
+            // Console.WriteLine("aiCheckToWinDiagonalLeft: ");
+            // foreach (var tup in aiCheckToWinDiagonalLeft)
+            // {
+            //     Console.Write(tup + " ");
+            // }
+            //
+            // Console.WriteLine();
 
             return aiCheckToWinDiagonalLeft;
         }
@@ -1368,6 +1438,14 @@ namespace FiveInRow
             }
 
             return tmpStirng;
+        }
+
+
+        private static (int, int) RandomElementFromList(List<(int, int)> list)
+        {
+            var random = new Random();
+            int index = random.Next(list.Count);
+            return list.ElementAt(index);
         }
     }
 }

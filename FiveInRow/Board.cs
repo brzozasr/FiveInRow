@@ -103,11 +103,8 @@ namespace FiveInRow
             GameListener();
             
             // TODO delete
-            // GameLogic.FindMarkInDiagonalLeftLine();
-            // GameLogic.FindMarkInDiagonalRightLine();
-            // GameLogic.FindMarkInVerticalLine();
-            // GameLogic.FindMarkInHorizontalLine();
-            // GameLogic.SingleCell();
+            GameLogic.AiMove();
+            // GameLogic.Test();
         }
 
 
