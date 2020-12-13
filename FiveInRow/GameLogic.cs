@@ -1021,8 +1021,6 @@ namespace FiveInRow
 
         protected internal static (int, int)? AiMoveToWin()
         {
-            (int, int) coordinates;
-            
             if (AiCheckToWinHorizontal().Count > 0)
             {
                 return AiCheckToWinHorizontal().First();
