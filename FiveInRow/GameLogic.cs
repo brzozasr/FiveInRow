@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Gtk;
@@ -1020,15 +1019,36 @@ namespace FiveInRow
         }
 
 
-        protected internal static (int, int) AiMoveToWin()
+        protected internal static (int, int)? AiMoveToWin()
         {
-            return (0, 0);
+            (int, int) coordinates;
+            
+            if (AiCheckToWinHorizontal().Count > 0)
+            {
+                return AiCheckToWinHorizontal().First();
+            }
+            else if (AiCheckToWinVertical().Count > 0)
+            {
+                return AiCheckToWinVertical().First();
+            }
+            else if (AiCheckToWinDiagonalRight().Count > 0)
+            {
+                return AiCheckToWinDiagonalRight().First();
+            }
+            else if (AiCheckToWinDiagonalLeft().Count > 0)
+            {
+                return AiCheckToWinDiagonalLeft().First();
+            }
+            else
+            {
+                return null;
+            }
         }
 
 
-        protected internal static (int, int) AiMoveToWinHorizontal()
+        private static List<(int, int)> AiCheckToWinHorizontal()
         {
-            List<(int x, int y)> aiMoveToWinHorizontal = new List<(int x, int y)>();
+            List<(int x, int y)> aiCheckToWinHorizontal = new List<(int x, int y)>();
 
             SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
 
@@ -1057,14 +1077,14 @@ namespace FiveInRow
                                         (uint) board.GetValue(tmpSet.First().x, tmpSet.First().y - 1) ==
                                         Board.EmptyCell)
                                     {
-                                        aiMoveToWinHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
+                                        aiCheckToWinHorizontal.Add((tmpSet.First().x, tmpSet.First().y - 1));
                                     }
 
                                     if (tmpSet.Last().y < board.GetLength(1) - 1 &&
                                         (uint) board.GetValue(tmpSet.Last().x, tmpSet.Last().y + 1) ==
                                         Board.EmptyCell)
                                     {
-                                        aiMoveToWinHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
+                                        aiCheckToWinHorizontal.Add((tmpSet.Last().x, tmpSet.Last().y + 1));
                                     }
 
                                     tmpSet.Clear();
@@ -1077,32 +1097,266 @@ namespace FiveInRow
             }
 
             Console.WriteLine("aiMoveToWinHorizontal: ");
-            foreach (var tup in aiMoveToWinHorizontal)
+            foreach (var tup in aiCheckToWinHorizontal)
             {
                 Console.Write(tup + " ");
             }
 
             Console.WriteLine();
 
-            return (0, 0);
+            return aiCheckToWinHorizontal;
         }
 
 
-        protected internal static (int, int) AiMoveToWinVertical()
+        private static List<(int, int)> AiCheckToWinVertical()
         {
-            return (0, 0);
+            List<(int x, int y)> aiCheckToWinVertical = new List<(int x, int y)>();
+
+            SortedSet<(int x, int y)> tmpSet = new SortedSet<(int x, int y)>();
+
+            uint[,] board = Board.BoardArray;
+
+            for (int i = 0; i < board.GetLength(1); i++)
+            {
+                for (int j = 0; j < board.GetLength(0); j++)
+                {
+                    if (board.GetLength(0) - 1 > j)
+                    {
+                        if ((uint) board.GetValue(j, i) == Board.Player2Mark &&
+                            (uint) board.GetValue(j + 1, i) == Board.Player2Mark)
+                        {
+                            tmpSet.Add((j, i));
+                            tmpSet.Add((j + 1, i));
+                        }
+
+                        if ((uint) board.GetValue(j + 1, i) != Board.Player2Mark || board.GetLength(0) - 2 == j)
+                        {
+                            if (tmpSet.Count > 0)
+                            {
+                                if (tmpSet.Count == _inLine - 1)
+                                {
+                                    if (tmpSet.First().x > 0 &&
+                                        (uint) board.GetValue(tmpSet.First().x - 1, tmpSet.First().y) ==
+                                        Board.EmptyCell)
+                                    {
+                                        aiCheckToWinVertical.Add((tmpSet.First().x - 1, tmpSet.First().y));
+                                    }
+
+                                    if (tmpSet.Last().x < board.GetLength(0) - 1 &&
+                                        (uint) board.GetValue(tmpSet.Last().x + 1, tmpSet.Last().y) ==
+                                        Board.EmptyCell)
+                                    {
+                                        aiCheckToWinVertical.Add((tmpSet.Last().x + 1, tmpSet.Last().y));
+                                    }
+
+                                    tmpSet.Clear();
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("aiCheckToWinVertical: ");
+            foreach (var tup in aiCheckToWinVertical)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+
+            return aiCheckToWinVertical;
         }
 
 
-        protected internal static (int, int) AiMoveToWinDiagonalRight()
+        private static List<(int, int)> AiCheckToWinDiagonalRight()
         {
-            return (0, 0);
+            uint[,] board = Board.BoardArray;
+
+            List<(int x, int y)> aiCheckToWinDiagonalRight = new List<(int x, int y)>();
+
+            List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
+            List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
+
+            int heightRow = board.GetLength(0);
+            int widthCol = board.GetLength(1);
+
+            string diagonalRight = "";
+
+            // looping thru two dimensional array diagonally (/ direction)
+            for (int k = 0; k <= heightRow + widthCol - 2; k++)
+            {
+                for (int j = 0; j <= k; j++)
+                {
+                    int i = k - j;
+                    if (i < heightRow && j < widthCol)
+                    {
+                        diagonalRight += Convert.ToString(board.GetValue(i, j));
+                        tmpList.Add((i, j, (uint) board.GetValue(i, j)));
+                    }
+                }
+
+                if (diagonalRight.Length > _inLine - 1)
+                {
+                    for (int i = 0; i < tmpList.Count; i++)
+                    {
+                        if (tmpList.Count - 1 > i)
+                        {
+                            if (tmpList.ElementAt(i).value == Board.Player2Mark &&
+                                tmpList.ElementAt(i + 1).value == Board.Player2Mark)
+                            {
+                                tmpListPos.Add((tmpList.ElementAt(i).x, tmpList.ElementAt(i).y));
+                                tmpListPos.Add((tmpList.ElementAt(i + 1).x, tmpList.ElementAt(i + 1).y));
+                            }
+
+                            if (tmpList.ElementAt(i + 1).value != Board.Player2Mark || tmpList.Count - 2 == i)
+                            {
+                                tmpListPos = tmpListPos.Distinct().ToList();
+
+
+                                if (tmpListPos.Count > 0)
+                                {
+                                    if (tmpListPos.Count == _inLine - 1)
+                                    {
+                                        Console.WriteLine(tmpListPos.First().y);
+                                        if (tmpListPos.First().y > 0 &&
+                                            tmpListPos.First().x < board.GetLength(0) - 1 &&
+                                            board[tmpListPos.First().x + 1, tmpListPos.First().y - 1] ==
+                                            Board.EmptyCell)
+                                        {
+                                            aiCheckToWinDiagonalRight.Add((tmpListPos.First().x + 1,
+                                                tmpListPos.First().y - 1));
+                                        }
+
+                                        if (tmpListPos.Last().x > 0 &&
+                                            tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                            board[tmpListPos.Last().x - 1, tmpListPos.Last().y + 1] ==
+                                            Board.EmptyCell)
+                                        {
+                                            aiCheckToWinDiagonalRight.Add((tmpListPos.Last().x - 1,
+                                                tmpListPos.Last().y + 1));
+                                        }
+
+                                        tmpListPos.Clear();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    tmpListPos.Clear();
+                }
+
+                diagonalRight = "";
+                tmpList.Clear();
+            }
+
+            // Console.WriteLine("twoOpen " + twoMarks.Count);
+            Console.WriteLine("aiCheckToWinDiagonalRight: ");
+            foreach (var tup in aiCheckToWinDiagonalRight)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+
+            return aiCheckToWinDiagonalRight;
         }
 
 
-        protected internal static (int, int) AiMoveToWinDiagonalLeft()
+        private static List<(int, int)> AiCheckToWinDiagonalLeft()
         {
-            return (0, 0);
+            uint[,] board = Board.BoardArray;
+
+            List<(int x, int y)> aiCheckToWinDiagonalLeft = new List<(int x, int y)>();
+
+            List<(int x, int y, uint value)> tmpList = new List<(int x, int y, uint value)>();
+            List<(int x, int y)> tmpListPos = new List<(int x, int y)>();
+
+            int heightRow = board.GetLength(0);
+            int widthCol = board.GetLength(1);
+
+            string diagonalLeft = "";
+
+            for (int i = -heightRow; i <= widthCol; i++)
+            {
+                for (int j = 0; j < heightRow; j++)
+                {
+                    if ((j - i >= 0) && (j - i < widthCol))
+                    {
+                        diagonalLeft += Convert.ToString(board.GetValue(j, j - i));
+                        tmpList.Add((j, j - i, (uint) board.GetValue(j, j - i)));
+                    }
+                }
+
+                if (diagonalLeft.Length > _inLine - 1)
+                {
+                    for (int k = 0; k < tmpList.Count; k++)
+                    {
+                        if (tmpList.Count - 1 > k)
+                        {
+                            if (tmpList.ElementAt(k).value == Board.Player2Mark &&
+                                tmpList.ElementAt(k + 1).value == Board.Player2Mark)
+                            {
+                                tmpListPos.Add((tmpList.ElementAt(k).x, tmpList.ElementAt(k).y));
+                                tmpListPos.Add((tmpList.ElementAt(k + 1).x, tmpList.ElementAt(k + 1).y));
+                            }
+
+                            if (tmpList.ElementAt(k + 1).value != Board.Player2Mark || tmpList.Count - 2 == k)
+                            {
+                                tmpListPos = tmpListPos.Distinct().ToList();
+
+                                if (tmpListPos.Count > 0)
+                                {
+                                    if (tmpListPos.Count == _inLine)
+                                    {
+                                        Console.WriteLine("Poz: " + tmpListPos.First().x + ", " +
+                                                          tmpListPos.First().y);
+                                        if (tmpListPos.First().x > 0 &&
+                                            tmpListPos.First().y > 0 &&
+                                            board[tmpListPos.First().x - 1, tmpListPos.First().y - 1] ==
+                                            Board.EmptyCell)
+                                        {
+                                            aiCheckToWinDiagonalLeft.Add((tmpListPos.First().x - 1,
+                                                tmpListPos.First().y - 1));
+                                        }
+
+                                        if (tmpListPos.Last().x < board.GetLength(0) - 1 &&
+                                            tmpListPos.Last().y < board.GetLength(1) - 1 &&
+                                            board[tmpListPos.Last().x + 1, tmpListPos.Last().y + 1] ==
+                                            Board.EmptyCell)
+                                        {
+                                            aiCheckToWinDiagonalLeft.Add((tmpListPos.Last().x + 1,
+                                                tmpListPos.Last().y + 1));
+                                        }
+
+                                        tmpListPos.Clear();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    tmpListPos.Clear();
+                }
+
+                diagonalLeft = "";
+                tmpList.Clear();
+            }
+
+            Console.WriteLine("aiCheckToWinDiagonalLeft: ");
+            foreach (var tup in aiCheckToWinDiagonalLeft)
+            {
+                Console.Write(tup + " ");
+            }
+
+            Console.WriteLine();
+
+            return aiCheckToWinDiagonalLeft;
         }
 
 
