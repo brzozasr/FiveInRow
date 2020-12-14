@@ -21,7 +21,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="FiveInRow.ConfigGameWindow" design-size="589 395">
+  <widget class="Gtk.Window" id="FiveInRow.ConfigGameWindow" design-size="482 395">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Game Configurarion</property>
     <property name="Icon">stock:gtk-apply Menu</property>
@@ -114,7 +114,28 @@
                             <property name="Value">8</property>
                           </widget>
                           <packing>
-                            <property name="X">116</property>
+                            <property name="X">105</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Label" id="lbPlayerName">
+                            <property name="MemberName" />
+                            <property name="LabelProp" translatable="yes">Name: </property>
+                          </widget>
+                          <packing>
+                            <property name="X">189</property>
+                            <property name="Y">5</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Entry" id="entryName">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="IsEditable">True</property>
+                            <property name="InvisibleChar">●</property>
+                          </widget>
+                          <packing>
+                            <property name="X">231</property>
                           </packing>
                         </child>
                       </widget>
@@ -126,14 +147,89 @@
                       </packing>
                     </child>
                     <child>
-                      <placeholder />
+                      <widget class="Gtk.HBox" id="hboxButtons">
+                        <property name="MemberName" />
+                        <property name="Spacing">6</property>
+                        <child>
+                          <widget class="Gtk.Alignment" id="alignment3">
+                            <property name="MemberName" />
+                            <child>
+                              <placeholder />
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="Position">0</property>
+                            <property name="AutoSize">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Button" id="btnServerShow">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextOnly</property>
+                            <property name="Label" translatable="yes">SERVER</property>
+                            <property name="UseUnderline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="Position">1</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Alignment" id="alignment5">
+                            <property name="MemberName" />
+                            <child>
+                              <placeholder />
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="Position">2</property>
+                            <property name="AutoSize">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Button" id="btnClientShow">
+                            <property name="MemberName" />
+                            <property name="CanFocus">True</property>
+                            <property name="Type">TextOnly</property>
+                            <property name="Label" translatable="yes">CLIENT</property>
+                            <property name="UseUnderline">True</property>
+                          </widget>
+                          <packing>
+                            <property name="Position">3</property>
+                            <property name="AutoSize">True</property>
+                            <property name="Expand">False</property>
+                            <property name="Fill">False</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="Gtk.Alignment" id="alignment1">
+                            <property name="MemberName" />
+                            <child>
+                              <placeholder />
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="Position">4</property>
+                            <property name="AutoSize">True</property>
+                          </packing>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="Position">2</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
                     </child>
                   </widget>
                 </child>
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel2">
+              <widget class="Gtk.Label" id="GtkLabel4">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">&lt;b&gt;Game Mode&lt;/b&gt;</property>
                 <property name="UseMarkup">True</property>
@@ -146,10 +242,71 @@
           <packing>
             <property name="Position">0</property>
             <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
         <child>
-          <placeholder />
+          <widget class="Gtk.Frame" id="frameServer">
+            <property name="MemberName" />
+            <property name="BorderWidth">15</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment1">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel6">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;SERVER&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Frame" id="frameClient">
+            <property name="MemberName" />
+            <property name="BorderWidth">15</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment2">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel7">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">&lt;b&gt;CLIENT&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+          </packing>
         </child>
         <child>
           <widget class="Gtk.HBox" id="hbox5">
@@ -216,7 +373,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">2</property>
+            <property name="Position">3</property>
             <property name="AutoSize">True</property>
           </packing>
         </child>

@@ -25,6 +25,8 @@ namespace FiveInRow
             this.Build();
             btnPlay.Clicked += new EventHandler(PlayGame);
             DeleteEvent += delegate { Application.Quit(); };
+
+            hboxButtons.Visible = false;
         }
 
         private void PlayGame(object sender, EventArgs e)
