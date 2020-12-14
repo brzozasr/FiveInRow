@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Gtk;
 using System.Threading.Tasks;
+using Gdk;
+using Image = Gtk.Image;
+using Window = Gtk.Window;
 
 
 namespace FiveInRow
@@ -18,17 +21,39 @@ namespace FiveInRow
         private bool _turn = true; // turn = PLAYER1
         private string _imageState;
         private static ConfigGameWindow _configGameWindow; // handler to ConfigGameWindow
-
+        private Label _lbPlayer1;
+        private Label _lbPlayer2;
+        private Label _lbTurn;
 
         public Board(uint row, uint col) : base("FIVE IN ONE ROW")
         {
             SetPosition(WindowPosition.Center);
             this.TypeHint = Gdk.WindowTypeHint.Dialog;
             this.Resizable = false;
-            DeleteEvent += new DeleteEventHandler(DestroyBoard);
+            DeleteEvent += DestroyBoard;
 
             List<Button> buttonLists = new List<Button>();
             _boardArray = new uint[row, col];
+
+            VBox vBoxMain = new VBox(false, 0);
+            HBox hBoxTopBar = new HBox(false, 0);
+            _lbPlayer1 = new Label("Player 1");
+            _lbPlayer2 = new Label("Player 2");
+            _lbTurn = new Label("<= TURN");
+
+            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
+            fontDescription.Size = 13000;
+            fontDescription.Weight = Pango.Weight.Bold;
+            Color red = new Color(255, 0, 0);
+            Color blue = new Color(0, 0, 255);
+            Color green = new Color(0, 130, 0);
+            _lbTurn.ModifyFont(fontDescription);
+            _lbTurn.ModifyFg(StateType.Normal, blue);
+            _lbPlayer1.ModifyFont(fontDescription);
+            _lbPlayer1.ModifyFg(StateType.Normal, green);
+            _lbPlayer2.ModifyFont(fontDescription);
+            _lbPlayer2.ModifyFg(StateType.Normal, red);
+
 
             _table = new Table(row, col, true);
 
@@ -51,7 +76,14 @@ namespace FiveInRow
                 btn.Clicked += OnClick;
             }
 
-            Add(_table);
+            vBoxMain.PackStart(hBoxTopBar, true, true, 10);
+            vBoxMain.PackEnd(_table, true, true, 0);
+
+            hBoxTopBar.PackStart(_lbPlayer1, true, true, 10);
+            hBoxTopBar.PackStart(_lbTurn, true, true, 10);
+            hBoxTopBar.PackEnd(_lbPlayer2, true, true, 10);
+
+            Add(vBoxMain);
             ShowAll();
         }
 
@@ -95,13 +127,16 @@ namespace FiveInRow
             string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
             bool isBoardFull = GameLogic.IsBoardFull();
 
+            GameStatus("PLAYER 1");
+
             if (_configGameWindow.RbAi.Active)
             {
                 if (hasWon == null && !isBoardFull)
                 {
                     BotMove();
+                    // Task.Delay(250);
+                    LbTurn.Text = "TURN =>";
                     ButtonsLocked(true);
-                    Task.Delay(250);
                 }
                 else
                 {
@@ -130,10 +165,19 @@ namespace FiveInRow
             Console.WriteLine(coordinates);
             SetCellOfBoardArray(coordinates.x, coordinates.y, Player2Mark);
             _turn = true;
+            LbTurn.Text = "<= TURN";
 
             ReplaceButton(coordinates);
             ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
+            ButtonsLocked(false);
+
+            // loop for updating GUI
+            while (Gtk.Application.EventsPending())
+            {
+                Gtk.Application.RunIteration();
+            }
         }
+
 
         private void ReplaceButton((int x, int y) coordinates)
         {
@@ -159,7 +203,7 @@ namespace FiveInRow
             newBtn.HeightRequest = 40;
 
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
-            
+
             ShowAll();
         }
 
@@ -172,6 +216,11 @@ namespace FiveInRow
             {
                 _table.Remove(_table.Children[0]);
                 _table.Children[0].Destroy();
+
+                if (_table.Children.Length == 1)
+                {
+                    _table.Attach(new Button(), 1, 2, 1, 2);
+                }
             }
 
             for (uint i = 0; i < row; i++)
@@ -210,7 +259,7 @@ namespace FiveInRow
                     btn.Clicked += OnClick;
                 }
             }
-            
+
             ShowAll();
         }
 
@@ -221,6 +270,35 @@ namespace FiveInRow
             {
                 btn.Sensitive = isLocked;
             }
+        }
+
+
+        private void GameStatus(string playerName, bool isDraw = false)
+        {
+            string message = "";
+            
+            if (isDraw)
+            {
+                message = "Nobody won is a draw.";
+            }
+            else
+            {
+                message = $"Player {playerName} won the game.";
+            }
+            
+            MessageDialog md = new MessageDialog(this,
+                DialogFlags.DestroyWithParent, MessageType.Info,
+                ButtonsType.Close, message);
+            md.Run();
+            md.Destroy();
+            
+            md.Close += DestroyBoard;
+        }
+
+        private void DestroyBoard(object sender, EventArgs e)
+        {
+            this.Destroy();
+            _configGameWindow.Show();
         }
 
 
@@ -270,6 +348,24 @@ namespace FiveInRow
         public static void SetCellOfBoardArray(int x, int y, uint value)
         {
             _boardArray[x, y] = value;
+        }
+
+        protected internal Label LbPlayer1
+        {
+            get => _lbPlayer1;
+            set => _lbPlayer1 = value;
+        }
+
+        protected internal Label LbPlayer2
+        {
+            get => _lbPlayer2;
+            set => _lbPlayer2 = value;
+        }
+
+        protected internal Label LbTurn
+        {
+            get => _lbTurn;
+            set => _lbTurn = value;
         }
     }
 }
