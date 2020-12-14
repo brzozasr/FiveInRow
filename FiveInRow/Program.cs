@@ -33,7 +33,7 @@ namespace FiveInRow
         {
             Thread.Sleep(4000);
             _win.HideAll();
-            new ConfigGameWindow();
+            _ = new ConfigGameWindow();
         }
     }
 }
