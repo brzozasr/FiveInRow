@@ -16,6 +16,8 @@ namespace FiveInRow
         protected internal const uint EmptyCell = 0; // emty cell (=0) of the game
         protected internal const uint Player1Mark = 1; // cell with mark (=1) the Player1 
         protected internal const uint Player2Mark = 2; // cell with mark (=2) the Player2
+        private string _player1Name = "PLAYER 1"; // Name of the Player1 
+        private string _player2Name = "PLAYER 2"; // Name of the the Player2
         private string _player1Image = Stock.Apply; // Image for player 1
         private string _player2Image = Stock.Cancel; // Image for player 2
         private bool _turn = true; // turn = PLAYER1
@@ -36,25 +38,8 @@ namespace FiveInRow
             _boardArray = new uint[row, col];
 
             VBox vBoxMain = new VBox(false, 0);
-            HBox hBoxTopBar = new HBox(false, 0);
-            _lbPlayer1 = new Label("Player 1");
-            _lbPlayer2 = new Label("Player 2");
-            _lbTurn = new Label("<= TURN");
-
-            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
-            fontDescription.Size = 13000;
-            fontDescription.Weight = Pango.Weight.Bold;
-            Color red = new Color(255, 0, 0);
-            Color blue = new Color(0, 0, 255);
-            Color green = new Color(0, 130, 0);
-            _lbTurn.ModifyFont(fontDescription);
-            _lbTurn.ModifyFg(StateType.Normal, blue);
-            _lbPlayer1.ModifyFont(fontDescription);
-            _lbPlayer1.ModifyFg(StateType.Normal, green);
-            _lbPlayer2.ModifyFont(fontDescription);
-            _lbPlayer2.ModifyFg(StateType.Normal, red);
-
-
+            HBox hBoxTopBar = new HBox(true, 0);
+            
             _table = new Table(row, col, true);
 
             for (uint i = 0; i < row; i++)
@@ -75,6 +60,32 @@ namespace FiveInRow
             {
                 btn.Clicked += OnClick;
             }
+
+            if (_configGameWindow.RbAi.Active)
+            {
+                Player2Name = "AI";
+            } 
+            else if (_configGameWindow.RbMultiplayer.Active)
+            {
+                
+            }
+
+            _lbPlayer1 = new Label(_player1Name);
+            _lbPlayer2 = new Label(_player2Name);
+            _lbTurn = new Label("<= TURN");
+            
+            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
+            fontDescription.Size = 13000;
+            fontDescription.Weight = Pango.Weight.Bold;
+            Color red = new Color(255, 0, 0);
+            Color blue = new Color(0, 0, 255);
+            Color green = new Color(0, 130, 0);
+            _lbTurn.ModifyFont(fontDescription);
+            _lbTurn.ModifyFg(StateType.Normal, blue);
+            _lbPlayer1.ModifyFont(fontDescription);
+            _lbPlayer1.ModifyFg(StateType.Normal, green);
+            _lbPlayer2.ModifyFont(fontDescription);
+            _lbPlayer2.ModifyFg(StateType.Normal, red);
 
             vBoxMain.PackStart(hBoxTopBar, true, true, 10);
             vBoxMain.PackEnd(_table, true, true, 0);
@@ -124,15 +135,23 @@ namespace FiveInRow
             _boardArray[x, y] = Player1Mark;
             _turn = false;
 
-            string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
+            string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
             bool isBoardFull = GameLogic.IsBoardFull();
 
             if (_configGameWindow.RbAi.Active)
             {
+                LbPlayer2.Text = Player2Name;
+                LbTurn.Text = "TURN =>";
+                
+                // loop for updating GUI
+                while (Gtk.Application.EventsPending())
+                {
+                    Gtk.Application.RunIteration();
+                }
+                
                 if (hasWon == null && !isBoardFull)
                 {
                     BotMove();
-                    LbTurn.Text = "TURN =>";
                     ButtonsLocked(true);
                 }
                 else if (hasWon != null)
@@ -170,7 +189,7 @@ namespace FiveInRow
             ReplaceButton(coordinates);
             ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
             ButtonsLocked(false);
-            string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
+            string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
             bool isBoardFull = GameLogic.IsBoardFull();
 
             // loop for updating GUI
@@ -371,6 +390,18 @@ namespace FiveInRow
         {
             get => _lbTurn;
             set => _lbTurn = value;
+        }
+        
+        protected internal string Player1Name
+        {
+            get => _player1Name;
+            set => _player1Name = value;
+        }
+
+        protected internal string Player2Name
+        {
+            get => _player2Name;
+            set => _player2Name = value;
         }
     }
 }
