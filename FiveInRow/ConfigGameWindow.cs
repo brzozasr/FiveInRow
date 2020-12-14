@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Text;
 using Gtk;
 
 namespace FiveInRow
@@ -9,6 +11,10 @@ namespace FiveInRow
         public RadioButton RbMultiplayer => rbMultiplayer;
         private uint _row;
         private uint _col;
+        protected internal Entry EntryName
+        {
+            get => entryName;
+        }
 
         public uint Col
         {
@@ -29,6 +35,9 @@ namespace FiveInRow
             rbMultiplayer.Clicked += OnClickRadioBtnMultiplayer;
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
+            
+            entryPortServer.Text = "5533";
+            entryPortClient.Text = "5533";
 
             if (rbAi.Active)
             {
@@ -46,6 +55,7 @@ namespace FiveInRow
         {
             frameServer.Visible = true;
             frameClient.Visible = false;
+            entryIpServer.Text = GetIpAddress();
         }
 
         private void OnClickBtnClientShow(object sender, EventArgs e)
@@ -81,6 +91,14 @@ namespace FiveInRow
 
             }
 
+        }
+        
+        private string GetIpAddress()
+        {
+            string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
+            // Get the IP  
+            string myIP = Dns.GetHostEntry(hostName).AddressList[0].ToString();  
+            return myIP;
         }
     }
 

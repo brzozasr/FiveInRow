@@ -63,6 +63,11 @@ namespace FiveInRow
 
             if (_configGameWindow.RbAi.Active)
             {
+                string name = _configGameWindow.EntryName.Text.Trim();
+                if (name != "" && name != null)
+                {
+                    Player1Name = _configGameWindow.EntryName.Text;
+                }
                 Player2Name = "AI";
             } 
             else if (_configGameWindow.RbMultiplayer.Active)
