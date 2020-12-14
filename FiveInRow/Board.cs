@@ -127,21 +127,21 @@ namespace FiveInRow
             string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
             bool isBoardFull = GameLogic.IsBoardFull();
 
-            GameStatus("PLAYER 1");
-
             if (_configGameWindow.RbAi.Active)
             {
                 if (hasWon == null && !isBoardFull)
                 {
                     BotMove();
-                    // Task.Delay(250);
                     LbTurn.Text = "TURN =>";
                     ButtonsLocked(true);
                 }
+                else if (hasWon != null)
+                {
+                    GameStatus(hasWon);
+                }
                 else
                 {
-                    Console.WriteLine($"{hasWon} won!!!");
-                    // TODO popup
+                    GameStatus(null, true);
                 }
             }
             else if (_configGameWindow.RbMultiplayer.Active)
@@ -170,11 +170,22 @@ namespace FiveInRow
             ReplaceButton(coordinates);
             ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
             ButtonsLocked(false);
+            string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
+            bool isBoardFull = GameLogic.IsBoardFull();
 
             // loop for updating GUI
             while (Gtk.Application.EventsPending())
             {
                 Gtk.Application.RunIteration();
+            }
+            
+            if (hasWon != null)
+            {
+                GameStatus(hasWon);
+            }
+            else if (isBoardFull)
+            {
+                GameStatus(null, true);
             }
         }
 
@@ -283,24 +294,18 @@ namespace FiveInRow
             }
             else
             {
-                message = $"Player {playerName} won the game.";
+                message = $"The player {playerName} has won the game.";
             }
             
             MessageDialog md = new MessageDialog(this,
                 DialogFlags.DestroyWithParent, MessageType.Info,
                 ButtonsType.Close, message);
             md.Run();
-            md.Destroy();
-            
-            md.Close += DestroyBoard;
-        }
-
-        private void DestroyBoard(object sender, EventArgs e)
-        {
             this.Destroy();
             _configGameWindow.Show();
+            md.Destroy();
         }
-
+        
 
         private void PlayerMove()
         {
