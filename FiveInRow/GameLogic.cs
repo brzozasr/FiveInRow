@@ -160,7 +160,7 @@ namespace FiveInRow
         {
             if (AiMoveToWin() != (-1, -1))  // Checking for AI win possibility
             {
-                Console.WriteLine("WIN" + AiMoveToWin());
+                Console.WriteLine("WIN " + AiMoveToWin());
                 return AiMoveToWin();
             }
             else
@@ -183,7 +183,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (fourDuplicatesH.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(fourDuplicatesH));
                         return RandomElementFromList(fourDuplicatesH);
                     }
                     
@@ -195,7 +194,6 @@ namespace FiveInRow
 
                         if (fourAndThreeDuplicateH.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateH));
                             return RandomElementFromList(fourAndThreeDuplicateH);
                         }
                     }
@@ -209,7 +207,6 @@ namespace FiveInRow
 
                         if (fourAndTwoDuplicateH.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateH));
                             return RandomElementFromList(fourAndTwoDuplicateH);
                         }
                     }
@@ -223,12 +220,10 @@ namespace FiveInRow
 
                         if (fourAndSingleDuplicateH.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateH));
                             return RandomElementFromList(fourAndSingleDuplicateH);
                         }
                     }
                     
-                    Console.WriteLine(_fourMarksHorizontal.First());
                     return _fourMarksHorizontal.First();
                 }
                 
@@ -244,7 +239,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (fourDuplicatesV.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(fourDuplicatesV));
                         return RandomElementFromList(fourDuplicatesV);
                     }
                     
@@ -256,7 +250,6 @@ namespace FiveInRow
 
                         if (fourAndThreeDuplicateV.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateV));
                             return RandomElementFromList(fourAndThreeDuplicateV);
                         }
                     }
@@ -270,7 +263,6 @@ namespace FiveInRow
 
                         if (fourAndTwoDuplicateV.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateV));
                             return RandomElementFromList(fourAndTwoDuplicateV);
                         }
                     }
@@ -284,12 +276,10 @@ namespace FiveInRow
 
                         if (fourAndSingleDuplicateV.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateV));
                             return RandomElementFromList(fourAndSingleDuplicateV);
                         }
                     }
                     
-                    Console.WriteLine(_fourMarksVertical.First());
                     return _fourMarksVertical.First();
                 }
                 
@@ -305,7 +295,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (fourDuplicatesDr.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(fourDuplicatesDr));
                         return RandomElementFromList(fourDuplicatesDr);
                     }
                     
@@ -317,7 +306,6 @@ namespace FiveInRow
 
                         if (fourAndThreeDuplicateDr.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateDr));
                             return RandomElementFromList(fourAndThreeDuplicateDr);
                         }
                     }
@@ -331,7 +319,6 @@ namespace FiveInRow
 
                         if (fourAndTwoDuplicateDr.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateDr));
                             return RandomElementFromList(fourAndTwoDuplicateDr);
                         }
                     }
@@ -345,12 +332,10 @@ namespace FiveInRow
 
                         if (fourAndSingleDuplicateDr.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateDr));
                             return RandomElementFromList(fourAndSingleDuplicateDr);
                         }
                     }
                     
-                    Console.WriteLine(_fourMarksDiagonalRight.First());
                     return _fourMarksDiagonalRight.First();
                 }
                 
@@ -366,7 +351,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (fourDuplicatesDl.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(fourDuplicatesDl));
                         return RandomElementFromList(fourDuplicatesDl);
                     }
                     
@@ -378,7 +362,6 @@ namespace FiveInRow
 
                         if (fourAndThreeDuplicateDl.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndThreeDuplicateDl));
                             return RandomElementFromList(fourAndThreeDuplicateDl);
                         }
                     }
@@ -392,7 +375,6 @@ namespace FiveInRow
 
                         if (fourAndTwoDuplicateDl.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndTwoDuplicateDl));
                             return RandomElementFromList(fourAndTwoDuplicateDl);
                         }
                     }
@@ -406,12 +388,9 @@ namespace FiveInRow
 
                         if (fourAndSingleDuplicateDl.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(fourAndSingleDuplicateDl));
                             return RandomElementFromList(fourAndSingleDuplicateDl);
                         }
                     }
-                    
-                    Console.WriteLine(_fourMarksDiagonalLeft.First());
                     return _fourMarksDiagonalLeft.First();
                 }
                 
@@ -427,7 +406,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (threeDuplicatesH.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(threeDuplicatesH));
                         return RandomElementFromList(threeDuplicatesH);
                     }
                     
@@ -439,7 +417,6 @@ namespace FiveInRow
 
                         if (twoDuplicateH.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(twoDuplicateH));
                             return RandomElementFromList(twoDuplicateH);
                         }
                     }
@@ -453,7 +430,6 @@ namespace FiveInRow
 
                         if (singleDuplicateH.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(singleDuplicateH));
                             return RandomElementFromList(singleDuplicateH);
                         }
                     }
@@ -471,7 +447,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (threeDuplicatesV.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(threeDuplicatesV));
                         return RandomElementFromList(threeDuplicatesV);
                     }
                     
@@ -484,7 +459,6 @@ namespace FiveInRow
 
                         if (twoDuplicateV.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(twoDuplicateV));
                             return RandomElementFromList(twoDuplicateV);
                         }
                     }
@@ -499,7 +473,6 @@ namespace FiveInRow
                         // If there is a gap returns it
                         if (singleDuplicateV.Count > 0)  
                         {
-                            Console.WriteLine(RandomElementFromList(singleDuplicateV));
                             return RandomElementFromList(singleDuplicateV);
                         }
                     }
@@ -517,7 +490,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (threeDuplicatesDr.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(threeDuplicatesDr));
                         return RandomElementFromList(threeDuplicatesDr);
                     }
                     
@@ -530,7 +502,6 @@ namespace FiveInRow
 
                         if (twoDuplicateDr.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(twoDuplicateDr));
                             return RandomElementFromList(twoDuplicateDr);
                         }
                     }
@@ -545,7 +516,6 @@ namespace FiveInRow
                         // If there is a gap returns it
                         if (singleDuplicateDr.Count > 0)  
                         {
-                            Console.WriteLine(RandomElementFromList(singleDuplicateDr));
                             return RandomElementFromList(singleDuplicateDr);
                         }
                     }
@@ -563,7 +533,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (threeDuplicatesDl.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(threeDuplicatesDl));
                         return RandomElementFromList(threeDuplicatesDl);
                     }
                     
@@ -576,7 +545,6 @@ namespace FiveInRow
 
                         if (twoDuplicateDl.Count > 0)  // If there is a gap returns it
                         {
-                            Console.WriteLine(RandomElementFromList(twoDuplicateDl));
                             return RandomElementFromList(twoDuplicateDl);
                         }
                     }
@@ -591,7 +559,6 @@ namespace FiveInRow
                         // If there is a gap returns it
                         if (singleDuplicateDl.Count > 0)  
                         {
-                            Console.WriteLine(RandomElementFromList(singleDuplicateDl));
                             return RandomElementFromList(singleDuplicateDl);
                         }
                     }
@@ -607,7 +574,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndTwoDuplicatesH.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesH));
                         return RandomElementFromList(twoAndTwoDuplicatesH);
                     }
                 }
@@ -622,7 +588,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndTwoDuplicatesV.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesV));
                         return RandomElementFromList(twoAndTwoDuplicatesV);
                     }
                 }
@@ -637,7 +602,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndTwoDuplicatesDr.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesDr));
                         return RandomElementFromList(twoAndTwoDuplicatesDr);
                     }
                 }
@@ -652,7 +616,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndTwoDuplicatesDl.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndTwoDuplicatesDl));
                         return RandomElementFromList(twoAndTwoDuplicatesDl);
                     }
                 }
@@ -660,28 +623,24 @@ namespace FiveInRow
                 // Checkin that 3 in line (horizontal) open (??)
                 if (_threeMarksHorizontal.Count > 1)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksHorizontal));
                     return RandomElementFromList(_threeMarksHorizontal);
                 }
                 
                 // Checkin that 3 in line (vertical) open (??)
                 if (_threeMarksVertical.Count > 1)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksVertical));
                     return RandomElementFromList(_threeMarksVertical);
                 }
                 
                 // Checkin that 3 in line (diagonal right) open (??)
                 if (_threeMarksDiagonalRight.Count > 1)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalRight));
                     return RandomElementFromList(_threeMarksDiagonalRight);
                 }
                 
                 // Checkin that 3 in line (diagonal left) open (??)
                 if (_threeMarksDiagonalLeft.Count > 1)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalLeft));
                     return RandomElementFromList(_threeMarksDiagonalLeft);
                 }
                 
@@ -693,7 +652,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndSingleDuplicateH.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateH));
                         return RandomElementFromList(twoAndSingleDuplicateH);
                     }
                 }
@@ -706,7 +664,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndSingleDuplicateV.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateV));
                         return RandomElementFromList(twoAndSingleDuplicateV);
                     }
                 }
@@ -719,7 +676,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndSingleDuplicateDr.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateDr));
                         return RandomElementFromList(twoAndSingleDuplicateDr);
                     }
                 }
@@ -732,7 +688,6 @@ namespace FiveInRow
                     // If there is a gap returns it
                     if (twoAndSingleDuplicateDl.Count > 0)  
                     {
-                        Console.WriteLine(RandomElementFromList(twoAndSingleDuplicateDl));
                         return RandomElementFromList(twoAndSingleDuplicateDl);
                     }
                 }
@@ -740,63 +695,54 @@ namespace FiveInRow
                 // Checkin 3 in line (horizontal)
                 if (_threeMarksHorizontal.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksHorizontal));
                     return RandomElementFromList(_threeMarksHorizontal);
                 }
                 
                 // Checkin 3 in line (vertical)
                 if (_threeMarksVertical.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksVertical));
                     return RandomElementFromList(_threeMarksVertical);
                 }
                 
                 // Checkin 3 in line (diagonal right)
                 if (_threeMarksDiagonalRight.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalRight));
                     return RandomElementFromList(_threeMarksDiagonalRight);
                 }
                 
                 // Checkin 3 in line (diagonal left)
                 if (_threeMarksDiagonalLeft.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_threeMarksDiagonalLeft));
                     return RandomElementFromList(_threeMarksDiagonalLeft);
                 }
                 
                 // Checking that 2 (horizontal) are in the line
                 if (_twoMarksHorizontal.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_twoMarksHorizontal));
                     return RandomElementFromList(_twoMarksHorizontal);
                 }
                 
                 // Checking that 2 (vertical) are in the line
                 if (_twoMarksVertical.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_twoMarksVertical));
                     return RandomElementFromList(_twoMarksVertical);
                 }
                 
                 // Checking that 2 (diagonal right) are in the line
                 if (_twoMarksDiagonalRight.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_twoMarksDiagonalRight));
                     return RandomElementFromList(_twoMarksDiagonalRight);
                 }
                 
                 // Checking that 2 (diagonal left) are in the line
                 if (_twoMarksDiagonalLeft.Count > 0)
                 {
-                    Console.WriteLine(RandomElementFromList(_twoMarksDiagonalLeft));
                     return RandomElementFromList(_twoMarksDiagonalLeft);
                 }
             }
 
             if (_singleList.Count > 0)
             {
-                Console.WriteLine(RandomElementFromList(_singleList));
                 return RandomElementFromList(_singleList);
             }
             else
@@ -804,41 +750,7 @@ namespace FiveInRow
                 return GetRandomEmptyField();
             }
         }
-
-        public static void Test()
-        {
-            List<(int, int)> l1 = new List<(int, int)>();
-            List<(int, int)> l2 = new List<(int, int)>();
-
-            l1.Add((0, 0));
-            l1.Add((0, 1));
-            l1.Add((0, 2));
-            l1.Add((0, 3));
-            l1.Add((0, 4));
-            l1.Add((1, 3));
-            l1.Add((4, 4));
-            l1.Add((4, 5));
-            
-            l2.Add((1, 0));
-            l2.Add((1, 1));
-            l2.Add((1, 2));
-            l2.Add((5, 3));
-            l2.Add((1, 4));
-            l2.Add((2, 3));
-
-            // var duplicateKeys = l1.GroupBy(x => x)
-            //     .Where(group => group.Count() > 1)
-            //     .Select(group => group.Key).ToList();
-            
-            var duplicates = l1.Intersect(l2).ToList();
-
-            foreach (var val in duplicates)
-            {
-                Console.Write(val + ", ");
-            }
-
-            Console.WriteLine();
-        }
+        
 
         private static void FindMarkInHorizontalLine()
         {

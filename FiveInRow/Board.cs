@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gtk;
+using System.Threading.Tasks;
+
 
 namespace FiveInRow
 {
@@ -67,7 +69,7 @@ namespace FiveInRow
             uint topAttach = (uint) x;
             uint bottomAttach = (uint) x + 1;
 
-            // _table.Remove(btn);
+            _table.Remove(btn);
 
             if (_turn == true)
             {
@@ -78,26 +80,18 @@ namespace FiveInRow
                 _imageState = _player2Image;
             }
 
-            // Image image = new Image(_imageState, IconSize.Button);
-            // Button newBtn = new Button(image);
-            // newBtn.WidthRequest = 40;
-            // newBtn.HeightRequest = 40;
+            Image image = new Image(_imageState, IconSize.Button);
+            Button newBtn = new Button(image);
+            newBtn.WidthRequest = 40;
+            newBtn.HeightRequest = 40;
 
-            // _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
-            //
-            // ShowAll();
-            
+            _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
+
+            ShowAll();
+
             _boardArray[x, y] = Player1Mark;
             _turn = false;
-            
-            while(_table.Children.Length > 0) {
-                _table.Remove(_table.Children[0]);
-                _table.Children[0].Destroy();
-            }
-            Remove(_table);
-            _table.Destroy();
-            CreateAgainBoard(_configGameWindow.Row, _configGameWindow.Col);
-            
+
             string hasWon = GameLogic.HasWon("PLAYER 1", "PLAYER 2");
             bool isBoardFull = GameLogic.IsBoardFull();
 
@@ -106,6 +100,8 @@ namespace FiveInRow
                 if (hasWon == null && !isBoardFull)
                 {
                     BotMove();
+                    ButtonsLocked(true);
+                    Task.Delay(250);
                 }
                 else
                 {
@@ -126,48 +122,69 @@ namespace FiveInRow
                 }
             }
         }
-        
+
 
         private void BotMove()
         {
             (int x, int y) coordinates = GameLogic.AiMove();
+            Console.WriteLine(coordinates);
             SetCellOfBoardArray(coordinates.x, coordinates.y, Player2Mark);
             _turn = true;
-            
-            while(_table.Children.Length > 0) {
-                _table.Remove(_table.Children[0]);
-                _table.Children[0].Destroy();
-            }
-            Remove(_table);
-            _table.Destroy();
 
-            CreateAgainBoard(_configGameWindow.Row, _configGameWindow.Col);
-            
-            this.ReallocateRedraws = true;
-            this.RedrawOnAllocate = true;
-            this.QueueDraw();
+            ReplaceButton(coordinates);
+            ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
+        }
+
+        private void ReplaceButton((int x, int y) coordinates)
+        {
+            string strLabel = $"{coordinates.x},{coordinates.y}";
+
+            uint leftAttach = (uint) coordinates.y;
+            uint rightAttach = (uint) coordinates.y + 1;
+            uint topAttach = (uint) coordinates.x;
+            uint bottomAttach = (uint) coordinates.x + 1;
+
+
+            foreach (Button btn in _table.Children)
+            {
+                if (btn.Label == strLabel)
+                {
+                    _table.Remove(btn);
+                }
+            }
+
+            Image image = new Image(_player2Image, IconSize.Button);
+            Button newBtn = new Button(image);
+            newBtn.WidthRequest = 40;
+            newBtn.HeightRequest = 40;
+
+            _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
             
             ShowAll();
-            
         }
 
 
-        private void CreateAgainBoard(uint row, uint col)
+        private void ReloadBoard(uint row, uint col)
         {
             List<Button> buttonLists = new List<Button>();
-            _table = new Table(row, col, true);
+
+            while (_table.Children.Length > 0)
+            {
+                _table.Remove(_table.Children[0]);
+                _table.Children[0].Destroy();
+            }
 
             for (uint i = 0; i < row; i++)
             {
                 for (uint j = 0; j < col; j++)
                 {
-                    Button cell; 
-                    
+                    Button cell;
+
                     if (_boardArray[i, j] == Player1Mark)
                     {
                         Image image = new Image(_player1Image, IconSize.Button);
                         cell = new Button(image);
-                    } 
+                    }
                     else if (_boardArray[i, j] == Player2Mark)
                     {
                         Image image = new Image(_player2Image, IconSize.Button);
@@ -178,7 +195,7 @@ namespace FiveInRow
                         cell = new Button($"{i},{j}");
                         cell.Children[0].ChildVisible = false;
                     }
-                    
+
                     cell.WidthRequest = 40;
                     cell.HeightRequest = 40;
                     _table.Attach(cell, j, j + 1, i, i + 1);
@@ -194,9 +211,16 @@ namespace FiveInRow
                 }
             }
             
-            Add(_table);
             ShowAll();
-            ShowNow();
+        }
+
+
+        private void ButtonsLocked(bool isLocked)
+        {
+            foreach (var btn in _table.Children)
+            {
+                btn.Sensitive = isLocked;
+            }
         }
 
 
