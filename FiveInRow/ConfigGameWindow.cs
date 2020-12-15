@@ -11,6 +11,7 @@ namespace FiveInRow
         public RadioButton RbMultiplayer => rbMultiplayer;
         private uint _row;
         private uint _col;
+        
         protected internal Entry EntryName
         {
             get => entryName;

@@ -88,7 +88,7 @@ namespace FiveInRow
 
             string diagonalRight = "";
 
-            // looping thru two dimensional array diagonally (/ direction)
+            // looping thru two dimensional array diagonally right (/ direction)
             for (int k = 0; k <= heightRow + widthCol - 2; k++)
             {
                 for (int j = 0; j <= k; j++)
@@ -115,7 +115,7 @@ namespace FiveInRow
 
             string diagonalLeft = "";
 
-            // looping thru two dimensional array diagonally (\ direction)
+            // looping thru two dimensional array diagonally left (\ direction)
             for (int i = -heightRow; i <= widthCol; i++)
             {
                 for (int j = 0; j < heightRow; j++)
@@ -743,6 +743,16 @@ namespace FiveInRow
 
             if (_singleList.Count > 0)
             {
+                var oneAndOneDuplicatesDl = _singleList.GroupBy(x => x)
+                    .Where(group => group.Count() > 1)
+                    .Select(group => group.Key).ToList();
+
+                // If there is a gap returns it
+                if (oneAndOneDuplicatesDl.Count > 0)  
+                {
+                    return RandomElementFromList(oneAndOneDuplicatesDl);
+                }
+                
                 return RandomElementFromList(_singleList);
             }
             else
