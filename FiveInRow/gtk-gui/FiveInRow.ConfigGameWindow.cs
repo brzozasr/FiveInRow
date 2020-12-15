@@ -103,7 +103,7 @@ namespace FiveInRow
 			global::Stetic.Gui.Initialize(this);
 			// Widget FiveInRow.ConfigGameWindow
 			this.Name = "FiveInRow.ConfigGameWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString("Game Configurarion");
+			this.Title = global::Mono.Unix.Catalog.GetString("Game Configuration");
 			this.Icon = global::Stetic.IconLoader.LoadIcon(this, "gtk-apply", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(1));
 			this.AllowShrink = true;
@@ -413,7 +413,7 @@ namespace FiveInRow
 			// Container child hboxInfoLabel.Gtk.Box+BoxChild
 			this.lbConnectionInfo = new global::Gtk.Label();
 			this.lbConnectionInfo.Name = "lbConnectionInfo";
-			this.lbConnectionInfo.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Waiting for connection...</b>");
+			this.lbConnectionInfo.LabelProp = global::Mono.Unix.Catalog.GetString("Waiting for connection...");
 			this.hboxInfoLabel.Add(this.lbConnectionInfo);
 			global::Gtk.Box.BoxChild w35 = ((global::Gtk.Box.BoxChild)(this.hboxInfoLabel[this.lbConnectionInfo]));
 			w35.Position = 1;

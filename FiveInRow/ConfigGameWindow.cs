@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Gtk;
 
 namespace FiveInRow
@@ -34,16 +35,23 @@ namespace FiveInRow
             rbMultiplayer.Clicked += OnClickRadioBtnMultiplayer;
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
+            
+            entryPortServer.Text = "5533";
+            entryPortClient.Text = "5533";
 
             if (rbAi.Active)
             {
                 hboxButtons.Visible = false;
                 frameServer.Visible = false;
                 frameClient.Visible = false;
+                btnPlay.Sensitive = true;
+                hboxInfoLabel.Visible = false;
             }
             else if (rbMultiplayer.Active)
             {
                 hboxButtons.Visible = true;
+                btnPlay.Sensitive = false;
+                hboxInfoLabel.Visible = false;
             }
         }
 
@@ -51,6 +59,7 @@ namespace FiveInRow
         {
             frameServer.Visible = true;
             frameClient.Visible = false;
+            entryIpServer.Text = GetIpAddress();
         }
 
         private void OnClickBtnClientShow(object sender, EventArgs e)
@@ -64,11 +73,13 @@ namespace FiveInRow
             hboxButtons.Visible = false;
             frameServer.Visible = false;
             frameClient.Visible = false;
+            btnPlay.Sensitive = true;
         }
 
         private void OnClickRadioBtnMultiplayer(object sender, EventArgs e)
         {
             hboxButtons.Visible = true;
+            btnPlay.Sensitive = false;
         }
 
         private void PlayGame(object sender, EventArgs e)
@@ -86,6 +97,14 @@ namespace FiveInRow
 
             }
 
+        }
+        
+        private string GetIpAddress()
+        {
+            string hostName = Dns.GetHostName(); // Retrive the Name of HOST  
+            // Get the IP  
+            string myIP = Dns.GetHostEntry(hostName).AddressList[0].ToString();  
+            return myIP;
         }
     }
 
