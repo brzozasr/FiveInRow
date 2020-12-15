@@ -11,13 +11,32 @@ namespace FiveInRow
     {
         public RadioButton RbAi => rbAi;
         public RadioButton RbMultiplayer => rbMultiplayer;
+        public Entry EntryIpServer => entryIpServer;
+        public Entry EntryPortServer => entryPortServer;
+        public Entry EntryIpClient => entryIpClient;
+        public Entry EntryPortClient => entryPortClient;
+
+        public Label LbConnectionInfo
+        {
+            get => lbConnectionInfo;
+            set => lbConnectionInfo = value;
+        }
+
+        public HBox HBoxInfoLabel
+        {
+            get => hboxInfoLabel;
+            set => hboxInfoLabel = value;
+        }
+
+        public Button BtnStartServer
+        {
+            get => btnStartServer;
+            set => btnStartServer = value;
+        }
+
         private uint _row;
         private uint _col;
-
-        protected internal Entry EntryName
-        {
-            get => entryName;
-        }
+        protected internal Entry EntryName { get; private set; }
 
         public uint Col
         {
@@ -47,6 +66,7 @@ namespace FiveInRow
             rbMultiplayer.Clicked += OnClickRadioBtnMultiplayer;
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
+            btnStartServer.Clicked += OnClickStartServer;
             
             entryPortServer.Text = "5533";
             entryPortClient.Text = "5533";
@@ -65,6 +85,11 @@ namespace FiveInRow
                 btnPlay.Sensitive = false;
                 hboxInfoLabel.Visible = false;
             }
+        }
+
+        private void OnClickStartServer(object sender, EventArgs e)
+        {
+            
         }
 
         private void OnClickBtnServerShow(object sender, EventArgs e)
@@ -104,9 +129,13 @@ namespace FiveInRow
                 this.Hide();
                 _ = new Board(_row, _col);
             }
-            else if (rbMultiplayer.Active)
+            else if (rbMultiplayer.Active && frameServer.Visible == true)
             {
-
+                
+            }
+            else  if (rbMultiplayer.Active && frameClient.Visible == true)
+            {
+                
             }
 
         }

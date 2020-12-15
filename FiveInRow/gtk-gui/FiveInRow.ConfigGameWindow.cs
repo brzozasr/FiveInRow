@@ -26,8 +26,6 @@ namespace FiveInRow
 
 		private global::Gtk.Label lbPlayerName;
 
-		private global::Gtk.Entry entryName;
-
 		private global::Gtk.HBox hboxButtons;
 
 		private global::Gtk.Alignment alignment3;
@@ -184,13 +182,13 @@ namespace FiveInRow
 			w6.X = 189;
 			w6.Y = 5;
 			// Container child fixed4.Gtk.Fixed+FixedChild
-			this.entryName = new global::Gtk.Entry();
-			this.entryName.CanFocus = true;
-			this.entryName.Name = "entryName";
-			this.entryName.IsEditable = true;
-			this.entryName.InvisibleChar = '●';
-			this.fixed4.Add(this.entryName);
-			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.entryName]));
+			this.EntryName = new global::Gtk.Entry();
+			this.EntryName.CanFocus = true;
+			this.EntryName.Name = "entryName";
+			this.EntryName.IsEditable = true;
+			this.EntryName.InvisibleChar = '●';
+			this.fixed4.Add(this.EntryName);
+			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.EntryName]));
 			w7.X = 231;
 			this.vbox15.Add(this.fixed4);
 			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.fixed4]));
@@ -311,7 +309,7 @@ namespace FiveInRow
 			this.btnStartServer.CanFocus = true;
 			this.btnStartServer.Name = "btnStartServer";
 			this.btnStartServer.UseUnderline = true;
-			this.btnStartServer.Label = global::Mono.Unix.Catalog.GetString("   START   ");
+			this.btnStartServer.Label = global::Mono.Unix.Catalog.GetString("START");
 			this.hbox9.Add(this.btnStartServer);
 			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.btnStartServer]));
 			w22.Position = 4;
