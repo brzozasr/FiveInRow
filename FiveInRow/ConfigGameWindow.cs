@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Net;
+using Gdk;
 using Gtk;
+using Window = Gtk.Window;
+using WindowType = Gtk.WindowType;
 
 namespace FiveInRow
 {
@@ -28,7 +31,16 @@ namespace FiveInRow
         public ConfigGameWindow() :
                 base(WindowType.Toplevel)
         {
+            this.Resize(520,275);
             this.Build();
+            
+            Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
+            fontDescription.Size = 13000;
+            fontDescription.Weight = Pango.Weight.Bold;
+            Color red = new Color(255, 0, 0);
+            lbConnectionInfo.ModifyFont(fontDescription);
+            lbConnectionInfo.ModifyFg(StateType.Normal, red);
+            
             btnPlay.Clicked += new EventHandler(PlayGame);
             DeleteEvent += delegate { Application.Quit(); };
             rbAi.Clicked += OnClickRadioBtnAi;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gtk;
-using System.Threading.Tasks;
 using Gdk;
 using Image = Gtk.Image;
 using Window = Gtk.Window;
