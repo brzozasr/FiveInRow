@@ -21,7 +21,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="FiveInRow.ConfigGameWindow" design-size="520 378">
+  <widget class="Gtk.Window" id="FiveInRow.ConfigGameWindow" design-size="520 462">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Game Configurarion</property>
     <property name="Icon">stock:gtk-apply Menu</property>
@@ -428,7 +428,7 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel7">
+              <widget class="Gtk.Label" id="GtkLabel8">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">&lt;b&gt;CLIENT&lt;/b&gt;</property>
                 <property name="UseMarkup">True</property>
@@ -440,6 +440,54 @@
           </widget>
           <packing>
             <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hboxInfoLabel">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Alignment" id="alignment2">
+                <property name="MemberName" />
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="lbConnectionInfo">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Waiting for connection...</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Alignment" id="alignment4">
+                <property name="MemberName" />
+                <child>
+                  <placeholder />
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">3</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -510,7 +558,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">3</property>
+            <property name="Position">4</property>
             <property name="AutoSize">True</property>
           </packing>
         </child>
