@@ -15,6 +15,13 @@ namespace FiveInRow
         public Entry EntryPortServer => entryPortServer;
         public Entry EntryIpClient => entryIpClient;
         public Entry EntryPortClient => entryPortClient;
+        private Entry entryReceivedData;
+
+        public Entry EntryReceivedData
+        {
+            get => entryReceivedData;
+            set => entryReceivedData = value;
+        }
 
         // public Entry EntrySentData
         // {
@@ -61,6 +68,11 @@ namespace FiveInRow
             
             Board.SetConfigGameWindow(this);
             
+            entryReceivedData = new Entry();
+            vboxMain.PackEnd(entryReceivedData, true, true, 0);
+            // entryReceivedData.Visibility = false;
+            entryReceivedData.ShowNow();
+            
             Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
             fontDescription.Size = 13000;
             fontDescription.Weight = Pango.Weight.Bold;
@@ -75,7 +87,7 @@ namespace FiveInRow
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
             btnStartServer.Clicked += OnClickStartServer;
-            // entrySentData.Changed += OnChangeSentData;
+            entryReceivedData.Changed += OnChangeReceivedData;
             
             entryPortServer.Text = "5533";
             entryPortClient.Text = "5533";
@@ -96,10 +108,10 @@ namespace FiveInRow
             }
         }
 
-        // private void OnChangeSentData(object sender, EventArgs e)
-        // {
-        //     // Console.WriteLine("Entry: " + entrySentData.Text);
-        // }
+        private void OnChangeReceivedData(object sender, EventArgs e)
+        {
+            Console.WriteLine("Entry: " + entryReceivedData.Text);
+        }
 
         private void OnClickStartServer(object sender, EventArgs e)
         {
