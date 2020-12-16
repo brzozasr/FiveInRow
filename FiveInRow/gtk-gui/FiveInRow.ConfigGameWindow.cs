@@ -26,8 +26,6 @@ namespace FiveInRow
 
 		private global::Gtk.Label lbPlayerName;
 
-		private global::Gtk.Entry entryName;
-
 		private global::Gtk.HBox hboxButtons;
 
 		private global::Gtk.Alignment alignment3;
@@ -98,14 +96,12 @@ namespace FiveInRow
 
 		private global::Gtk.Alignment alignment18;
 
-		private global::Gtk.Entry entrySentData;
-
 		protected virtual void Build()
 		{
 			global::Stetic.Gui.Initialize(this);
 			// Widget FiveInRow.ConfigGameWindow
 			this.Name = "FiveInRow.ConfigGameWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString("Game Configurarion");
+			this.Title = global::Mono.Unix.Catalog.GetString("Game Configuration");
 			this.Icon = global::Stetic.IconLoader.LoadIcon(this, "gtk-apply", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(1));
 			this.AllowShrink = true;
@@ -186,13 +182,13 @@ namespace FiveInRow
 			w6.X = 189;
 			w6.Y = 5;
 			// Container child fixed4.Gtk.Fixed+FixedChild
-			this.entryName = new global::Gtk.Entry();
-			this.entryName.CanFocus = true;
-			this.entryName.Name = "entryName";
-			this.entryName.IsEditable = true;
-			this.entryName.InvisibleChar = '●';
-			this.fixed4.Add(this.entryName);
-			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.entryName]));
+			this.EntryName = new global::Gtk.Entry();
+			this.EntryName.CanFocus = true;
+			this.EntryName.Name = "entryName";
+			this.EntryName.IsEditable = true;
+			this.EntryName.InvisibleChar = '●';
+			this.fixed4.Add(this.EntryName);
+			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.EntryName]));
 			w7.X = 231;
 			this.vbox15.Add(this.fixed4);
 			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.fixed4]));
@@ -313,7 +309,7 @@ namespace FiveInRow
 			this.btnStartServer.CanFocus = true;
 			this.btnStartServer.Name = "btnStartServer";
 			this.btnStartServer.UseUnderline = true;
-			this.btnStartServer.Label = global::Mono.Unix.Catalog.GetString("   START   ");
+			this.btnStartServer.Label = global::Mono.Unix.Catalog.GetString("START");
 			this.hbox9.Add(this.btnStartServer);
 			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.btnStartServer]));
 			w22.Position = 4;
@@ -475,24 +471,13 @@ namespace FiveInRow
 			this.vboxMain.Add(this.hbox5);
 			global::Gtk.Box.BoxChild w43 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.hbox5]));
 			w43.Position = 4;
-			// Container child vboxMain.Gtk.Box+BoxChild
-			this.entrySentData = new global::Gtk.Entry();
-			this.entrySentData.CanFocus = true;
-			this.entrySentData.Name = "entrySentData";
-			this.entrySentData.IsEditable = true;
-			this.entrySentData.InvisibleChar = '●';
-			this.vboxMain.Add(this.entrySentData);
-			global::Gtk.Box.BoxChild w44 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.entrySentData]));
-			w44.Position = 5;
-			w44.Expand = false;
-			w44.Fill = false;
 			this.Add(this.vboxMain);
 			if ((this.Child != null))
 			{
 				this.Child.ShowAll();
 			}
 			this.DefaultWidth = 520;
-			this.DefaultHeight = 430;
+			this.DefaultHeight = 462;
 			this.Show();
 		}
 	}
