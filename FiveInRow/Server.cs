@@ -35,40 +35,36 @@ namespace FiveInRow
 
         protected internal void StartServer()
         {
-            try
-            {
+            // try
+            // {
+                // _server = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
+                //     int.Parse(_config.EntryPortServer.Text));
                 _server = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
                     int.Parse(_config.EntryPortServer.Text));
                 _server.Start();
+                Console.WriteLine(_server.Pending());
                 _socket = _server.AcceptSocket();
-            }
-            catch(SocketException ex)
-            {
-                DialogWindow(ex.Message);
-            }
-            finally
-            {
-                _server.Stop();
-            }
+                
+            // }
+            // catch(SocketException ex)
+            // {
+            //     DialogWindow(ex.Message);
+            // }
+            // finally
+            // {
+            //     _server.Stop();
+            // }
         }
-
-
-        protected internal void StopServer()
-        {
-            _messageReceiver.WorkerSupportsCancellation = true;
-            _messageReceiver.CancelAsync();
-            if (_server != null)
-                _server.Stop();
-        }
-
-
+        
+        
         protected internal void ConnectClient()
         {
             try
             {
                 IPEndPoint ipEnd = new IPEndPoint(IPAddress.Parse(_config.EntryIpClient.Text),
                     int.Parse(_config.EntryPortClient.Text));
-                _client = new TcpClient(ipEnd);
+                _client = new TcpClient();
+                _client.Connect(ipEnd);
                 _socket = _client.Client;
                 _messageReceiver.RunWorkerAsync();
                 
@@ -80,11 +76,21 @@ namespace FiveInRow
             catch (Exception ex)
             {
                 DialogWindow(ex.Message);
+                Console.WriteLine(ex.Message);
             }
             finally
             {
-                _client.Close();
+                // _client.Close();
             }
+        }
+        
+        
+        protected internal void StopServer()
+        {
+            _messageReceiver.WorkerSupportsCancellation = true;
+            _messageReceiver.CancelAsync();
+            if (_server != null)
+                _server.Stop();
         }
         
         

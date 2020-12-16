@@ -119,23 +119,24 @@ namespace FiveInRow
         private void OnClickBtnStartServer(object sender, EventArgs e)
         {
             Button btn = (Button) sender;
-            
+            Server server = new Server();
             
             if (btn.Label.Trim() == "START")
             {
-                
+                server.StartServer();
                 btn.Label = "STOP";
             }
             else if (btn.Label.Trim() == "STOP")
             {
-                
+                server.StopServer();
                 btn.Label = "START";
             }
         }
 
         private void OnClickBtnConnectClient(object sender, EventArgs e)
         {
-            
+            Server server = new Server();
+            server.ConnectClient();
         }
 
         private void OnChangeReceivedData(object sender, EventArgs e)
