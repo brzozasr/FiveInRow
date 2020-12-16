@@ -67,6 +67,7 @@ namespace FiveInRow
             this.Build();
             
             Board.SetConfigGameWindow(this);
+            Server.SetConfigGameWindow(this);
             
             entryReceivedData = new Entry();
             vboxMain.PackEnd(entryReceivedData, true, true, 0);
@@ -80,13 +81,15 @@ namespace FiveInRow
             lbConnectionInfo.ModifyFont(fontDescription);
             lbConnectionInfo.ModifyFg(StateType.Normal, red);
             
-            btnPlay.Clicked += new EventHandler(PlayGame);
-            DeleteEvent += delegate { Application.Quit(); };
+            btnPlay.Clicked += PlayGame;
+            // DeleteEvent += delegate { Application.Quit(); };
+            DeleteEvent += AppQuit;
             rbAi.Clicked += OnClickRadioBtnAi;
             rbMultiplayer.Clicked += OnClickRadioBtnMultiplayer;
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
-            btnStartServer.Clicked += OnClickStartServer;
+            btnStartServer.Clicked += OnClickBtnStartServer;
+            btnConnectClient.Clicked += OnClickBtnConnectClient;
             entryReceivedData.Changed += OnChangeReceivedData;
             
             entryPortServer.Text = "5533";
@@ -108,15 +111,38 @@ namespace FiveInRow
             }
         }
 
+        private void AppQuit(object o, DeleteEventArgs args)
+        {
+            Application.Quit();
+        }
+
+        private void OnClickBtnStartServer(object sender, EventArgs e)
+        {
+            Button btn = (Button) sender;
+            
+            
+            if (btn.Label.Trim() == "START")
+            {
+                
+                btn.Label = "STOP";
+            }
+            else if (btn.Label.Trim() == "STOP")
+            {
+                
+                btn.Label = "START";
+            }
+        }
+
+        private void OnClickBtnConnectClient(object sender, EventArgs e)
+        {
+            
+        }
+
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
             Console.WriteLine("Entry: " + entryReceivedData.Text);
         }
-
-        private void OnClickStartServer(object sender, EventArgs e)
-        {
-            
-        }
+        
 
         private void OnClickBtnServerShow(object sender, EventArgs e)
         {
