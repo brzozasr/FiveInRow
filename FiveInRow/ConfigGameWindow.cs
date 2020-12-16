@@ -116,12 +116,12 @@ namespace FiveInRow
             Button btn = (Button) sender;
             _server = new Server();
             
-            if (_server.ServerListener == null)
+            if (_server.Listener == null)
             {
                 _server.StartServer();
                 btn.Label = "STOP";
             }
-            else if (_server.ServerListener != null)
+            else if (_server.Listener != null)
             {
                 _server.StopServer();
                 btn.Label = "START";
@@ -147,7 +147,7 @@ namespace FiveInRow
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.RunSender();
+            _server.RunSender(_entryReceivedData.Text);
         }
         
 

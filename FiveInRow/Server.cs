@@ -13,17 +13,16 @@ namespace FiveInRow
     {
         private static ConfigGameWindow _config;
         private TcpClient _client;
-        public TcpClient Client => _client;
-        public TcpListener ServerListener => _server;
+        private TcpListener _listener;
+        public TcpListener Listener => _listener;
 
-        private TcpListener _server;
-        private Socket _socket;
         private StreamReader _reader;
         private StreamWriter _writer;
+        private string _receiveText;
+        private string _textToSend;
+        public TcpClient Client => _client;
         private BackgroundWorker _messageReceiver;
         private BackgroundWorker _messageSender;
-        private string _textToSend;
-
 
         public Server()
         {
@@ -33,8 +32,8 @@ namespace FiveInRow
 
         private void InitBackgroundWorkers()
         {
-            _messageReceiver = new BackgroundWorker();
-            _messageSender = new BackgroundWorker();
+            _messageReceiver = new BackgroundWorker(); // 1
+            _messageSender = new BackgroundWorker(); // 2
         }
 
         private void BackgroundWorkersAddLListener()
@@ -43,20 +42,20 @@ namespace FiveInRow
             _messageSender.DoWork += MessageSenderDoWork;
         }
 
-        
+
         protected internal void StartServer()
         {
             try
             {
-                _server = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
+                _listener = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
                     int.Parse(_config.EntryPortServer.Text));
-                _server.Start();
-                _client = _server.AcceptTcpClient();
-                
+                _listener.Start();
+                _client = _listener.AcceptTcpClient();
+
                 _reader = new StreamReader(_client.GetStream());
                 _writer = new StreamWriter(_client.GetStream());
                 _writer.AutoFlush = true;
-                
+
                 _messageReceiver.RunWorkerAsync();
                 _messageSender.WorkerSupportsCancellation = true;
             }
@@ -69,11 +68,11 @@ namespace FiveInRow
 
         protected internal void ConnectClient()
         {
+            _client = new TcpClient();
+            IPEndPoint ipEnd = new IPEndPoint(IPAddress.Parse(_config.EntryIpClient.Text),
+                int.Parse(_config.EntryPortClient.Text));
             try
             {
-                IPEndPoint ipEnd = new IPEndPoint(IPAddress.Parse(_config.EntryIpClient.Text),
-                    int.Parse(_config.EntryPortClient.Text));
-                _client = new TcpClient();
                 _client.Connect(ipEnd);
 
                 if (_client.Connected)
@@ -89,7 +88,6 @@ namespace FiveInRow
             catch (Exception ex)
             {
                 DialogWindow(ex.Message);
-                Console.WriteLine(ex.Message);
             }
         }
 
@@ -98,9 +96,9 @@ namespace FiveInRow
         {
             _messageReceiver.WorkerSupportsCancellation = true;
             _messageReceiver.CancelAsync();
-            if (_server != null)
+            if (_listener != null)
             {
-                _server.Stop();
+                _listener.Stop();
                 Console.WriteLine("Server stopped.");
             }
         }
@@ -127,77 +125,82 @@ namespace FiveInRow
         }
 
 
-        private void ReceiveMove()
-        {
-            byte[] buffer = new byte[150];
-            _socket.Receive(buffer);
-            // TODO
-            foreach (var val in buffer)
-            {
-                Console.Write(val + ", ");
-            }
-            
-        }
-
-
-        protected internal void SendMove(string move)
-        {
-            byte[] num = {1};
-            _socket.Send(num);
-            _messageReceiver.RunWorkerAsync();
-        }
+        // private void ReceiveMove()
+        // {
+        //     byte[] buffer = new byte[150];
+        //     _socket.Receive(buffer);
+        //     // TODO
+        //     foreach (var val in buffer)
+        //     {
+        //         Console.Write(val + ", ");
+        //     }
+        //     
+        // }
+        //
+        //
+        // protected internal void SendMove(string move)
+        // {
+        //     byte[] num = {1};
+        //     _socket.Send(num);
+        //     _messageReceiver.RunWorkerAsync();
+        // }
 
 
         private void MessageReceiverDoWork(object sender, DoWorkEventArgs e)
         {
-            if(_client.Connected)
+            while (_client.Connected)
             {
                 try
                 {
-                    string receive = _reader.ReadLine();
-                    
-                    Application.Invoke (delegate {
-                        _config.EntryReceivedData.Text = receive;
-                    });
-                    receive = "";
+                    _receiveText = _reader.ReadLine();
+
+                    if (!String.IsNullOrEmpty(_receiveText))
+                    {
+                        Console.WriteLine("_receiveText: " + _receiveText);
+
+                        Application.Invoke(delegate { _config.EntryReceivedData.Text = _receiveText; });
+                    }
+                    _receiveText = "";
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     DialogWindow(ex.Message);
                 }
             }
         }
-        
+
         private void MessageSenderDoWork(object sender, DoWorkEventArgs e)
         {
-            if(_client.Connected)
+            if (_client.Connected)
             {
                 _writer.WriteLine(_textToSend);
-                Application.Invoke (delegate {
-                    _config.EntryReceivedData.Text = _textToSend;
-                });
+
+                Console.WriteLine("_textToSend: " + _textToSend);
+                
+                Application.Invoke(delegate { _config.EntryReceivedData.Text = _textToSend; });
             }
             else
             {
                 DialogWindow("Sending failed");
             }
+
             _messageSender.CancelAsync();
         }
-        
-        
-        protected internal void RunSender()
-        {
-            // if(MessagetextBox.Text!="")
-            // {
-            _textToSend = "Test text :)";
-                // _textToSend = _config.EntryReceivedData.Text;
-                _messageSender.RunWorkerAsync();
-            // }
-            // MessagetextBox.Text = "";
 
+
+        protected internal void RunSender(string text)
+        {
+            _textToSend = text;
+            _messageSender.RunWorkerAsync();
         }
-        
-        
+
+
+        protected internal string DataReceiver(string inputText)
+        {
+            return inputText;
+        }
+
+
         private void StartingServerWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Console.WriteLine("Client connected to the server... :)" + "\n");
