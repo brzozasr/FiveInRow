@@ -15,19 +15,14 @@ namespace FiveInRow
         public Entry EntryPortServer => entryPortServer;
         public Entry EntryIpClient => entryIpClient;
         public Entry EntryPortClient => entryPortClient;
-        private Entry entryReceivedData;
+        private Entry _entryReceivedData;
+        private Server _server;
 
         public Entry EntryReceivedData
         {
-            get => entryReceivedData;
-            set => entryReceivedData = value;
+            get => _entryReceivedData;
+            set => _entryReceivedData = value;
         }
-
-        // public Entry EntrySentData
-        // {
-        //     get => entrySentData;
-        //     set => entrySentData = value;
-        // }
 
         public Label LbConnectionInfo
         {
@@ -69,10 +64,10 @@ namespace FiveInRow
             Board.SetConfigGameWindow(this);
             Server.SetConfigGameWindow(this);
             
-            entryReceivedData = new Entry();
-            vboxMain.PackEnd(entryReceivedData, true, true, 0);
+            _entryReceivedData = new Entry();
+            vboxMain.PackEnd(_entryReceivedData, true, true, 0);
             // entryReceivedData.Visibility = false;
-            entryReceivedData.ShowNow();
+            _entryReceivedData.ShowNow();
             
             Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
             fontDescription.Size = 13000;
@@ -90,7 +85,7 @@ namespace FiveInRow
             btnClientShow.Clicked += OnClickBtnClientShow;
             btnStartServer.Clicked += OnClickBtnStartServer;
             btnConnectClient.Clicked += OnClickBtnConnectClient;
-            entryReceivedData.Changed += OnChangeReceivedData;
+            _entryReceivedData.Changed += OnChangeReceivedData;
             
             entryPortServer.Text = "5533";
             entryPortClient.Text = "5533";
@@ -119,28 +114,40 @@ namespace FiveInRow
         private void OnClickBtnStartServer(object sender, EventArgs e)
         {
             Button btn = (Button) sender;
+            _server = new Server();
             
-            
-            if (btn.Label.Trim() == "START")
+            if (_server.Listener == null)
             {
-                
+                _server.StartServer();
                 btn.Label = "STOP";
             }
-            else if (btn.Label.Trim() == "STOP")
+            else if (_server.Listener != null)
             {
-                
+                _server.StopServer();
                 btn.Label = "START";
             }
         }
 
         private void OnClickBtnConnectClient(object sender, EventArgs e)
         {
+            Button btn = (Button) sender;
+            _server = new Server();
             
+            if (_server.Client == null)
+            {
+                _server.ConnectClient();
+                btn.Label = "DISCONNECT";
+            }
+            else if (_server.Client != null)
+            {
+                _server.DisconnectClient();
+                btn.Label = "CONNECT";
+            }
         }
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            Console.WriteLine("Entry: " + entryReceivedData.Text);
+            _server.RunSender(_entryReceivedData.Text);
         }
         
 
