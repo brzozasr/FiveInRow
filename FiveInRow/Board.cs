@@ -107,8 +107,6 @@ namespace FiveInRow
         {
             Button btn = (Button) sender;
 
-            // _configGameWindow.EntrySentData.Text = btn.Label;
-
             string[] coords = btn.Label.Split(',');
             int x = Int32.Parse(coords[0]);
             int y = Int32.Parse(coords[1]);
