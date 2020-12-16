@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using Gtk;
@@ -17,8 +18,11 @@ namespace FiveInRow
 
         private TcpListener _server;
         private Socket _socket;
+        private StreamReader _reader;
+        private StreamWriter _writer;
         private BackgroundWorker _messageReceiver;
-        private BackgroundWorker _startingServer;
+        private BackgroundWorker _messageSender;
+        private string _textToSend;
 
 
         public Server()
@@ -30,17 +34,16 @@ namespace FiveInRow
         private void InitBackgroundWorkers()
         {
             _messageReceiver = new BackgroundWorker();
-            _startingServer = new BackgroundWorker();
+            _messageSender = new BackgroundWorker();
         }
 
         private void BackgroundWorkersAddLListener()
         {
             _messageReceiver.DoWork += MessageReceiverDoWork;
-            _startingServer.DoWork += StartingServerDoWork;
-            _startingServer.RunWorkerCompleted += StartingServerWorkerCompleted;
+            _messageSender.DoWork += MessageSenderDoWork;
         }
-        
 
+        
         protected internal void StartServer()
         {
             try
@@ -48,15 +51,18 @@ namespace FiveInRow
                 _server = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
                     int.Parse(_config.EntryPortServer.Text));
                 _server.Start();
-                _socket = _server.AcceptSocket();
+                _client = _server.AcceptTcpClient();
+                
+                _reader = new StreamReader(_client.GetStream());
+                _writer = new StreamWriter(_client.GetStream());
+                _writer.AutoFlush = true;
+                
+                _messageReceiver.RunWorkerAsync();
+                _messageSender.WorkerSupportsCancellation = true;
             }
             catch (SocketException ex)
             {
                 DialogWindow(ex.Message);
-            }
-            finally
-            {
-                _server.Stop();
             }
         }
 
@@ -69,18 +75,20 @@ namespace FiveInRow
                     int.Parse(_config.EntryPortClient.Text));
                 _client = new TcpClient();
                 _client.Connect(ipEnd);
-                _socket = _client.Client;
-                _messageReceiver.RunWorkerAsync();
 
                 if (_client.Connected)
                 {
                     Console.WriteLine("Connected to server..." + "\n");
+                    _writer = new StreamWriter(_client.GetStream());
+                    _reader = new StreamReader(_client.GetStream());
+                    _writer.AutoFlush = true;
+                    _messageReceiver.RunWorkerAsync();
+                    _messageSender.WorkerSupportsCancellation = true;
                 }
             }
             catch (Exception ex)
             {
                 DialogWindow(ex.Message);
-                Console.WriteLine("Start server");
                 Console.WriteLine(ex.Message);
             }
         }
@@ -142,14 +150,50 @@ namespace FiveInRow
 
         private void MessageReceiverDoWork(object sender, DoWorkEventArgs e)
         {
-            if (_client.Connected)
+            if(_client.Connected)
             {
-                ReceiveMove();
+                try
+                {
+                    string receive = _reader.ReadLine();
+                    
+                    Application.Invoke (delegate {
+                        _config.EntryReceivedData.Text = receive;
+                    });
+                    receive = "";
+                }
+                catch(Exception ex)
+                {
+                    DialogWindow(ex.Message);
+                }
             }
         }
         
-        private void StartingServerDoWork(object sender, DoWorkEventArgs e)
+        private void MessageSenderDoWork(object sender, DoWorkEventArgs e)
         {
+            if(_client.Connected)
+            {
+                _writer.WriteLine(_textToSend);
+                Application.Invoke (delegate {
+                    _config.EntryReceivedData.Text = _textToSend;
+                });
+            }
+            else
+            {
+                DialogWindow("Sending failed");
+            }
+            _messageSender.CancelAsync();
+        }
+        
+        
+        protected internal void RunSender()
+        {
+            // if(MessagetextBox.Text!="")
+            // {
+            _textToSend = "Test text :)";
+                // _textToSend = _config.EntryReceivedData.Text;
+                _messageSender.RunWorkerAsync();
+            // }
+            // MessagetextBox.Text = "";
 
         }
         

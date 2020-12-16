@@ -147,13 +147,7 @@ namespace FiveInRow
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            
-            Console.WriteLine("Entry: " + _entryReceivedData.Text);
-            
-            Application.Invoke (delegate {
-                
-                _server.SendMove("tttt");
-            });
+            _server.RunSender();
         }
         
 
