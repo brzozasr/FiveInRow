@@ -25,7 +25,6 @@ namespace FiveInRow
         private Label _lbPlayer1;
         private Label _lbPlayer2;
         private Label _lbTurn;
-        private Entry _entryReceiver;
 
         public Board(uint row, uint col) : base("FIVE IN ONE ROW")
         {
@@ -74,9 +73,7 @@ namespace FiveInRow
             {
                 
             }
-
-            _entryReceiver = new Entry();
-            _entryReceiver.Changed += OnChangeReceiver;
+            
             _lbPlayer1 = new Label(_player1Name);
             _lbPlayer2 = new Label(_player2Name);
             _lbTurn = new Label("<= TURN");
@@ -93,8 +90,7 @@ namespace FiveInRow
             _lbPlayer1.ModifyFg(StateType.Normal, green);
             _lbPlayer2.ModifyFont(fontDescription);
             _lbPlayer2.ModifyFg(StateType.Normal, red);
-
-            vBoxMain.PackStart(_entryReceiver, true, true, 0);
+            
             vBoxMain.PackStart(hBoxTopBar, true, true, 10);
             vBoxMain.PackEnd(_table, true, true, 0);
 
@@ -104,13 +100,6 @@ namespace FiveInRow
 
             Add(vBoxMain);
             ShowAll();
-            _entryReceiver.Visible = false;
-        }
-
-        private void OnChangeReceiver(object sender, EventArgs e)
-        {
-            Entry txt = (Entry) sender;
-            Console.WriteLine("Entry: " + txt.Text);
         }
 
 
@@ -118,7 +107,7 @@ namespace FiveInRow
         {
             Button btn = (Button) sender;
 
-            _entryReceiver.Text = btn.Label;
+            // _configGameWindow.EntrySentData.Text = btn.Label;
 
             string[] coords = btn.Label.Split(',');
             int x = Int32.Parse(coords[0]);
@@ -148,7 +137,6 @@ namespace FiveInRow
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
 
             ShowAll();
-            _entryReceiver.Visible = false;
 
             _boardArray[x, y] = Player1Mark;
             _turn = false;
@@ -253,7 +241,6 @@ namespace FiveInRow
             _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
 
             ShowAll();
-            _entryReceiver.Visible = false;
         }
 
 
@@ -310,7 +297,6 @@ namespace FiveInRow
             }
 
             ShowAll();
-            _entryReceiver.Visible = false;
         }
 
 
@@ -424,10 +410,5 @@ namespace FiveInRow
             set => _player2Name = value;
         }
         
-        public Entry EntryReceiver
-        {
-            get => _entryReceiver;
-            set => _entryReceiver = value;
-        }
     }
 }

@@ -16,6 +16,12 @@ namespace FiveInRow
         public Entry EntryIpClient => entryIpClient;
         public Entry EntryPortClient => entryPortClient;
 
+        // public Entry EntrySentData
+        // {
+        //     get => entrySentData;
+        //     set => entrySentData = value;
+        // }
+
         public Label LbConnectionInfo
         {
             get => lbConnectionInfo;
@@ -53,6 +59,8 @@ namespace FiveInRow
             this.Resize(520,275);
             this.Build();
             
+            Board.SetConfigGameWindow(this);
+            
             Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
             fontDescription.Size = 13000;
             fontDescription.Weight = Pango.Weight.Bold;
@@ -67,6 +75,7 @@ namespace FiveInRow
             btnServerShow.Clicked += OnClickBtnServerShow;
             btnClientShow.Clicked += OnClickBtnClientShow;
             btnStartServer.Clicked += OnClickStartServer;
+            // entrySentData.Changed += OnChangeSentData;
             
             entryPortServer.Text = "5533";
             entryPortClient.Text = "5533";
@@ -86,6 +95,11 @@ namespace FiveInRow
                 hboxInfoLabel.Visible = false;
             }
         }
+
+        // private void OnChangeSentData(object sender, EventArgs e)
+        // {
+        //     // Console.WriteLine("Entry: " + entrySentData.Text);
+        // }
 
         private void OnClickStartServer(object sender, EventArgs e)
         {
