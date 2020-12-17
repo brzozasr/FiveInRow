@@ -137,7 +137,6 @@ namespace FiveInRow
             {
                 _server.ConnectClient();
                 btn.Label = "DISCONNECT";
-                _entryReceivedData.Text = $"CONFIG:|:{EntryName.Text}";
             }
             else if (_server.Client != null)
             {
@@ -148,7 +147,7 @@ namespace FiveInRow
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.RunSender(_entryReceivedData.Text);
+            _server.SendMove(_entryReceivedData.Text);
         }
         
 
