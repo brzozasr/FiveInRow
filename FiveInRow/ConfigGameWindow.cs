@@ -63,6 +63,7 @@ namespace FiveInRow
             
             Board.SetConfigGameWindow(this);
             Server.SetConfigGameWindow(this);
+            Client.SetConfigGameWindow(this);
             
             _entryReceivedData = new Entry();
             vboxMain.PackEnd(_entryReceivedData, true, true, 0);
@@ -114,42 +115,43 @@ namespace FiveInRow
         private void OnClickBtnStartServer(object sender, EventArgs e)
         {
             Button btn = (Button) sender;
-            _server = new Server();
+            // _server = new Server();
+            Server.ExecuteServer();
             
-            if (_server.Listener == null)
-            {
-                _server.StartServer();
-                btn.Label = "STOP";
-            }
-            else if (_server.Listener != null)
-            {
-                _server.StopServer();
-                btn.Label = "START";
-            }
+            // if (_server.Listener == null)
+            // {
+            //     _server.StartServer();
+            //     btn.Label = "STOP";
+            // }
+            // else if (_server.Listener != null)
+            // {
+            //     _server.StopServer();
+            //     btn.Label = "START";
+            // }
         }
 
         private void OnClickBtnConnectClient(object sender, EventArgs e)
         {
             Button btn = (Button) sender;
-            _server = new Server();
+            // _server = new Server();
+            Client.ExecuteClient();
             
-            if (_server.Client == null)
-            {
-                _server.ConnectClient();
-                btn.Label = "DISCONNECT";
-            }
-            else if (_server.Client != null)
-            {
-                _server.DisconnectClient();
-                btn.Label = "CONNECT";
-            }
+            // if (_server.Client == null)
+            // {
+            //     _server.ConnectClient();
+            //     btn.Label = "DISCONNECT";
+            // }
+            // else if (_server.Client != null)
+            // {
+            //     _server.DisconnectClient();
+            //     btn.Label = "CONNECT";
+            // }
         }
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.RunSender(_entryReceivedData.Text);
+            // _server.RunSender(_entryReceivedData.Text);
         }
-        
 
         private void OnClickBtnServerShow(object sender, EventArgs e)
         {
