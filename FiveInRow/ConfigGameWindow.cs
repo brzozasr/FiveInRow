@@ -116,13 +116,14 @@ namespace FiveInRow
             Button btn = (Button) sender;
             _server = new Server();
             
-            if (_server.Listener == null)
+            if (btn.Label == "START")
             {
                 _server.StartServer();
                 btn.Label = "STOP";
             }
-            else if (_server.Listener != null)
+            else if (btn.Label == "STOP")
             {
+                Console.WriteLine("stop aaa");
                 _server.StopServer();
                 btn.Label = "START";
             }
@@ -133,12 +134,12 @@ namespace FiveInRow
             Button btn = (Button) sender;
             _server = new Server();
             
-            if (_server.Client == null)
+            if (btn.Label == "CONNECT")
             {
                 _server.ConnectClient();
                 btn.Label = "DISCONNECT";
             }
-            else if (_server.Client != null)
+            else if (btn.Label == "DISCONNECT")
             {
                 _server.DisconnectClient();
                 btn.Label = "CONNECT";

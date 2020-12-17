@@ -12,9 +12,13 @@ namespace FiveInRow
 {
     public class Server
     {
-        private Socket _socket;
-        private BackgroundWorker _messageReceiver;
-        private BackgroundWorker _messageSender;
+        private Socket _socket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+
+        public Socket SocketListener => _socket;
+
+        private BackgroundWorker _messageReceiverFirst;
+        private BackgroundWorker _messageReceiverSecond;
+        private BackgroundWorker _waitForConnection;
         private TcpListener _listener;
 
         public TcpListener Listener => _listener;
@@ -33,32 +37,36 @@ namespace FiveInRow
 
         private void InitBackgroundWorkers()
         {
-            _messageReceiver = new BackgroundWorker(); // 1
-            _messageSender = new BackgroundWorker(); // 2
+            _messageReceiverFirst = new BackgroundWorker();
+            _messageReceiverSecond = new BackgroundWorker();
+            _waitForConnection = new BackgroundWorker(); 
         }
 
         private void BackgroundWorkersAddLListener()
         {
-            _messageReceiver.DoWork += MessageReceiverDoWork;
-            _messageSender.DoWork += MessageSenderDoWork;
+            _messageReceiverFirst.DoWork += MessageReceiverFirstDoWork;
+            _messageReceiverFirst.RunWorkerCompleted += MessageReceiverFirstWorkerCompleted;
+            _messageReceiverSecond.DoWork += MessageReceiverSecondDoWork;
+            _messageReceiverSecond.RunWorkerCompleted += MessageReceiverSecondWorkerCompleted;
+            _waitForConnection.DoWork += WaitForConnectionDoWork;
+            _waitForConnection.RunWorkerCompleted += WaitForConnectionWorkerCompleted;
         }
-
-
+        
+        
         protected internal void StartServer()
         {
-            _listener = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
-                int.Parse(_config.EntryPortServer.Text));
             try
             {
+                _listener = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
+                    int.Parse(_config.EntryPortServer.Text));
                 _listener.Start();
                 Console.WriteLine("Wait for connection...");
-                _socket = _listener.AcceptSocket();
-                Console.WriteLine("Client connected...");
+                _waitForConnection.RunWorkerAsync();
             }
             catch (Exception ex)
             {
                 DialogWindow(ex.Message);
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
             }
         }
 
@@ -73,7 +81,7 @@ namespace FiveInRow
                 _client.Connect(ipEnd);
                 _socket = _client.Client;
                 Console.WriteLine("Connected...");
-                _messageReceiver.RunWorkerAsync();
+                _messageReceiverFirst.RunWorkerAsync();
             }
             catch (Exception ex)
             {
@@ -85,20 +93,32 @@ namespace FiveInRow
 
         protected internal void StopServer()
         {
-            _messageReceiver.WorkerSupportsCancellation = true;
-            _messageReceiver.CancelAsync();
-            if (_listener != null)
+            _waitForConnection.WorkerSupportsCancellation = true;
+            _waitForConnection.CancelAsync();
+            _waitForConnection.Dispose();
+            try
             {
+                if (_socket.Connected)
+                {
+                    _socket.Shutdown(SocketShutdown.Both);
+                }
                 _listener.Stop();
+                _socket.Close();
+
                 Console.WriteLine("Server stopped.");
+            }
+            catch (Exception ex)
+            {
+                DialogWindow(ex.Message);
+                Console.WriteLine(ex);
             }
         }
 
 
         protected internal void DisconnectClient()
         {
-            _messageReceiver.WorkerSupportsCancellation = true;
-            _messageReceiver.CancelAsync();
+            _messageReceiverFirst.WorkerSupportsCancellation = true;
+            _messageReceiverFirst.CancelAsync();
             if (_client != null)
             {
                 try
@@ -117,29 +137,66 @@ namespace FiveInRow
 
         protected internal void ReceiveMove()
         {
-            byte[] messageReceived = new byte[1024]; 
-            
-            int byteRecv = _socket.Receive(messageReceived); 
-            Console.WriteLine("Message from Server -> {0}",  
-                Encoding.ASCII.GetString(messageReceived,  
+            byte[] messageReceived = new byte[1024];
+
+            int byteRecv = _socket.Receive(messageReceived);
+            Console.WriteLine("Message from Server -> {0}",
+                Encoding.ASCII.GetString(messageReceived,
                     0, byteRecv));
         }
-        
+
         protected internal void SendMove(string move)
         {
-            byte[] messageSent = Encoding.ASCII.GetBytes(move); 
-            int byteSent = _socket.Send(messageSent); 
-            _messageReceiver.RunWorkerAsync();
+            byte[] messageSent = Encoding.ASCII.GetBytes(move);
+            int byteSent = _socket.Send(messageSent);
+            
+            if (!_messageReceiverFirst.IsBusy)
+            {
+                _messageReceiverFirst.RunWorkerAsync();
+            }
+            else if (!_messageReceiverSecond.IsBusy)
+            {
+                _messageReceiverSecond.RunWorkerAsync();
+            }
+            else
+            {
+                DialogWindow("This BackgroundWorker is currently busy and cannot run multiple tasks concurrently.");
+            }
         }
 
-        private void MessageReceiverDoWork(object sender, DoWorkEventArgs e)
+        private void MessageReceiverFirstDoWork(object sender, DoWorkEventArgs e)
         {
+            Console.WriteLine("First");
             ReceiveMove();
         }
-
-        private void MessageSenderDoWork(object sender, DoWorkEventArgs e)
+        
+        private void MessageReceiverFirstWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            
+            _messageReceiverFirst.WorkerSupportsCancellation = true;
+            _messageReceiverFirst.CancelAsync();
+        }
+        
+        private void MessageReceiverSecondDoWork(object sender, DoWorkEventArgs e)
+        {
+            Console.WriteLine("Second");
+            ReceiveMove();
+        }
+        
+        private void MessageReceiverSecondWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _messageReceiverSecond.WorkerSupportsCancellation = true;
+            _messageReceiverSecond.CancelAsync();
+        }
+        
+
+        private void WaitForConnectionDoWork(object sender, DoWorkEventArgs e)
+        {
+            _socket = _listener.AcceptSocket();
+        }
+
+        private void WaitForConnectionWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("Client connected...");
         }
 
 
