@@ -148,7 +148,7 @@ namespace FiveInRow
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.SendMove(_entryReceivedData.Text);
+            // _server.SendMove(_entryReceivedData.Text);
         }
         
 

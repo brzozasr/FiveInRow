@@ -18,6 +18,8 @@ namespace FiveInRow
 
         private BackgroundWorker _messageReceiverFirst;
         private BackgroundWorker _messageReceiverSecond;
+        private BackgroundWorker _messageReceiverThird;
+        private BackgroundWorker _messageReceiverFourth;
         private BackgroundWorker _waitForConnection;
         private TcpListener _listener;
 
@@ -39,7 +41,9 @@ namespace FiveInRow
         {
             _messageReceiverFirst = new BackgroundWorker();
             _messageReceiverSecond = new BackgroundWorker();
-            _waitForConnection = new BackgroundWorker(); 
+            _messageReceiverThird = new BackgroundWorker();
+            _messageReceiverFourth = new BackgroundWorker();
+            _waitForConnection = new BackgroundWorker();
         }
 
         private void BackgroundWorkersAddLListener()
@@ -48,11 +52,15 @@ namespace FiveInRow
             _messageReceiverFirst.RunWorkerCompleted += MessageReceiverFirstWorkerCompleted;
             _messageReceiverSecond.DoWork += MessageReceiverSecondDoWork;
             _messageReceiverSecond.RunWorkerCompleted += MessageReceiverSecondWorkerCompleted;
+            _messageReceiverThird.DoWork += MessageReceiverThirdDoWork;
+            _messageReceiverThird.RunWorkerCompleted += MessageReceiverThirdWorkerCompleted;
+            _messageReceiverFourth.DoWork += MessageReceiverFourthDoWork;
+            _messageReceiverFourth.RunWorkerCompleted += MessageReceiverFourthWorkerCompleted;
             _waitForConnection.DoWork += WaitForConnectionDoWork;
             _waitForConnection.RunWorkerCompleted += WaitForConnectionWorkerCompleted;
         }
-        
-        
+
+
         protected internal void StartServer()
         {
             try
@@ -102,6 +110,7 @@ namespace FiveInRow
                 {
                     _socket.Shutdown(SocketShutdown.Both);
                 }
+
                 _listener.Stop();
                 _socket.Close();
 
@@ -143,13 +152,16 @@ namespace FiveInRow
             Console.WriteLine("Message from Server -> {0}",
                 Encoding.ASCII.GetString(messageReceived,
                     0, byteRecv));
+
+            // _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived,
+            //     0, byteRecv);
         }
 
         protected internal void SendMove(string move)
         {
             byte[] messageSent = Encoding.ASCII.GetBytes(move);
             int byteSent = _socket.Send(messageSent);
-            
+
             if (!_messageReceiverFirst.IsBusy)
             {
                 _messageReceiverFirst.RunWorkerAsync();
@@ -157,6 +169,14 @@ namespace FiveInRow
             else if (!_messageReceiverSecond.IsBusy)
             {
                 _messageReceiverSecond.RunWorkerAsync();
+            }
+            else if (!_messageReceiverThird.IsBusy)
+            {
+                _messageReceiverThird.RunWorkerAsync();
+            }
+            else if (!_messageReceiverFourth.IsBusy)
+            {
+                _messageReceiverFourth.RunWorkerAsync();
             }
             else
             {
@@ -169,25 +189,49 @@ namespace FiveInRow
             Console.WriteLine("First");
             ReceiveMove();
         }
-        
+
         private void MessageReceiverFirstWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverFirst.WorkerSupportsCancellation = true;
             _messageReceiverFirst.CancelAsync();
         }
-        
+
         private void MessageReceiverSecondDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Second");
             ReceiveMove();
         }
-        
+
         private void MessageReceiverSecondWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverSecond.WorkerSupportsCancellation = true;
             _messageReceiverSecond.CancelAsync();
         }
         
+        private void MessageReceiverThirdDoWork(object sender, DoWorkEventArgs e)
+        {
+            Console.WriteLine("Third");
+            ReceiveMove();
+        }
+        
+        
+        private void MessageReceiverThirdWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _messageReceiverThird.WorkerSupportsCancellation = true;
+            _messageReceiverThird.CancelAsync();
+        }
+        
+        private void MessageReceiverFourthDoWork(object sender, DoWorkEventArgs e)
+        {
+            Console.WriteLine("Fourth");
+            ReceiveMove();
+        }
+        
+        private void MessageReceiverFourthWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _messageReceiverFourth.WorkerSupportsCancellation = true;
+            _messageReceiverFourth.CancelAsync();
+        }
 
         private void WaitForConnectionDoWork(object sender, DoWorkEventArgs e)
         {
