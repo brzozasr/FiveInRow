@@ -158,7 +158,11 @@ namespace FiveInRow
                     {
                         Console.WriteLine("_receiveText: " + _receiveText);
 
-                        Application.Invoke(delegate { _config.EntryReceivedData.Text = _receiveText; });
+                        Application.Invoke(delegate
+                        {
+                            _config.EntryReceivedData.Text = _reader.ReadLine();
+                        });
+                        
                     }
                     _receiveText = "";
                 }
@@ -175,9 +179,9 @@ namespace FiveInRow
             {
                 _writer.WriteLine(_textToSend);
 
-                Console.WriteLine("_textToSend: " + _textToSend);
-                
-                Application.Invoke(delegate { _config.EntryReceivedData.Text = _textToSend; });
+                // Console.WriteLine("_textToSend: " + _textToSend);
+                //
+                // Application.Invoke(delegate { _config.EntryReceivedData.Text = _textToSend; });
             }
             else
             {
