@@ -1,91 +1,220 @@
 using System;
+using System.ComponentModel;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+using Gtk;
+using Socket = System.Net.Sockets.Socket;
+
 
 namespace FiveInRow
 {
-    class Server
+    public class Server
     {
         private static ConfigGameWindow _config;
+        private TcpClient _client;
+        private TcpListener _listener;
+        public TcpListener Listener => _listener;
 
-        protected  internal static void ExecuteServer()
+        private StreamReader _reader;
+        private StreamWriter _writer;
+        private string _receiveText;
+        private string _textToSend;
+        public TcpClient Client => _client;
+        private BackgroundWorker _messageReceiver;
+        private BackgroundWorker _messageSender;
+
+        public Server()
         {
-            // Establish the local endpoint  
-            // for the socket. Dns.GetHostName 
-            // returns the name of the host  
-            // running the application. 
-            IPAddress ipAddr = IPAddress.Parse(_config.EntryIpServer.Text);
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr,
-                (Int32.Parse(_config.EntryPortServer.Text)));
+            InitBackgroundWorkers();
+            BackgroundWorkersAddLListener();
+        }
 
-            // Creation TCP/IP Socket using  
-            // Socket Class Costructor 
-            Socket listener = new Socket(ipAddr.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
+        private void InitBackgroundWorkers()
+        {
+            _messageReceiver = new BackgroundWorker(); // 1
+            _messageSender = new BackgroundWorker(); // 2
+        }
 
+        private void BackgroundWorkersAddLListener()
+        {
+            _messageReceiver.DoWork += MessageReceiverDoWork;
+            _messageSender.DoWork += MessageSenderDoWork;
+        }
+
+
+        protected internal void StartServer()
+        {
             try
             {
-                // Using Bind() method we associate a 
-                // network address to the Server Socket 
-                // All client that will connect to this  
-                // Server Socket must know this network 
-                // Address 
-                listener.Bind(localEndPoint);
+                _listener = new TcpListener(IPAddress.Parse(_config.EntryIpServer.Text),
+                    int.Parse(_config.EntryPortServer.Text));
+                _listener.Start();
+                _client = _listener.AcceptTcpClient();
 
-                // Using Listen() method we create  
-                // the Client list that will want 
-                // to connect to Server 
-                listener.Listen(10);
+                _reader = new StreamReader(_client.GetStream());
+                _writer = new StreamWriter(_client.GetStream());
+                _writer.AutoFlush = true;
 
-                while (true)
-                {
-                    Console.WriteLine("Waiting connection ... ");
-
-                    // Suspend while waiting for 
-                    // incoming connection Using  
-                    // Accept() method the server  
-                    // will accept connection of client 
-                    Socket clientSocket = listener.Accept();
-
-                    // Data buffer 
-                    byte[] bytes = new Byte[1024];
-                    string data = null;
-
-                    while (true)
-                    {
-                        int numByte = clientSocket.Receive(bytes);
-
-                        data += Encoding.ASCII.GetString(bytes,
-                            0, numByte);
-
-                        if (data.IndexOf("<EOF>") > -1)
-                            break;
-                    }
-
-                    Console.WriteLine("Text received -> {0} ", data);
-                    byte[] message = Encoding.ASCII.GetBytes("Test Server");
-
-                    // Send a message to Client  
-                    // using Send() method 
-                    clientSocket.Send(message);
-
-                    // Close client Socket using the 
-                    // Close() method. After closing, 
-                    // we can use the closed Socket  
-                    // for a new Client Connection 
-                    
-                    // clientSocket.Shutdown(SocketShutdown.Both);
-                    // clientSocket.Close();
-                }
+                _messageReceiver.RunWorkerAsync();
+                _messageSender.WorkerSupportsCancellation = true;
             }
-
-            catch (Exception e)
+            catch (SocketException ex)
             {
-                Console.WriteLine(e.ToString());
+                DialogWindow(ex.Message);
             }
         }
 
+
+        protected internal void ConnectClient()
+        {
+            _client = new TcpClient();
+            IPEndPoint ipEnd = new IPEndPoint(IPAddress.Parse(_config.EntryIpClient.Text),
+                int.Parse(_config.EntryPortClient.Text));
+            try
+            {
+                _client.Connect(ipEnd);
+
+                if (_client.Connected)
+                {
+                    Console.WriteLine("Connected to server..." + "\n");
+                    _writer = new StreamWriter(_client.GetStream());
+                    _reader = new StreamReader(_client.GetStream());
+                    _writer.AutoFlush = true;
+                    _messageReceiver.RunWorkerAsync();
+                    _messageSender.WorkerSupportsCancellation = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                DialogWindow(ex.Message);
+            }
+        }
+
+
+        protected internal void StopServer()
+        {
+            _messageReceiver.WorkerSupportsCancellation = true;
+            _messageReceiver.CancelAsync();
+            if (_listener != null)
+            {
+                _listener.Stop();
+                Console.WriteLine("Server stopped.");
+            }
+        }
+
+
+        protected internal void DisconnectClient()
+        {
+            _messageReceiver.WorkerSupportsCancellation = true;
+            _messageReceiver.CancelAsync();
+            if (_client != null)
+            {
+                try
+                {
+                    _client.Client.Shutdown(SocketShutdown.Both);
+                    _client.Client.Close();
+                    _client.Close();
+                    GC.Collect();
+                }
+                catch (ObjectDisposedException ex)
+                {
+                    DialogWindow(GetType().FullName + "\n" + ex.Message);
+                }
+            }
+        }
+
+
+        // private void ReceiveMove()
+        // {
+        //     byte[] buffer = new byte[150];
+        //     _socket.Receive(buffer);
+        //     // TODO
+        //     foreach (var val in buffer)
+        //     {
+        //         Console.Write(val + ", ");
+        //     }
+        //     
+        // }
+        //
+        //
+        // protected internal void SendMove(string move)
+        // {
+        //     byte[] num = {1};
+        //     _socket.Send(num);
+        //     _messageReceiver.RunWorkerAsync();
+        // }
+
+
+        private void MessageReceiverDoWork(object sender, DoWorkEventArgs e)
+        {
+            while (_client.Connected)
+            {
+                try
+                {
+                    _receiveText = _reader.ReadLine();
+
+                    if (!String.IsNullOrEmpty(_receiveText))
+                    {
+                        Console.WriteLine("_receiveText: " + _receiveText);
+
+                        Application.Invoke(delegate { _config.EntryReceivedData.Text = _receiveText; });
+                    }
+                    _receiveText = "";
+                }
+                catch (Exception ex)
+                {
+                    DialogWindow(ex.Message);
+                }
+            }
+        }
+
+        private void MessageSenderDoWork(object sender, DoWorkEventArgs e)
+        {
+            if (_client.Connected)
+            {
+                _writer.WriteLine(_textToSend);
+
+                Console.WriteLine("_textToSend: " + _textToSend);
+                
+                Application.Invoke(delegate { _config.EntryReceivedData.Text = _textToSend; });
+            }
+            else
+            {
+                DialogWindow("Sending failed");
+            }
+
+            _messageSender.CancelAsync();
+        }
+
+
+        protected internal void RunSender(string text)
+        {
+            _textToSend = text;
+            _messageSender.RunWorkerAsync();
+        }
+
+
+        protected internal string DataReceiver(string inputText)
+        {
+            return inputText;
+        }
+
+
+        private void StartingServerWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Console.WriteLine("Client connected to the server... :)" + "\n");
+        }
+
+
+        private void DialogWindow(string message)
+        {
+            MessageDialog md = new MessageDialog(_config,
+                DialogFlags.DestroyWithParent, MessageType.Info,
+                ButtonsType.Close, message);
+            md.Run();
+            md.Destroy();
+        }
 
         public static void SetConfigGameWindow(ConfigGameWindow configGameWindow)
         {
