@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 using Gtk;
 using Socket = System.Net.Sockets.Socket;
 
@@ -90,6 +91,9 @@ namespace FiveInRow
                 _socket = _client.Client;
                 Console.WriteLine("Connected...");
                 _messageReceiverFirst.RunWorkerAsync();
+                _messageReceiverSecond.RunWorkerAsync();
+                _messageReceiverThird.RunWorkerAsync();
+                _messageReceiverFourth.RunWorkerAsync();
             }
             catch (Exception ex)
             {
@@ -154,6 +158,7 @@ namespace FiveInRow
                     0, byteRecv));
             _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
         }
+        
 
         protected internal void SendMove(string move)
         {
@@ -182,49 +187,68 @@ namespace FiveInRow
             }
         }
 
+        protected internal void RunSending(string messageToSend)
+        {
+            try
+            {
+                Task task1 = Task.Factory.StartNew( () => SendMove(messageToSend));
+                Task task2 = Task.Factory.StartNew(ReceiveMove);
+                // Task task1 = Task.Run(() => SendMove(message));
+                // Task task2 = Task.Run(() => ReceiveMove());
+            }
+            catch (Exception e)
+            {
+                DialogWindow(e.Message);
+                Console.WriteLine(e);
+            }
+
+            // Task.WaitAll(task1, task2);
+        }
+        
+        
         private void MessageReceiverFirstDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("First");
             ReceiveMove();
         }
-
+        
         private void MessageReceiverFirstWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverFirst.WorkerSupportsCancellation = true;
             _messageReceiverFirst.CancelAsync();
         }
-
+        
         private void MessageReceiverSecondDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Second");
             ReceiveMove();
         }
-
+        
         private void MessageReceiverSecondWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverSecond.WorkerSupportsCancellation = true;
             _messageReceiverSecond.CancelAsync();
         }
-
+        
         private void MessageReceiverThirdDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Third");
             ReceiveMove();
         }
-
-
+        
+        
         private void MessageReceiverThirdWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverThird.WorkerSupportsCancellation = true;
             _messageReceiverThird.CancelAsync();
         }
-
+        
         private void MessageReceiverFourthDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Fourth");
             ReceiveMove();
         }
-
+        
         private void MessageReceiverFourthWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverFourth.WorkerSupportsCancellation = true;

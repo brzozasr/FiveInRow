@@ -55,13 +55,13 @@ namespace FiveInRow
                 }
             }
 
-            foreach (Button btn in buttonLists)
-            {
-                btn.Clicked += OnClick;
-            }
-
             if (_configGameWindow.RbAi.Active)
             {
+                foreach (Button btn in buttonLists)
+                {
+                    btn.Clicked += OnClick;
+                }
+                
                 string name = _configGameWindow.EntryName.Text.Trim();
                 if (!String.IsNullOrEmpty(name))
                 {
@@ -71,7 +71,10 @@ namespace FiveInRow
             } 
             else if (_configGameWindow.RbMultiplayer.Active)
             {
-                
+                foreach (Button btn in buttonLists)
+                {
+                    btn.Clicked += OnClickMultiplayer;
+                }
             }
             
             _lbPlayer1 = new Label(_player1Name);
@@ -100,6 +103,14 @@ namespace FiveInRow
 
             Add(vBoxMain);
             ShowAll();
+        }
+
+        private void OnClickMultiplayer(object sender, EventArgs e)
+        {
+            Button btn = (Button) sender;
+
+            Console.WriteLine(btn.Label);
+            _configGameWindow.EntryReceivedData.Text = btn.Label;
         }
 
 
