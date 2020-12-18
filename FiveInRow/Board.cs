@@ -15,8 +15,9 @@ namespace FiveInRow
         protected internal const uint EmptyCell = 0; // emty cell (=0) of the game
         protected internal const uint Player1Mark = 1; // cell with mark (=1) the Player1 
         protected internal const uint Player2Mark = 2; // cell with mark (=2) the Player2
-        private string _player1Name = "PLAYER 1"; // Name of the Player1 
-        private string _player2Name = "PLAYER 2"; // Name of the the Player2
+        private uint _playerMark;
+        private static string _player1Name = "PLAYER 1"; // Name of the Player1 
+        private static string _player2Name = "PLAYER 2"; // Name of the the Player2
         private string _player1Image = Stock.Apply; // Image for player 1
         private string _player2Image = Stock.Cancel; // Image for player 2
         private bool _turn = true; // turn = PLAYER1
@@ -55,13 +56,13 @@ namespace FiveInRow
                 }
             }
 
-            foreach (Button btn in buttonLists)
-            {
-                btn.Clicked += OnClick;
-            }
-
             if (_configGameWindow.RbAi.Active)
             {
+                foreach (Button btn in buttonLists)
+                {
+                    btn.Clicked += OnClick;
+                }
+                
                 string name = _configGameWindow.EntryName.Text.Trim();
                 if (!String.IsNullOrEmpty(name))
                 {
@@ -71,7 +72,12 @@ namespace FiveInRow
             } 
             else if (_configGameWindow.RbMultiplayer.Active)
             {
-                
+                foreach (Button btn in buttonLists)
+                {
+                    btn.Clicked += OnClickMultiplayer;
+                }
+
+                SetVariablesForMultiplayer();
             }
             
             _lbPlayer1 = new Label(_player1Name);
@@ -102,7 +108,124 @@ namespace FiveInRow
             ShowAll();
         }
 
+        private void SetVariablesForMultiplayer()
+        {
+            string playerRole = _configGameWindow.MultiplayerRole;
+            
+            if (playerRole == "PLAYER1")
+            {
+                _turn = true;
+                _imageState = _player1Image;
+                _playerMark = Player1Mark;
+            }
+            else if(playerRole == "PLAYER2")
+            {
+                _turn = false;
+                _imageState = _player2Image;
+                _playerMark = Player2Mark;
+            }
+        }
 
+        private void OnClickMultiplayer(object sender, EventArgs e)
+        {
+            Button btn = (Button) sender;
+
+            if (_turn == true)
+            {
+                string move = $"MOVE<|>{btn.Label}";
+                _configGameWindow.ServerRunning.SendMove(move);
+
+                string[] coords = btn.Label.Split(',');
+                int x = Int32.Parse(coords[0]);
+                int y = Int32.Parse(coords[1]);
+
+                uint leftAttach = (uint) y;
+                uint rightAttach = (uint) y + 1;
+                uint topAttach = (uint) x;
+                uint bottomAttach = (uint) x + 1;
+
+                _table.Remove(btn);
+
+                Image image = new Image(_imageState, IconSize.Button);
+                Button newBtn = new Button(image);
+                newBtn.WidthRequest = 40;
+                newBtn.HeightRequest = 40;
+
+                _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
+
+                ShowAll();
+
+                _boardArray[x, y] = _playerMark;
+                _turn = false;
+                
+                string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
+                bool isBoardFull = GameLogic.IsBoardFull();
+                
+                if (_configGameWindow.RbMultiplayer.Active)
+                {
+                    LbTurn.Text = "TURN =>"; ///
+                
+                    // loop for updating GUI
+                    while (Gtk.Application.EventsPending())
+                    {
+                        Gtk.Application.RunIteration();
+                    }
+                
+                    if (hasWon != null)
+                    {
+                        GameStatus(hasWon);
+                    }
+                    else if (isBoardFull)
+                    {
+                        GameStatus(null, true);
+                    }
+                }
+            }
+        }
+
+        
+        protected internal void OpponentMove((int x, int y) coord)
+        {
+            string playerRole = _configGameWindow.MultiplayerRole;
+
+            uint mark = 0;
+            
+            if (playerRole == "PLAYER1")
+            {
+                mark = Player2Mark;
+            }
+            else if(playerRole == "PLAYER2")
+            {
+                mark = Player1Mark;
+            }
+            
+            SetCellOfBoardArray(coord.x, coord.y, mark);
+            _turn = true;
+            LbTurn.Text = "<= TURN";
+            
+            ReplaceButton(coord);
+            ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
+            
+            string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
+            bool isBoardFull = GameLogic.IsBoardFull();
+            
+            // loop for updating GUI
+            while (Gtk.Application.EventsPending())
+            {
+                Gtk.Application.RunIteration();
+            }
+            
+            if (hasWon != null)
+            {
+                GameStatus(hasWon);
+            }
+            else if (isBoardFull)
+            {
+                GameStatus(null, true);
+            }
+        }
+        
+        
         private void OnClick(object sender, EventArgs args)
         {
             Button btn = (Button) sender;
@@ -165,18 +288,6 @@ namespace FiveInRow
                 else
                 {
                     GameStatus(null, true);
-                }
-            }
-            else if (_configGameWindow.RbMultiplayer.Active)
-            {
-                if (hasWon == null && !isBoardFull)
-                {
-                    PlayerMove();
-                }
-                else
-                {
-                    Console.WriteLine($"{hasWon} won!!!");
-                    // TODO popup
                 }
             }
         }
@@ -396,13 +507,13 @@ namespace FiveInRow
             set => _lbTurn = value;
         }
         
-        protected internal string Player1Name
+        protected internal static string Player1Name
         {
             get => _player1Name;
             set => _player1Name = value;
         }
 
-        protected internal string Player2Name
+        protected internal static string Player2Name
         {
             get => _player2Name;
             set => _player2Name = value;

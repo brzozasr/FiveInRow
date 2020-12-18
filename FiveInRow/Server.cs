@@ -39,7 +39,7 @@ namespace FiveInRow
         {
             _messageReceiver = new BackgroundWorker();
             _waitForConnection = new BackgroundWorker();
-            
+
             _messageReceiver.WorkerSupportsCancellation = true;
         }
 
@@ -49,9 +49,8 @@ namespace FiveInRow
             _messageReceiver.RunWorkerCompleted += MessageReceiverWorkerCompleted;
             _waitForConnection.DoWork += WaitForConnectionDoWork;
             _waitForConnection.RunWorkerCompleted += WaitForConnectionWorkerCompleted;
-            
         }
-        
+
 
         protected internal void StartServer()
         {
@@ -61,6 +60,7 @@ namespace FiveInRow
                     int.Parse(_config.EntryPortServer.Text));
                 _listener.Start();
                 Console.WriteLine("Wait for connection...");
+                _config.HBoxInfoLabel.Visible = true;
                 _waitForConnection.RunWorkerAsync();
             }
             catch (Exception ex)
@@ -80,8 +80,13 @@ namespace FiveInRow
                 _client = new TcpClient();
                 _client.Connect(ipEnd);
                 _socket = _client.Client;
-                Console.WriteLine("Connected...");
                 _messageReceiver.RunWorkerAsync();
+                
+                if (_client.Connected)
+                {
+                    Console.WriteLine("Connected...");
+                    SendMove(ServerConfig());
+                }
             }
             catch (Exception ex)
             {
@@ -98,26 +103,25 @@ namespace FiveInRow
                 _waitForConnection.WorkerSupportsCancellation = true;
                 _waitForConnection.CancelAsync();
                 _waitForConnection.Dispose();
-                
+
                 if (_socket != null)
                 {
                     if (_socket.Connected)
                     {
                         _socket.Shutdown(SocketShutdown.Both);
                     }
-                    
+
                     _socket.Close();
                     _socket.Dispose();
-                    
                 }
 
                 if (_listener != null)
                 {
                     _listener.Stop();
                 }
-                
+
                 GC.Collect();
-                
+
                 Console.WriteLine("Server stopped...");
             }
             catch (Exception ex)
@@ -158,16 +162,15 @@ namespace FiveInRow
                 {
                     int byteRecv = _socket.Receive(messageReceived);
                     Console.WriteLine("{0}", Encoding.ASCII.GetString(messageReceived,
-                            0, byteRecv));
-                    
-                    _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived, 0, 
+                        0, byteRecv));
+
+                    _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived, 0,
                         byteRecv);
                 }
                 else
                 {
                     Thread.Sleep(500);
                 }
-                
             }
         }
 
@@ -197,10 +200,42 @@ namespace FiveInRow
         private void WaitForConnectionWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Console.WriteLine("Client connected...");
+            SendMove(ClientConfig());
             _messageReceiver.RunWorkerAsync();
         }
 
 
+        private string ServerConfig()
+        {
+            string playerName;
+            if (string.IsNullOrEmpty(_config.EntryName.Text))
+            {
+                playerName = "EMPTY_NAME";
+            }
+            else
+            {
+                playerName = _config.EntryName.Text;
+            }
+
+            return $"CONFIG<|>PLAYER1<|>{playerName}";
+        }
+        
+        private string ClientConfig()
+        {
+            string playerName;
+            if (string.IsNullOrEmpty(_config.EntryName.Text))
+            {
+                playerName = "EMPTY_NAME";
+            }
+            else
+            {
+                playerName = _config.EntryName.Text;
+            }
+            
+            return $"CONFIG<|>PLAYER2<|>{playerName}<|>{_config.SbBoardSize.Text}<|>{_config.SbBoardSize.Text}";
+        }
+        
+        
         private void DialogWindow(string message)
         {
             MessageDialog md = new MessageDialog(_config,

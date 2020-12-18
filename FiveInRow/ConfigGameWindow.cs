@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.InteropServices;
 using Gdk;
 using Gtk;
 using Window = Gtk.Window;
@@ -9,6 +10,8 @@ namespace FiveInRow
 {
     public partial class ConfigGameWindow : Window
     {
+        private string _multiplayerRole;
+        public string MultiplayerRole => _multiplayerRole;
         public RadioButton RbAi => rbAi;
         public RadioButton RbMultiplayer => rbMultiplayer;
         public Entry EntryIpServer => entryIpServer;
@@ -17,6 +20,14 @@ namespace FiveInRow
         public Entry EntryPortClient => entryPortClient;
         private Entry _entryReceivedData;
         private Server _server;
+        private Board _board;
+        private (int x, int y) _coord;
+
+        public Server ServerRunning => _server;
+
+        private string _typeOfReceiveData;
+        
+        public SpinButton SbBoardSize => sbBoardSize;
 
         public Entry EntryReceivedData
         {
@@ -119,12 +130,15 @@ namespace FiveInRow
             if (btn.Label == "START")
             {
                 _server.StartServer();
+                _multiplayerRole = "PLAYER1";
                 btn.Label = "STOP";
             }
             else if (btn.Label == "STOP")
             {
                 _server.StopServer();
+                _multiplayerRole = null;
                 btn.Label = "START";
+                HBoxInfoLabel.Visible = false;
             }
         }
 
@@ -136,20 +150,94 @@ namespace FiveInRow
             if (btn.Label == "CONNECT")
             {
                 _server.ConnectClient();
+                _multiplayerRole = "PLAYER2";
                 btn.Label = "DISCONNECT";
             }
             else if (btn.Label == "DISCONNECT")
             {
                 _server.DisconnectClient();
+                _multiplayerRole = null;
                 btn.Label = "CONNECT";
             }
         }
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.SendMove(_entryReceivedData.Text);
+            Entry dataGame = (Entry) sender;
+            
+            ReaderReceivedConfig(dataGame.Text);
+
+            if (_typeOfReceiveData == "CONFIG")
+            {
+                Gtk.Application.Invoke (delegate {
+                    this.Hide();
+                    _board = new Board(_row, _col);
+                });
+            }
+
+            if (_typeOfReceiveData == "MOVE")
+            {
+                // _board.OpponentMove(_coord);
+            }
         }
-        
+
+
+        private void ReaderReceivedConfig(string data)
+        {
+            string[] splitArray = data.Split(new string[]{ "<|>" }, StringSplitOptions.None);
+
+            if (splitArray.Length > 0)
+            {
+                _typeOfReceiveData = splitArray[0];
+                
+                if (_typeOfReceiveData == "CONFIG")
+                {
+                    if (splitArray[1] == "PLAYER1")
+                    {
+                        if (!string.IsNullOrEmpty(EntryName.Text))
+                        {
+                            Board.Player1Name = EntryName.Text;
+                        }
+                        
+                        if (splitArray[2] != "EMPTY_NAME")
+                        {
+                            Board.Player2Name = splitArray[2];
+                        }
+                        
+                        _row = _col = Convert.ToUInt32(sbBoardSize.Text, 10);
+                    }
+                    else if (splitArray[1] == "PLAYER2")
+                    {
+                        if (!string.IsNullOrEmpty(EntryName.Text))
+                        {
+                            Board.Player2Name = EntryName.Text;
+                        }
+                        
+                        if (splitArray[2] != "EMPTY_NAME")
+                        {
+                            Board.Player1Name = splitArray[2];
+                        }
+
+                        _row = Convert.ToUInt32(splitArray[3], 10);
+                        _col = Convert.ToUInt32(splitArray[4], 10);
+                    }
+                }
+                else if (_typeOfReceiveData == "MOVE")
+                {
+                    (int x, int y) _coord = ReaderReceivedMove(splitArray[1]);
+                }
+            }
+        }
+
+        private (int x, int y) ReaderReceivedMove(string move)
+        {
+            string[] coords = move.Split(',');
+            int x = Int32.Parse(coords[0]);
+            int y = Int32.Parse(coords[1]);
+
+            return (x, y);
+        }
+
 
         private void OnClickBtnServerShow(object sender, EventArgs e)
         {
