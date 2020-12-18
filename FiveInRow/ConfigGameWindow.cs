@@ -77,7 +77,7 @@ namespace FiveInRow
             
             _entryReceivedData = new Entry();
             vboxMain.PackEnd(_entryReceivedData, true, true, 0);
-            // entryReceivedData.Visibility = false;
+            // _entryReceivedData.Visibility = false;
             _entryReceivedData.ShowNow();
             
             Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
