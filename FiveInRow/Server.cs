@@ -60,6 +60,7 @@ namespace FiveInRow
                     int.Parse(_config.EntryPortServer.Text));
                 _listener.Start();
                 Console.WriteLine("Wait for connection...");
+                _config.HBoxInfoLabel.Visible = true;
                 _waitForConnection.RunWorkerAsync();
             }
             catch (Exception ex)
@@ -216,7 +217,7 @@ namespace FiveInRow
                 playerName = _config.EntryName.Text;
             }
 
-            return $"CONFIG<|>{playerName}";
+            return $"CONFIG<|>PLAYER1<|>{playerName}";
         }
         
         private string ClientConfig()
@@ -231,7 +232,7 @@ namespace FiveInRow
                 playerName = _config.EntryName.Text;
             }
             
-            return $"CONFIG<|>{playerName}<|>{_config.SbBorderSize.ValueAsInt}<|>{_config.SbBorderSize.ValueAsInt}";
+            return $"CONFIG<|>PLAYER2<|>{playerName}<|>{_config.SbBoardSize.Text}<|>{_config.SbBoardSize.Text}";
         }
         
         
