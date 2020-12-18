@@ -120,12 +120,9 @@ namespace FiveInRow
             {
                 _server.StartServer();
                 btn.Label = "STOP";
-                this.Hide();
-                _ = new Board(8, 8);
             }
             else if (btn.Label == "STOP")
             {
-                Console.WriteLine("stop aaa");
                 _server.StopServer();
                 btn.Label = "START";
             }
@@ -140,10 +137,6 @@ namespace FiveInRow
             {
                 _server.ConnectClient();
                 btn.Label = "DISCONNECT";
-                Console.WriteLine("EntryName.Text:" + EntryName.Text);
-                this.Hide();
-                _ = new Board(8, 8);
-                
             }
             else if (btn.Label == "DISCONNECT")
             {
@@ -155,7 +148,6 @@ namespace FiveInRow
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
             _server.SendMove(_entryReceivedData.Text);
-            // _server.RunSending(_entryReceivedData.Text);
         }
         
 
