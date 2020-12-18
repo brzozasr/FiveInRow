@@ -2,10 +2,9 @@
 
 ## Print Screens
 
-![alt text](https://github.com/brzozasr/FiveInRow/blob/develop/config.png)
-
 ![alt text](FiveInRow/Properties/Resources/config.png?raw=true)
 
+![alt text](FiveInRow/Properties/Resources/board.png?raw=true)
 
 ## Story
 
