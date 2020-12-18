@@ -1,5 +1,9 @@
 # Five in a Row
 
+## Print Screens
+
+![alt text](https://github.com/brzozasr/FiveInRow/blob/develop/config.png?raw=true)
+
 ## Story
 
 Do you remember Tic-tac-toe from the beginning of your programming career?
