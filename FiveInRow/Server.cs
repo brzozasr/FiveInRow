@@ -152,9 +152,7 @@ namespace FiveInRow
             Console.WriteLine("Message from Server -> {0}",
                 Encoding.ASCII.GetString(messageReceived,
                     0, byteRecv));
-
-            // _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived,
-            //     0, byteRecv);
+            _config.EntryReceivedData.Text = Encoding.ASCII.GetString(messageReceived, 0, byteRecv);
         }
 
         protected internal void SendMove(string move)
@@ -207,26 +205,26 @@ namespace FiveInRow
             _messageReceiverSecond.WorkerSupportsCancellation = true;
             _messageReceiverSecond.CancelAsync();
         }
-        
+
         private void MessageReceiverThirdDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Third");
             ReceiveMove();
         }
-        
-        
+
+
         private void MessageReceiverThirdWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverThird.WorkerSupportsCancellation = true;
             _messageReceiverThird.CancelAsync();
         }
-        
+
         private void MessageReceiverFourthDoWork(object sender, DoWorkEventArgs e)
         {
             Console.WriteLine("Fourth");
             ReceiveMove();
         }
-        
+
         private void MessageReceiverFourthWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             _messageReceiverFourth.WorkerSupportsCancellation = true;

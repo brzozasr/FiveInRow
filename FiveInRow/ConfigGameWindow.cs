@@ -138,6 +138,8 @@ namespace FiveInRow
             {
                 _server.ConnectClient();
                 btn.Label = "DISCONNECT";
+                _server.SendMove(EntryName.Text);
+                Console.WriteLine("EntryName.Text:" + EntryName.Text);
             }
             else if (btn.Label == "DISCONNECT")
             {
