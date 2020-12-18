@@ -17,6 +17,7 @@ namespace FiveInRow
         public Entry EntryPortClient => entryPortClient;
         private Entry _entryReceivedData;
         private Server _server;
+        // private SpinButton sbBoardSize; 
 
         public Entry EntryReceivedData
         {
@@ -147,7 +148,8 @@ namespace FiveInRow
 
         private void OnChangeReceivedData(object sender, EventArgs e)
         {
-            _server.SendMove(_entryReceivedData.Text);
+            // _server.SendMove(_entryReceivedData.Text);
+            Console.WriteLine(SbBorderSize.ValueAsInt);
         }
         
 
