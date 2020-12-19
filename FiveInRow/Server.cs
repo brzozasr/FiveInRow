@@ -2,8 +2,10 @@ using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Gtk;
 using Socket = System.Net.Sockets.Socket;
 
@@ -100,17 +102,8 @@ namespace FiveInRow
         {
             try
             {
-                _waitForConnection.WorkerSupportsCancellation = true;
-                _waitForConnection.CancelAsync();
-                _waitForConnection.Dispose();
-
                 if (_socket != null)
                 {
-                    if (_socket.Connected)
-                    {
-                        _socket.Shutdown(SocketShutdown.Both);
-                    }
-
                     _socket.Close();
                     _socket.Dispose();
                 }
@@ -119,7 +112,15 @@ namespace FiveInRow
                 {
                     _listener.Stop();
                 }
+                
+                if (_waitForConnection.CancellationPending)
+                {
+                    _waitForConnection.WorkerSupportsCancellation = true;
+                    _waitForConnection.CancelAsync();
+                    _waitForConnection.Dispose();
+                }
 
+                GC.SuppressFinalize(this);
                 GC.Collect();
 
                 Console.WriteLine("Server stopped...");
@@ -136,6 +137,7 @@ namespace FiveInRow
         {
             _messageReceiver.WorkerSupportsCancellation = true;
             _messageReceiver.CancelAsync();
+            _messageReceiver.Dispose();
             if (_client != null)
             {
                 try
@@ -194,6 +196,11 @@ namespace FiveInRow
 
         private void WaitForConnectionDoWork(object sender, DoWorkEventArgs e)
         {
+            // if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            // {
+            //     _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            // }
+            
             _socket = _listener.AcceptSocket();
         }
 
