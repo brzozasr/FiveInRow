@@ -100,24 +100,24 @@ namespace FiveInRow
         {
             try
             {
-                _waitForConnection.WorkerSupportsCancellation = true;
-                _waitForConnection.CancelAsync();
-                _waitForConnection.Dispose();
-
                 if (_socket != null)
                 {
-                    if (_socket.Connected)
-                    {
-                        _socket.Shutdown(SocketShutdown.Both);
-                    }
-
                     _socket.Close();
                     _socket.Dispose();
                 }
 
+                Console.WriteLine("list: " + _waitForConnection);
+
                 if (_listener != null)
                 {
                     _listener.Stop();
+                }
+                
+                if (_waitForConnection.CancellationPending)
+                {
+                    _waitForConnection.WorkerSupportsCancellation = true;
+                    _waitForConnection.CancelAsync();
+                    _waitForConnection.Dispose();
                 }
 
                 GC.Collect();
@@ -136,6 +136,7 @@ namespace FiveInRow
         {
             _messageReceiver.WorkerSupportsCancellation = true;
             _messageReceiver.CancelAsync();
+            _messageReceiver.Dispose();
             if (_client != null)
             {
                 try
