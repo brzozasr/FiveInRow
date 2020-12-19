@@ -111,16 +111,14 @@ namespace FiveInRow
         private void SetVariablesForMultiplayer()
         {
             string playerRole = _configGameWindow.MultiplayerRole;
-            
+
             if (playerRole == "PLAYER1")
             {
-                _turn = true;
                 _imageState = _player1Image;
                 _playerMark = Player1Mark;
             }
             else if(playerRole == "PLAYER2")
             {
-                _turn = false;
                 _imageState = _player2Image;
                 _playerMark = Player2Mark;
             }
@@ -132,6 +130,18 @@ namespace FiveInRow
 
             if (_turn == true)
             {
+                SetVariablesForMultiplayer();
+                string playerRole = _configGameWindow.MultiplayerRole;
+                
+                if (playerRole == "PLAYER1")
+                {
+                    LbTurn.Text = "TURN =>";
+                }
+                else if(playerRole == "PLAYER2")
+                {
+                    LbTurn.Text = "<= TURN";
+                }
+                
                 string move = $"MOVE<|>{btn.Label}";
                 _configGameWindow.ServerRunning.SendMove(move);
 
@@ -163,7 +173,7 @@ namespace FiveInRow
                 
                 if (_configGameWindow.RbMultiplayer.Active)
                 {
-                    LbTurn.Text = "TURN =>"; ///
+                    // LbTurn.Text = "TURN =>";
                 
                     // loop for updating GUI
                     while (Gtk.Application.EventsPending())
@@ -183,7 +193,7 @@ namespace FiveInRow
             }
         }
 
-        
+
         protected internal void OpponentMove((int x, int y) coord)
         {
             string playerRole = _configGameWindow.MultiplayerRole;
@@ -193,18 +203,19 @@ namespace FiveInRow
             if (playerRole == "PLAYER1")
             {
                 mark = Player2Mark;
+                LbTurn.Text = "<= TURN";
             }
             else if(playerRole == "PLAYER2")
             {
                 mark = Player1Mark;
+                LbTurn.Text = "TURN =>";
             }
             
             SetCellOfBoardArray(coord.x, coord.y, mark);
             _turn = true;
-            LbTurn.Text = "<= TURN";
-            
-            ReplaceButton(coord);
-            ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
+
+            ReplaceButtonMultiplayer(coord);
+            // ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
             
             string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
             bool isBoardFull = GameLogic.IsBoardFull();
@@ -223,6 +234,46 @@ namespace FiveInRow
             {
                 GameStatus(null, true);
             }
+        }
+        
+        
+        private void ReplaceButtonMultiplayer((int x, int y) coordinates)
+        {
+            string strLabel = $"{coordinates.x},{coordinates.y}";
+
+            uint leftAttach = (uint) coordinates.y;
+            uint rightAttach = (uint) coordinates.y + 1;
+            uint topAttach = (uint) coordinates.x;
+            uint bottomAttach = (uint) coordinates.x + 1;
+
+
+            foreach (Button btn in _table.Children)
+            {
+                if (btn.Label == strLabel)
+                {
+                    _table.Remove(btn);
+                }
+            }
+            
+            string playerRole = _configGameWindow.MultiplayerRole;
+            
+            if (playerRole == "PLAYER1")
+            {
+                _imageState = _player2Image;
+            }
+            else if(playerRole == "PLAYER2")
+            {
+                _imageState = _player1Image;
+            }
+
+            Image image = new Image(_imageState, IconSize.Button);
+            Button newBtn = new Button(image);
+            newBtn.WidthRequest = 40;
+            newBtn.HeightRequest = 40;
+
+            _table.Attach(newBtn, leftAttach, rightAttach, topAttach, bottomAttach);
+
+            ShowAll();
         }
         
         
@@ -445,16 +496,7 @@ namespace FiveInRow
         {
         }
 
-
-        private void GameListener()
-        {
-            foreach (var btn in _table.Children)
-            {
-                // Console.WriteLine(btn.Label);
-            }
-        }
-
-
+        
         private void DestroyBoard(object sender, DeleteEventArgs e)
         {
             this.Destroy();

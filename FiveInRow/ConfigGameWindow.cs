@@ -77,8 +77,8 @@ namespace FiveInRow
             
             _entryReceivedData = new Entry();
             vboxMain.PackEnd(_entryReceivedData, true, true, 0);
-            // _entryReceivedData.Visibility = false;
-            _entryReceivedData.ShowNow();
+            _entryReceivedData.Visibility = false;
+            // _entryReceivedData.ShowNow();
             
             Pango.FontDescription fontDescription = Pango.FontDescription.FromString("Arial");
             fontDescription.Size = 13000;
@@ -171,13 +171,16 @@ namespace FiveInRow
             {
                 Gtk.Application.Invoke (delegate {
                     this.Hide();
+                    HBoxInfoLabel.Visible = false;
                     _board = new Board(_row, _col);
                 });
             }
 
             if (_typeOfReceiveData == "MOVE")
             {
-                // _board.OpponentMove(_coord);
+                Gtk.Application.Invoke (delegate {
+                    _board.OpponentMove(_coord);
+                });
             }
         }
 
@@ -224,7 +227,7 @@ namespace FiveInRow
                 }
                 else if (_typeOfReceiveData == "MOVE")
                 {
-                    (int x, int y) _coord = ReaderReceivedMove(splitArray[1]);
+                    _coord = ReaderReceivedMove(splitArray[1]);
                 }
             }
         }
@@ -276,15 +279,6 @@ namespace FiveInRow
                 this.Hide();
                 _ = new Board(_row, _col);
             }
-            else if (rbMultiplayer.Active && frameServer.Visible == true)
-            {
-                
-            }
-            else  if (rbMultiplayer.Active && frameClient.Visible == true)
-            {
-                
-            }
-
         }
         
         private string GetIpAddress()
