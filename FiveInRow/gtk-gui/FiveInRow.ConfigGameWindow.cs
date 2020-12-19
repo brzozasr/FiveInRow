@@ -4,7 +4,7 @@ namespace FiveInRow
 {
 	public partial class ConfigGameWindow
 	{
-		private global::Gtk.VBox vbox14;
+		private global::Gtk.VBox vboxMain;
 
 		private global::Gtk.Frame frame;
 
@@ -24,7 +24,65 @@ namespace FiveInRow
 
 		private global::Gtk.SpinButton sbBoardSize;
 
-		private global::Gtk.Label GtkLabel2;
+		private global::Gtk.Label lbPlayerName;
+
+		private global::Gtk.HBox hboxButtons;
+
+		private global::Gtk.Alignment alignment3;
+
+		private global::Gtk.Button btnServerShow;
+
+		private global::Gtk.Alignment alignment5;
+
+		private global::Gtk.Button btnClientShow;
+
+		private global::Gtk.Alignment alignment1;
+
+		private global::Gtk.Label GtkLabel4;
+
+		private global::Gtk.Frame frameServer;
+
+		private global::Gtk.Alignment GtkAlignment1;
+
+		private global::Gtk.HBox hbox9;
+
+		private global::Gtk.Label lbIpServer;
+
+		private global::Gtk.Entry entryIpServer;
+
+		private global::Gtk.Label lbPortServer;
+
+		private global::Gtk.Entry entryPortServer;
+
+		private global::Gtk.Button btnStartServer;
+
+		private global::Gtk.Label GtkLabel6;
+
+		private global::Gtk.Frame frameClient;
+
+		private global::Gtk.Alignment GtkAlignment2;
+
+		private global::Gtk.HBox hbox10;
+
+		private global::Gtk.Label lbIpClient;
+
+		private global::Gtk.Entry entryIpClient;
+
+		private global::Gtk.Label lbPortClient;
+
+		private global::Gtk.Entry entryPortClient;
+
+		private global::Gtk.Button btnConnectClient;
+
+		private global::Gtk.Label GtkLabel8;
+
+		private global::Gtk.HBox hboxInfoLabel;
+
+		private global::Gtk.Alignment alignment2;
+
+		private global::Gtk.Label lbConnectionInfo;
+
+		private global::Gtk.Alignment alignment4;
 
 		private global::Gtk.HBox hbox5;
 
@@ -43,14 +101,15 @@ namespace FiveInRow
 			global::Stetic.Gui.Initialize(this);
 			// Widget FiveInRow.ConfigGameWindow
 			this.Name = "FiveInRow.ConfigGameWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString("Game Configurarion");
+			this.Title = global::Mono.Unix.Catalog.GetString("Game Configuration");
 			this.Icon = global::Stetic.IconLoader.LoadIcon(this, "gtk-apply", global::Gtk.IconSize.Menu);
 			this.WindowPosition = ((global::Gtk.WindowPosition)(1));
+			this.AllowShrink = true;
 			// Container child FiveInRow.ConfigGameWindow.Gtk.Container+ContainerChild
-			this.vbox14 = new global::Gtk.VBox();
-			this.vbox14.Name = "vbox14";
-			this.vbox14.Spacing = 6;
-			// Container child vbox14.Gtk.Box+BoxChild
+			this.vboxMain = new global::Gtk.VBox();
+			this.vboxMain.Name = "vboxMain";
+			this.vboxMain.Spacing = 6;
+			// Container child vboxMain.Gtk.Box+BoxChild
 			this.frame = new global::Gtk.Frame();
 			this.frame.Name = "frame";
 			this.frame.BorderWidth = ((uint)(15));
@@ -113,23 +172,263 @@ namespace FiveInRow
 			this.sbBoardSize.Value = 8D;
 			this.fixed4.Add(this.sbBoardSize);
 			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.sbBoardSize]));
-			w5.X = 116;
+			w5.X = 105;
+			// Container child fixed4.Gtk.Fixed+FixedChild
+			this.lbPlayerName = new global::Gtk.Label();
+			this.lbPlayerName.Name = "lbPlayerName";
+			this.lbPlayerName.LabelProp = global::Mono.Unix.Catalog.GetString("Name: ");
+			this.fixed4.Add(this.lbPlayerName);
+			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.lbPlayerName]));
+			w6.X = 189;
+			w6.Y = 5;
+			// Container child fixed4.Gtk.Fixed+FixedChild
+			this.EntryName = new global::Gtk.Entry();
+			this.EntryName.CanFocus = true;
+			this.EntryName.Name = "entryName";
+			this.EntryName.IsEditable = true;
+			this.EntryName.InvisibleChar = '●';
+			this.fixed4.Add(this.EntryName);
+			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed4[this.EntryName]));
+			w7.X = 231;
 			this.vbox15.Add(this.fixed4);
-			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.fixed4]));
-			w6.Position = 1;
-			w6.Expand = false;
-			w6.Fill = false;
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.fixed4]));
+			w8.Position = 1;
+			w8.Expand = false;
+			w8.Fill = false;
+			// Container child vbox15.Gtk.Box+BoxChild
+			this.hboxButtons = new global::Gtk.HBox();
+			this.hboxButtons.Name = "hboxButtons";
+			this.hboxButtons.Spacing = 6;
+			// Container child hboxButtons.Gtk.Box+BoxChild
+			this.alignment3 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment3.Name = "alignment3";
+			this.hboxButtons.Add(this.alignment3);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hboxButtons[this.alignment3]));
+			w9.Position = 0;
+			// Container child hboxButtons.Gtk.Box+BoxChild
+			this.btnServerShow = new global::Gtk.Button();
+			this.btnServerShow.CanFocus = true;
+			this.btnServerShow.Name = "btnServerShow";
+			this.btnServerShow.UseUnderline = true;
+			this.btnServerShow.Label = global::Mono.Unix.Catalog.GetString("SERVER");
+			this.hboxButtons.Add(this.btnServerShow);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hboxButtons[this.btnServerShow]));
+			w10.Position = 1;
+			w10.Expand = false;
+			w10.Fill = false;
+			// Container child hboxButtons.Gtk.Box+BoxChild
+			this.alignment5 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment5.Name = "alignment5";
+			this.hboxButtons.Add(this.alignment5);
+			global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.hboxButtons[this.alignment5]));
+			w11.Position = 2;
+			// Container child hboxButtons.Gtk.Box+BoxChild
+			this.btnClientShow = new global::Gtk.Button();
+			this.btnClientShow.CanFocus = true;
+			this.btnClientShow.Name = "btnClientShow";
+			this.btnClientShow.UseUnderline = true;
+			this.btnClientShow.Label = global::Mono.Unix.Catalog.GetString("CLIENT");
+			this.hboxButtons.Add(this.btnClientShow);
+			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.hboxButtons[this.btnClientShow]));
+			w12.Position = 3;
+			w12.Expand = false;
+			w12.Fill = false;
+			// Container child hboxButtons.Gtk.Box+BoxChild
+			this.alignment1 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment1.Name = "alignment1";
+			this.hboxButtons.Add(this.alignment1);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hboxButtons[this.alignment1]));
+			w13.Position = 4;
+			this.vbox15.Add(this.hboxButtons);
+			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox15[this.hboxButtons]));
+			w14.Position = 2;
+			w14.Expand = false;
+			w14.Fill = false;
 			this.GtkAlignment.Add(this.vbox15);
 			this.frame.Add(this.GtkAlignment);
-			this.GtkLabel2 = new global::Gtk.Label();
-			this.GtkLabel2.Name = "GtkLabel2";
-			this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Game Mode</b>");
-			this.GtkLabel2.UseMarkup = true;
-			this.frame.LabelWidget = this.GtkLabel2;
-			this.vbox14.Add(this.frame);
-			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox14[this.frame]));
-			w9.Position = 0;
-			// Container child vbox14.Gtk.Box+BoxChild
+			this.GtkLabel4 = new global::Gtk.Label();
+			this.GtkLabel4.Name = "GtkLabel4";
+			this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Game Mode</b>");
+			this.GtkLabel4.UseMarkup = true;
+			this.frame.LabelWidget = this.GtkLabel4;
+			this.vboxMain.Add(this.frame);
+			global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.frame]));
+			w17.Position = 0;
+			w17.Expand = false;
+			w17.Fill = false;
+			// Container child vboxMain.Gtk.Box+BoxChild
+			this.frameServer = new global::Gtk.Frame();
+			this.frameServer.Name = "frameServer";
+			this.frameServer.BorderWidth = ((uint)(15));
+			// Container child frameServer.Gtk.Container+ContainerChild
+			this.GtkAlignment1 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+			this.GtkAlignment1.Name = "GtkAlignment1";
+			this.GtkAlignment1.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment1.Gtk.Container+ContainerChild
+			this.hbox9 = new global::Gtk.HBox();
+			this.hbox9.Name = "hbox9";
+			this.hbox9.Spacing = 6;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.lbIpServer = new global::Gtk.Label();
+			this.lbIpServer.Name = "lbIpServer";
+			this.lbIpServer.LabelProp = global::Mono.Unix.Catalog.GetString("IP: ");
+			this.hbox9.Add(this.lbIpServer);
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.lbIpServer]));
+			w18.Position = 0;
+			w18.Expand = false;
+			w18.Fill = false;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.entryIpServer = new global::Gtk.Entry();
+			this.entryIpServer.CanFocus = true;
+			this.entryIpServer.Name = "entryIpServer";
+			this.entryIpServer.IsEditable = true;
+			this.entryIpServer.InvisibleChar = '●';
+			this.hbox9.Add(this.entryIpServer);
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.entryIpServer]));
+			w19.Position = 1;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.lbPortServer = new global::Gtk.Label();
+			this.lbPortServer.Name = "lbPortServer";
+			this.lbPortServer.LabelProp = global::Mono.Unix.Catalog.GetString("Port: ");
+			this.hbox9.Add(this.lbPortServer);
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.lbPortServer]));
+			w20.Position = 2;
+			w20.Expand = false;
+			w20.Fill = false;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.entryPortServer = new global::Gtk.Entry();
+			this.entryPortServer.CanFocus = true;
+			this.entryPortServer.Name = "entryPortServer";
+			this.entryPortServer.IsEditable = true;
+			this.entryPortServer.InvisibleChar = '●';
+			this.hbox9.Add(this.entryPortServer);
+			global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.entryPortServer]));
+			w21.Position = 3;
+			// Container child hbox9.Gtk.Box+BoxChild
+			this.btnStartServer = new global::Gtk.Button();
+			this.btnStartServer.CanFocus = true;
+			this.btnStartServer.Name = "btnStartServer";
+			this.btnStartServer.UseUnderline = true;
+			this.btnStartServer.Label = global::Mono.Unix.Catalog.GetString("START");
+			this.hbox9.Add(this.btnStartServer);
+			global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.hbox9[this.btnStartServer]));
+			w22.Position = 4;
+			w22.Expand = false;
+			w22.Fill = false;
+			this.GtkAlignment1.Add(this.hbox9);
+			this.frameServer.Add(this.GtkAlignment1);
+			this.GtkLabel6 = new global::Gtk.Label();
+			this.GtkLabel6.Name = "GtkLabel6";
+			this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString("<b>SERVER</b>");
+			this.GtkLabel6.UseMarkup = true;
+			this.frameServer.LabelWidget = this.GtkLabel6;
+			this.vboxMain.Add(this.frameServer);
+			global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.frameServer]));
+			w25.Position = 1;
+			w25.Expand = false;
+			w25.Fill = false;
+			// Container child vboxMain.Gtk.Box+BoxChild
+			this.frameClient = new global::Gtk.Frame();
+			this.frameClient.Name = "frameClient";
+			this.frameClient.BorderWidth = ((uint)(15));
+			// Container child frameClient.Gtk.Container+ContainerChild
+			this.GtkAlignment2 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+			this.GtkAlignment2.Name = "GtkAlignment2";
+			this.GtkAlignment2.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment2.Gtk.Container+ContainerChild
+			this.hbox10 = new global::Gtk.HBox();
+			this.hbox10.Name = "hbox10";
+			this.hbox10.Spacing = 6;
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.lbIpClient = new global::Gtk.Label();
+			this.lbIpClient.Name = "lbIpClient";
+			this.lbIpClient.LabelProp = global::Mono.Unix.Catalog.GetString("IP: ");
+			this.hbox10.Add(this.lbIpClient);
+			global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.hbox10[this.lbIpClient]));
+			w26.Position = 0;
+			w26.Expand = false;
+			w26.Fill = false;
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.entryIpClient = new global::Gtk.Entry();
+			this.entryIpClient.CanFocus = true;
+			this.entryIpClient.Name = "entryIpClient";
+			this.entryIpClient.IsEditable = true;
+			this.entryIpClient.InvisibleChar = '●';
+			this.hbox10.Add(this.entryIpClient);
+			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.hbox10[this.entryIpClient]));
+			w27.Position = 1;
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.lbPortClient = new global::Gtk.Label();
+			this.lbPortClient.Name = "lbPortClient";
+			this.lbPortClient.LabelProp = global::Mono.Unix.Catalog.GetString("Port: ");
+			this.hbox10.Add(this.lbPortClient);
+			global::Gtk.Box.BoxChild w28 = ((global::Gtk.Box.BoxChild)(this.hbox10[this.lbPortClient]));
+			w28.Position = 2;
+			w28.Expand = false;
+			w28.Fill = false;
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.entryPortClient = new global::Gtk.Entry();
+			this.entryPortClient.CanFocus = true;
+			this.entryPortClient.Name = "entryPortClient";
+			this.entryPortClient.IsEditable = true;
+			this.entryPortClient.InvisibleChar = '●';
+			this.hbox10.Add(this.entryPortClient);
+			global::Gtk.Box.BoxChild w29 = ((global::Gtk.Box.BoxChild)(this.hbox10[this.entryPortClient]));
+			w29.Position = 3;
+			// Container child hbox10.Gtk.Box+BoxChild
+			this.btnConnectClient = new global::Gtk.Button();
+			this.btnConnectClient.CanFocus = true;
+			this.btnConnectClient.Name = "btnConnectClient";
+			this.btnConnectClient.UseUnderline = true;
+			this.btnConnectClient.Label = global::Mono.Unix.Catalog.GetString("CONNECT");
+			this.hbox10.Add(this.btnConnectClient);
+			global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.hbox10[this.btnConnectClient]));
+			w30.Position = 4;
+			w30.Expand = false;
+			w30.Fill = false;
+			this.GtkAlignment2.Add(this.hbox10);
+			this.frameClient.Add(this.GtkAlignment2);
+			this.GtkLabel8 = new global::Gtk.Label();
+			this.GtkLabel8.Name = "GtkLabel8";
+			this.GtkLabel8.LabelProp = global::Mono.Unix.Catalog.GetString("<b>CLIENT</b>");
+			this.GtkLabel8.UseMarkup = true;
+			this.frameClient.LabelWidget = this.GtkLabel8;
+			this.vboxMain.Add(this.frameClient);
+			global::Gtk.Box.BoxChild w33 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.frameClient]));
+			w33.Position = 2;
+			w33.Expand = false;
+			w33.Fill = false;
+			// Container child vboxMain.Gtk.Box+BoxChild
+			this.hboxInfoLabel = new global::Gtk.HBox();
+			this.hboxInfoLabel.Name = "hboxInfoLabel";
+			this.hboxInfoLabel.Spacing = 6;
+			// Container child hboxInfoLabel.Gtk.Box+BoxChild
+			this.alignment2 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment2.Name = "alignment2";
+			this.hboxInfoLabel.Add(this.alignment2);
+			global::Gtk.Box.BoxChild w34 = ((global::Gtk.Box.BoxChild)(this.hboxInfoLabel[this.alignment2]));
+			w34.Position = 0;
+			// Container child hboxInfoLabel.Gtk.Box+BoxChild
+			this.lbConnectionInfo = new global::Gtk.Label();
+			this.lbConnectionInfo.Name = "lbConnectionInfo";
+			this.lbConnectionInfo.LabelProp = global::Mono.Unix.Catalog.GetString("Waiting for connection...");
+			this.hboxInfoLabel.Add(this.lbConnectionInfo);
+			global::Gtk.Box.BoxChild w35 = ((global::Gtk.Box.BoxChild)(this.hboxInfoLabel[this.lbConnectionInfo]));
+			w35.Position = 1;
+			w35.Expand = false;
+			w35.Fill = false;
+			// Container child hboxInfoLabel.Gtk.Box+BoxChild
+			this.alignment4 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
+			this.alignment4.Name = "alignment4";
+			this.hboxInfoLabel.Add(this.alignment4);
+			global::Gtk.Box.BoxChild w36 = ((global::Gtk.Box.BoxChild)(this.hboxInfoLabel[this.alignment4]));
+			w36.Position = 2;
+			this.vboxMain.Add(this.hboxInfoLabel);
+			global::Gtk.Box.BoxChild w37 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.hboxInfoLabel]));
+			w37.Position = 3;
+			w37.Expand = false;
+			w37.Fill = false;
+			// Container child vboxMain.Gtk.Box+BoxChild
 			this.hbox5 = new global::Gtk.HBox();
 			this.hbox5.Name = "hbox5";
 			this.hbox5.Spacing = 6;
@@ -137,8 +436,8 @@ namespace FiveInRow
 			this.alignment17 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
 			this.alignment17.Name = "alignment17";
 			this.hbox5.Add(this.alignment17);
-			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment17]));
-			w10.Position = 0;
+			global::Gtk.Box.BoxChild w38 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment17]));
+			w38.Position = 0;
 			// Container child hbox5.Gtk.Box+BoxChild
 			this.vbox5 = new global::Gtk.VBox();
 			this.vbox5.Name = "vbox5";
@@ -154,31 +453,31 @@ namespace FiveInRow
 			this.btnPlay.Label = global::Mono.Unix.Catalog.GetString("PLAY");
 			this.alignment19.Add(this.btnPlay);
 			this.vbox5.Add(this.alignment19);
-			global::Gtk.Box.BoxChild w12 = ((global::Gtk.Box.BoxChild)(this.vbox5[this.alignment19]));
-			w12.Position = 0;
-			w12.Expand = false;
-			w12.Fill = false;
+			global::Gtk.Box.BoxChild w40 = ((global::Gtk.Box.BoxChild)(this.vbox5[this.alignment19]));
+			w40.Position = 0;
+			w40.Expand = false;
+			w40.Fill = false;
 			this.hbox5.Add(this.vbox5);
-			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.vbox5]));
-			w13.Position = 1;
-			w13.Expand = false;
-			w13.Fill = false;
+			global::Gtk.Box.BoxChild w41 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.vbox5]));
+			w41.Position = 1;
+			w41.Expand = false;
+			w41.Fill = false;
 			// Container child hbox5.Gtk.Box+BoxChild
 			this.alignment18 = new global::Gtk.Alignment(0.5F, 0.5F, 1F, 1F);
 			this.alignment18.Name = "alignment18";
 			this.hbox5.Add(this.alignment18);
-			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment18]));
-			w14.Position = 2;
-			this.vbox14.Add(this.hbox5);
-			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox14[this.hbox5]));
-			w15.Position = 2;
-			this.Add(this.vbox14);
+			global::Gtk.Box.BoxChild w42 = ((global::Gtk.Box.BoxChild)(this.hbox5[this.alignment18]));
+			w42.Position = 2;
+			this.vboxMain.Add(this.hbox5);
+			global::Gtk.Box.BoxChild w43 = ((global::Gtk.Box.BoxChild)(this.vboxMain[this.hbox5]));
+			w43.Position = 4;
+			this.Add(this.vboxMain);
 			if ((this.Child != null))
 			{
 				this.Child.ShowAll();
 			}
-			this.DefaultWidth = 589;
-			this.DefaultHeight = 395;
+			this.DefaultWidth = 520;
+			this.DefaultHeight = 462;
 			this.Show();
 		}
 	}
