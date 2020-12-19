@@ -10,7 +10,7 @@ using Socket = System.Net.Sockets.Socket;
 
 namespace FiveInRow
 {
-    public class Server
+    public class Server : IDisposable
     {
         private Socket _socket;
 
@@ -244,6 +244,16 @@ namespace FiveInRow
                 ButtonsType.Close, message);
             md.Run();
             md.Destroy();
+        }
+        
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
+        
+        ~Server()      // finalizer
+        {
+            Dispose();
         }
 
         public static void SetConfigGameWindow(ConfigGameWindow configGameWindow)
