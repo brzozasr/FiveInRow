@@ -2,9 +2,9 @@
 
 ## Print Screens
 
-![alt text](FiveInRow/Properties/Resources/config.png?raw=true)
+![alt text](FiveInRow/Properties/Resources/config.png?raw=true?style=centerme)
 
-![alt text](FiveInRow/Properties/Resources/board.png?raw=true)
+![alt text](FiveInRow/Properties/Resources/board.png?raw=true?style=centerme)
 
 ## Story
 

@@ -76,6 +76,15 @@ namespace FiveInRow
                 {
                     btn.Clicked += OnClickMultiplayer;
                 }
+                
+                if (_configGameWindow.MultiplayerRole == "PLAYER1")
+                {
+                    _turn = true;
+                }
+                else if (_configGameWindow.MultiplayerRole == "PLAYER2")
+                {
+                    _turn = false;
+                }
 
                 SetVariablesForMultiplayer();
             }
@@ -167,14 +176,12 @@ namespace FiveInRow
 
                 _boardArray[x, y] = _playerMark;
                 _turn = false;
-                
+
                 string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
                 bool isBoardFull = GameLogic.IsBoardFull();
                 
                 if (_configGameWindow.RbMultiplayer.Active)
                 {
-                    // LbTurn.Text = "TURN =>";
-                
                     // loop for updating GUI
                     while (Gtk.Application.EventsPending())
                     {
@@ -215,8 +222,7 @@ namespace FiveInRow
             _turn = true;
 
             ReplaceButtonMultiplayer(coord);
-            // ReloadBoard(_configGameWindow.Row, _configGameWindow.Col);
-            
+
             string hasWon = GameLogic.HasWon(_player1Name, _player2Name);
             bool isBoardFull = GameLogic.IsBoardFull();
             
