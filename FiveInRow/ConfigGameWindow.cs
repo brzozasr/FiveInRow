@@ -139,11 +139,6 @@ namespace FiveInRow
                 _multiplayerRole = null;
                 btn.Label = "START";
                 HBoxInfoLabel.Visible = false;
-
-                if (_server != null)
-                {
-                    _server.Dispose();
-                }
             }
         }
 

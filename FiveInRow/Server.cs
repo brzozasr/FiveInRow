@@ -2,15 +2,17 @@ using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Gtk;
 using Socket = System.Net.Sockets.Socket;
 
 
 namespace FiveInRow
 {
-    public class Server : IDisposable
+    public class Server
     {
         private Socket _socket;
 
@@ -106,8 +108,6 @@ namespace FiveInRow
                     _socket.Dispose();
                 }
 
-                Console.WriteLine("list: " + _waitForConnection);
-
                 if (_listener != null)
                 {
                     _listener.Stop();
@@ -120,6 +120,7 @@ namespace FiveInRow
                     _waitForConnection.Dispose();
                 }
 
+                GC.SuppressFinalize(this);
                 GC.Collect();
 
                 Console.WriteLine("Server stopped...");
@@ -195,6 +196,11 @@ namespace FiveInRow
 
         private void WaitForConnectionDoWork(object sender, DoWorkEventArgs e)
         {
+            // if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            // {
+            //     _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            // }
+            
             _socket = _listener.AcceptSocket();
         }
 
@@ -244,16 +250,6 @@ namespace FiveInRow
                 ButtonsType.Close, message);
             md.Run();
             md.Destroy();
-        }
-        
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-        
-        ~Server()      // finalizer
-        {
-            Dispose();
         }
 
         public static void SetConfigGameWindow(ConfigGameWindow configGameWindow)
