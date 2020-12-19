@@ -1,5 +1,11 @@
 # Five in a Row
 
+## Print Screens
+
+![alt text](FiveInRow/Properties/Resources/config.png?raw=true)
+
+![alt text](FiveInRow/Properties/Resources/board.png?raw=true)
+
 ## Story
 
 Do you remember Tic-tac-toe from the beginning of your programming career?
