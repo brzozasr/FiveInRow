@@ -52,7 +52,7 @@ namespace FiveInRow
             _waitForConnection.DoWork += WaitForConnectionDoWork;
             _waitForConnection.RunWorkerCompleted += WaitForConnectionWorkerCompleted;
         }
-
+        
 
         protected internal void StartServer()
         {
@@ -119,6 +119,10 @@ namespace FiveInRow
                     _waitForConnection.CancelAsync();
                     _waitForConnection.Dispose();
                 }
+                
+                _messageReceiver.WorkerSupportsCancellation = true;
+                _messageReceiver.CancelAsync();
+                _messageReceiver.Dispose();
 
                 GC.SuppressFinalize(this);
                 GC.Collect();
